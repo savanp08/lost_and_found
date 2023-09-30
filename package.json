@@ -1,0 +1,22 @@
+{
+  "engines": {
+    "node": "18.8.0",
+    "npm": "9.6.2"
+  },
+  "scripts": {
+    "clientBuild": "cd client && npm run build",
+    "clientInstall": "cd client && npm install",
+    "serverInstall": "cd server && npm install",
+    "client": "cd client && npm start",
+    "server": "cd server && npm start",
+    "start": "npm run server",
+    "heroku-prebuild": "",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm run serverInstall && npm run clientInstall && npm run clientBuild",
+    "heroku-cleanup": "",
+    "Dev-BuildNRun" :"npm run clientBuild && npm run server"
+  },
+  "dependencies": {
+    
+    "react-scripts": "^5.0.1"
+  }
+}
