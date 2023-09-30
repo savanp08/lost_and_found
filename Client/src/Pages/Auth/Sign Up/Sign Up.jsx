@@ -35,7 +35,7 @@ const SignUp = () =>{
     occupation: null,
     gender: null,
     ethnicity: null,
-    trusted:null,
+    trusted:false,
     location: {
         university: null,
         street: null,
@@ -45,15 +45,15 @@ const SignUp = () =>{
         pinCode : null,
     },
     reports: {
-        count: null,
+        count: 0,
         itemIds:[],
     },
     searches: {
-        count: null,
+        count: 0,
         searchIds: [],
     },
     Claims: {
-        count: null,
+        count: 0,
         itemIds: [],
     }
     
@@ -105,22 +105,20 @@ const SignUp = () =>{
         if((typeof user.location[key] === 'string' || user.location[key] instanceof String) && user.location[key].length<1) { console.log("Returning False",key,user.location[key])
             return false; }
         console.log(user.location[key]);
-        
-            if(user.occupation==="Staff"){
-                setUser({...user,trusted : true},submitAccount);
-            }
-            else setUser({...user,trusted : false},submitAccount);
-        
-        
-        
        }
+       submitAccount();
       
     }
     
     async function submitAccount(){
-        dispatch(addUser);
+        dispatch(addUser({...user, 
+            trusted : user.occupation==="Staff",
+            userType : "user",
+            
+        }));
+        console.log("Sending API request to Create Account",{...user, trusted : user.occupation==="Staff"});
       axios.post('/Auth/SignUp', {
-        user: user,
+        user: {...user, trusted : user.occupation==="Staff"},
         password : password
       }).then(response=>{
         console.log(response.data);

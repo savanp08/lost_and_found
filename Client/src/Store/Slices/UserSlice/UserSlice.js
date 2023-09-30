@@ -17,7 +17,7 @@ const initialState = {
     occupation: null,
     gender: null,
     ethnicity: null,
-    trusted:null,
+    trusted:false,
     location: {
         university: null,
         street: null,
@@ -27,15 +27,15 @@ const initialState = {
         pinCode : null,
     },
     reports: {
-        count: null,
+        count: 0,
         itemIds:[],
     },
     searches: {
-        count: null,
+        count: 0,
         searchIds: [],
     },
     Claims: {
-        count: null,
+        count: 0,
         itemIds: [],
     }
     
@@ -47,7 +47,7 @@ const userSlice = createSlice({
     initialState,
     reducers:{
         addUser : (state, action) => {
-            const user = action.payload.user;
+            const user = action.payload;
             state.user = user;
         },
         getUser : (state,action) => {
@@ -57,7 +57,7 @@ const userSlice = createSlice({
             state.user = initialState;
         },
         updateUser :(state,action) => {
-            state.user =  action.payload.user;
+            state.user =  action.payload;
         },
         default : (state, action) => {
             return state;
