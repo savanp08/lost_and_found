@@ -1,0 +1,39 @@
+* {
+    box-sizing: border-box;
+}
+body {
+    margin: 0px 0px;
+}
+div{
+    margin: 0px;
+    border: 0px;   
+}
+
+.App-Wrap{
+    width: 100vw;
+    height: 100vh;
+    margin: 0px;
+    border: 0px;
+    display: flex;
+    flex-flow: column nowrap;
+    overflow-x: hidden;
+    /* overflow-y: hidden; */
+}
+.NavDiv-InApp{
+    width: 100%;
+    flex:0.1;
+    
+  }
+  
+  .Content-InApp{
+    width: 100%;
+    flex: 0.9;
+    
+  }
+  
+.Routes-Wrap{
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    border: 0px;
+}

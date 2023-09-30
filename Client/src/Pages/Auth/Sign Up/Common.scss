@@ -1,0 +1,32 @@
+.Flex{
+    display: flex;
+    flex-flow: row ;
+}
+
+.wrap{
+    flex-wrap: wrap;
+}
+.nowrap{
+    flex-wrap: nowrap;
+}
+
+.FHori{
+    flex-direction: row;
+}
+
+.Fvert{
+    flex-direction: column;
+}
+
+.FJus-St{
+    justify-content: flex-start;
+}
+
+.FJus-Ce{
+    justify-content: center;
+}
+
+.Fjus-En{
+    justify-content: end;
+}
+

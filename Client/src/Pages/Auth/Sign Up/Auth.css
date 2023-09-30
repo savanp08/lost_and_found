@@ -1,0 +1,219 @@
+.signUp-wrap{
+    width: 100%;
+    height: 100%;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    overflow-x: hidden;
+    /* overflow-y: scroll; */
+    background-color: purple;
+}
+
+.WH100Per{
+    width: 100%;
+    height: 100%;
+}
+.signUp-topWrap{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    align-content: center;
+    flex-flow: row no wrap;
+    background-color: white;
+}
+
+.signUp-topRightWrap{
+    height: 100%;
+    width: 65vw;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+}
+
+.bckImg-wrap{
+    height: 100%;
+    width: 35vw;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+    min-width: 280px;
+}
+
+.signUp-topImgTextWrap{
+    display: flex;
+    flex-flow: column wrap;
+    
+    height: 20%;
+    width: 100%;
+    justify-content: flex-end;
+    align-items: center;
+    align-content: center;
+}
+.signUp-topImgText{
+    margin-bottom: 5vh;
+}
+
+.signUp-TopImgWrap{
+    display: flex;
+    flex-flow: column wrap;
+    width: 100%;
+    height: 60%;
+    
+}
+.bckImg{
+    width: 100%;
+    height: 100%;
+}
+.signUp-ImgBtmTextWrap{
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+    align-items: flex-start;
+    align-content: center;
+    height: 20%;
+    width: 100%;  
+    position: relative;
+    
+}
+.signUp-ImgBtmTextWrap::before{
+    position: absolute;
+}
+.signUp-box{
+    flex:0.5;
+    display: flex;
+    flex-flow: column wrap;
+    margin: 4vw;
+    padding: 1vw;
+    max-width: 560px;
+    box-shadow: -5px 6px 5px rgb(168, 161, 161), 
+ 4px 3px 3px rgb(188, 180, 180);
+    border-radius: 15px;
+    background-color: rgb(255, 255, 255);
+}
+
+.signUp-innerBox{
+    width: 100%;
+    height: 100%;
+    flex: 1;
+    display: flex;
+    flex-flow: row wrap;
+    overflow-x: hidden;
+}
+
+.signUp-nameWrap{
+    display: flex;
+    flex-flow: row wrap;
+    width: 100%;
+    max-height: 220px;
+    height: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.signUp-wrapsB{
+    display: flex;
+    flex-flow: row wrap;
+    max-height: fit-content;
+    width: fit-content;
+    height: fit-content;
+    justify-content: space-between;
+    align-items: center;
+    /* background-color: aliceblue; */
+    /* margin-top: 2.3vw; */
+}
+
+.signUp-formButton{
+    margin: 8px;
+}
+
+.signUp-boxLabel{
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    border-top: wheat solid 5px;
+}
+
+.signUp-topTextWrap{
+    width: 65vw;
+    height: 100%;
+    background-color: rgb(36, 126, 158);
+    border-radius: 50% 0% 0% 50%;
+    box-shadow: -4px 4px 10px rgb(101, 98, 98),
+    4px -4px 10px rgb(101, 98, 98);
+}
+
+.signUp-TopTextBox1{
+display: flex;
+flex-flow: column wrap;
+justify-content: flex-end;
+align-items: center;
+align-content: center;
+width: 100%;
+height: 30%;
+}
+.signUp-TopText1{
+    text-align: center;
+    margin-left: 5vw;
+    font-size: 23px;
+    font-weight: 500;
+    color: rgb(255, 255, 255);
+    width: 55%;
+    min-width: 400px;
+	font-family: 'Brush Script MT', cursive;
+    text-shadow: 0px 0px 2px wheat, 0px 0px 2px wheat, 0px 0px 1px wheat;
+}
+.signUp-TopRight-signUpButton{
+    display: flex;
+    width: 100%;
+    height: 40%;
+    justify-content: flex-start;
+    flex-flow: row wrap;
+    align-items: center;
+    align-content: center;
+}
+.signUp-TopRight-signUpBut{
+    width: 170px;
+    height: 50px;
+    margin-left: 60px;
+    background-color: orange;
+    border-radius: 40px;
+    border: none;
+    box-shadow: -2px 2px 6px rgb(92, 89, 89), 2px -3px 7px rgb(107, 104, 104) ;
+    font-size: 20px;
+    font-weight: 460;
+    font-family: cursive;
+}
+.signUp-TopRight-signUpButText{
+    text-align: start;
+    margin-left: 5vw;
+    font-size: 31px;
+    font-weight: 500;
+    color: wheat;
+
+}
+.signUp-topRight-TextBox2{
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: flex-start;
+    align-items: center;
+    align-content: center;
+    width: 100%;
+    height: 30%;
+}
+.signUp-TopText2{
+    text-align: center;
+    margin-left: 5vw;
+    font-size: 23px;
+    font-weight: 500;
+    color: wheat;
+    width: 50%;
+    min-width: 400px;
+}

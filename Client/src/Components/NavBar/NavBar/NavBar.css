@@ -1,0 +1,187 @@
+.NavBar-Wrapper{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-around;
+    align-items: center;
+    align-content: center;
+    width: 100%;
+    background-color: rgb(195, 198, 143);
+    height: 100%;
+    box-shadow: 5px 5px 5px rgb(65, 65, 65);
+    min-height: 70px;
+}
+.NavBarResp-Wrapper{
+display: none;
+flex-flow: row nowrap;
+justify-content: space-around;
+align-items: center;
+align-content: center;
+width: 100%;
+background-color: rgb(109, 132, 139);
+height: 100%;
+}
+.NavBar-LinkEle{
+    text-decoration: none;
+    color:white;
+    font-size: 22px;
+
+}
+.ActiveEle-NavBar{
+    color:rgb(43, 73, 226);
+}
+
+.NavBarResp-LeftsideOptionsMenu{
+flex:0.15;
+}
+
+.NavBarResp-SearchBarWrapper{
+flex:0.5;
+}
+
+.NavBarResp-LoginOptions{
+    flex:0.25;
+}
+.NavBarResp-Account{
+    flex:0.1;
+}
+
+@media only screen and (max-width:600px){
+.NavBar-Wrapper{
+    display:none;
+}
+.NavBarResp-Wrapper{
+    display: flex;
+}
+}
+
+
+
+
+.NavBar-LeftMenu-Wrapper{
+    position: relative;
+}
+
+.NavBar-LeftMenu-OptionsContainer{
+    position: absolute;
+    background-color: rgb(65, 65, 65);
+    width: 300px;
+    max-width: 400px;
+    display: flex;
+    flex-flow: column nowrap;
+    margin-top: 0vh;
+    height: 90vh;
+    margin-left : -14.4vw;
+}
+
+.NavBar-LeftMenu-ContentType{
+    display: flex;
+    flex-flow: column nowrap;
+    color: white;
+    height: 180px;
+    justify-content: space-around;
+    align-content: center;
+    border-bottom: solid 3px black;
+}
+
+.NavBar-LeftMenu-ContentEle{
+cursor: pointer;
+color: rgb(92, 190, 70);
+font-size: 19px;
+font-weight: 500;
+text-align: end;
+padding: 10px;
+}
+
+.DividerHorizontal-Half{
+    border-top: solid 3px black;
+    width: 50%;
+    align-self: flex-end;
+}
+
+.DividerHorizontal-Full{
+    border-top: solid 3px black;
+    width: 100%;
+    align-self: flex-end;
+}
+
+.NavBarResp-Account{
+    position: relative;
+    margin-right: 30px;
+}
+
+.AccountOptionsMenuContainer{
+position: absolute;
+background-color: rgb(241, 243, 241);
+width: 140px;
+margin-left: -2vw;
+margin-top: 1.5vh;
+height: fit-content;
+box-shadow: 3px 3px 10px black;
+border-radius: 5px;
+}
+.AccountOptions-Wrapper{
+    position: relative;
+    z-index: 1000;
+}
+.AccountOptionsEle{
+    height: 30px;
+    text-align: center;
+    font-size: large;
+    font-weight: 400;
+    border-bottom: solid 2px black;
+    cursor: pointer;
+    font-family: Arial, Helvetica, sans-serif;
+    padding-top: 5%;
+}
+
+.AccountOptionsEle:hover{
+    color: blue;
+}
+
+.Hide{
+    display: none !important;
+  }
+  .NavBar-AccountOptions{
+    justify-self: flex-end;
+
+  }
+
+  .NavBar-AccountWrap{
+    display: flex;
+    flex-flow: row wrap;
+    width: 200px;
+    height: max-content;
+    justify-content: space-around;
+    align-items: center;
+    align-content: center;
+    justify-self: flex-end;
+    float: right;
+    margin-left: auto;
+    margin-right: 70px;
+  }
+
+  .NavBar-ContentType{
+    width: 400px;
+    justify-content: space-around;
+    align-items: center;
+    align-content: center;
+    display: flex;
+    margin-left: 5vw;
+    height: 100%;
+
+  }
+
+  .NavBar-DesIcon{
+    width: 50px;
+    height: 50px;
+  }
+
+  /* .NavBar-IconWrap{
+    width: 60px;
+    height: 60px;
+  } */
+
+  .NavBar-DesIcon{
+    width: 30px;
+    height: 30px;
+  }

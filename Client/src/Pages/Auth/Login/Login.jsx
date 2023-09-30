@@ -1,0 +1,152 @@
+import React from "react";
+import { NavLink } from "react-router-dom";
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import FormControl from '@mui/material/FormControl';
+import InputAdornment from '@mui/material/InputAdornment';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import IconButton from '@mui/material/IconButton';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
+import Input from '@mui/material/Input';
+import Img1 from '../../../Media/SVGs/temp3.svg';
+
+import './Login.css';
+import Button from '@mui/material/Button';
+
+
+const Login = () => {
+
+    const [showPassword, setShowPassword] = React.useState(false);
+
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+  
+    const handleMouseDownPassword = (event) => {
+      event.preventDefault();
+    };
+
+  return (
+    <div className="login-wrap">
+        <div className="login-sideStyleWrap">
+            <img className="login-sideStyleImg"
+            src={Img1} />
+            <span className="login-sideText">
+                Virtual help desk to help u find ur lost things
+            </span>
+        </div>
+      <div className="login-container">
+        <div className="login-titleWrap">
+      <span className="login-title">
+                Welcome to Lost&Found
+            </span>
+            </div>
+        <div className="login-box">
+            
+          <div className="login-innerBox">
+            <div className="login-credWrap">
+          <div className="login-field">
+            <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+              {/* <AccountCircle sx={{ color: "action.active", mr: 1, my: 0.5 ,width:'38px' , height:'38px' , marginLeft:'-48px' }} /> */}
+              <TextField
+                id="login_email"
+                label="Email"
+                variant="standard"
+                sx={{
+                    width:'310px',
+                    marginTop:'10px',
+                    height:'60px',
+                }}
+                autoFocus
+                inputProps={{
+                    fontSize:'30px',
+                }}
+                InputProps={{
+                    style: {
+                        color: "rgb(133, 140, 141)",
+                        fontSize:'17px',
+                    }
+                }}
+                />
+            </Box>
+          </div>
+          <div className="login-field">
+          <FormControl sx={{  width: '310px',height:'60px', }} 
+          variant="standard"
+          
+          >
+          <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
+          <Input
+            id="standard-adornment-password"
+            type={showPassword ? 'text' : 'password'}
+            sx={{
+                style: {
+                    fontSize:'20px',
+                    color:'red'
+                }
+            }}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
+          />
+        </FormControl>
+        <div className="login-passTextWrap">
+            <span className="login-passText">
+                    Forgot Password
+            </span>
+        </div>
+          </div>
+          <div className="login-otherOptionsWrap">
+            
+          </div>
+          </div>
+          <div className="login-helperText">
+            {}
+          </div>
+          <Button 
+          variant="contained"
+          sx={{
+            width:'250px',
+            height:'40px',
+            borderRadius:'40px',
+            backgroundColor:'rgb(142, 176, 179)',
+            display:'flex',
+            flexFlow:'row wrap',
+            justifyContent: 'center',
+            alignItems: 'center',
+            alignContent:'center',
+            ":hover" : {
+                backgroundColor:'rgb(142, 176, 179)',
+
+            }
+          }}
+          >
+            Sign in
+            </Button>
+        </div>
+        </div>
+        <div className="login-signUpWrap">
+          <span className="login-signUpText">
+            {"Don't Have an Account? Sign in "}
+            <NavLink to="/SignUp" className="login-signUpButton">
+               {"Here"}
+            </NavLink>
+          </span>
+        </div>
+      </div>
+
+    </div>
+  );
+
+}
+
+export default Login;
