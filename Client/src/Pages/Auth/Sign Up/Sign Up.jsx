@@ -12,16 +12,16 @@ import { NavLink } from "react-router-dom";
 import axios from 'axios';
 import {useDispatch, useSelector} from 'react-redux';
 import { addUser } from "../../../Store/Slices/UserSlice/UserSlice";
-
+import mongoose from "mongoose";
 
 const SignUp = () =>{
    const dispatch = useDispatch();
-   
+   const newId = new mongoose.Types.ObjectId().toString();
    const [password,setPassword] = useState(null);
    const ExistingUser = useSelector(state => state.user);
    console.log("Existing User =>", ExistingUser);
    const [user,setUser] =useState({
-    userId: null,
+    userId: newId,
     email:null,
     Name:{
         FirstName:"",
@@ -30,8 +30,7 @@ const SignUp = () =>{
     },
     userType: null,
     UniqueId: null,
-    nanoid: null,
-    userName:null,
+    nanoid: newId,
     occupation: null,
     gender: null,
     ethnicity: null,
@@ -111,20 +110,33 @@ const SignUp = () =>{
     }
     
     async function submitAccount(){
+        const Id = new mongoose.Types.ObjectId().toString();
         dispatch(addUser({...user, 
             trusted : user.occupation==="Staff",
             userType : "user",
-            
+            password : password,
+            nanoid : Id,
+            userId : Id
         }));
-        console.log("Sending API request to Create Account",{...user, trusted : user.occupation==="Staff"});
-      axios.post('/Auth/SignUp', {
-        user: {...user, trusted : user.occupation==="Staff"},
+        console.log("Sending API request to Create Account",{...user, trusted : user.occupation==="Staff" , userType : "user"});
+      await axios.post('/Auth/SignUp', {
+        user: {...user, 
+            trusted : user.occupation==="Staff",
+            userType : "user",
+            password : password,
+            nanoid : Id,
+            userId : Id
+        },
         password : password
       }).then(response=>{
         console.log(response.data);
-        
+        if(response.data && (typeof response.data === 'string' || response.data instanceof String) && response.data === "TokenVerified"){
+            localStorage.setItem(`user ${user.email}` , response.data.AccessToken);
+        }
       }).catch(error=>{
         console.log("Error while submitting", error);
+        var x = document.getElementById("signUp-helperText")
+        x.innerHTML = "Account already exists";
     })
       
     }
@@ -172,6 +184,7 @@ const SignUp = () =>{
             </div>
             </div>
             </div>
+            <div className="signUp-BottomWrap">
             <div className="signUp-TitleTextWrap">
                 <span className="signUp-TopText">
                     Create Account
@@ -491,6 +504,7 @@ const SignUp = () =>{
                         Here
                     </NavLink>
                 </div>
+            </div>
             </div>
         </div>
     )

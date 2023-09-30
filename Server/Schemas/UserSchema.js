@@ -15,6 +15,13 @@ const userSchemaX = new mongoose.Schema({
         default: null,
         unique: true,
     },
+    password:{
+        required: true,
+        type: 'string',
+        minlength: 3,
+        default: null,
+        unique: false,
+    },
     Name:{
         FirstName:{
             required: true,
@@ -49,13 +56,6 @@ const userSchemaX = new mongoose.Schema({
         unique: true,
     },
     nanoid: {
-        required: true,
-        type: 'string',
-        minlength: 3,
-        default: null,
-        unique: true,
-    },
-    userName:{
         required: true,
         type: 'string',
         minlength: 3,

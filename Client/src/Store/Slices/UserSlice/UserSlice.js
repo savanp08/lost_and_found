@@ -5,6 +5,7 @@ const initialState = {
    
     userId: null,
     email:null,
+    password:null,
     Name:{
         FirstName:null,
         MiddleName:null,
@@ -13,7 +14,6 @@ const initialState = {
     userType: null,
     UniqueId: null,
     nanoid: null,
-    userName:null,
     occupation: null,
     gender: null,
     ethnicity: null,
@@ -47,20 +47,19 @@ const userSlice = createSlice({
     initialState,
     reducers:{
         addUser : (state, action) => {
-            const user = action.payload;
-            state.user = user;
+            state = {...action.payload};
         },
         getUser : (state,action) => {
-            return state.user;
+            return state;
         },
         removeUser : (state,action) => {
-            state.user = initialState;
+            state = {...initialState};
         },
         updateUser :(state,action) => {
-            state.user =  action.payload;
+            state =  {...action.payload};
         },
         default : (state, action) => {
-            return state;
+            return {...state};
         },
 },
 });

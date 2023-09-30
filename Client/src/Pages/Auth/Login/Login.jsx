@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -15,17 +15,31 @@ import Img1 from '../../../Media/SVGs/temp3.svg';
 
 import './Login.css';
 import Button from '@mui/material/Button';
-
+import { useDispatch } from "react-redux";
+import axios from "axios";
 
 const Login = () => {
 
     const [showPassword, setShowPassword] = React.useState(false);
-
+    const [email,setEmail] = useState("");
+    const [password,setPassword] = useState("");
     const handleClickShowPassword = () => setShowPassword((show) => !show);
   
     const handleMouseDownPassword = (event) => {
       event.preventDefault();
     };
+
+    async function LoginFun(e){
+      e.preventDefault();
+     axios.post('/Login/user',{
+          email: email,
+          password: password
+     }).then(res=>{
+      console.log("Loged in",res);
+     }).catch(err=>{
+      console.log("Failed to login",err);
+     })
+    }
 
   return (
     <div className="login-wrap">
@@ -68,6 +82,10 @@ const Login = () => {
                         fontSize:'17px',
                     }
                 }}
+                value={email}
+                onChange ={(e)=>{
+                  setEmail(e.target.value);
+                }}
                 />
             </Box>
           </div>
@@ -97,6 +115,10 @@ const Login = () => {
                 </IconButton>
               </InputAdornment>
             }
+            value={password}
+                onChange ={(e)=>{
+                  setPassword(e.target.value);
+                }}
           />
         </FormControl>
         <div className="login-passTextWrap">
@@ -129,6 +151,7 @@ const Login = () => {
 
             }
           }}
+          onClick={(e)=> LoginFun(e) }
           >
             Sign in
             </Button>
