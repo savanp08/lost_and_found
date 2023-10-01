@@ -31,13 +31,20 @@ const Login = () => {
 
     async function LoginFun(e){
       e.preventDefault();
-     axios.post('/Login/user',{
+     axios.post('/Auth/Login/user',{
           email: email,
           password: password
      }).then(res=>{
       console.log("Loged in",res);
+      const AccessToken  = res.data.AccessToken;
+      if(AccessToken && (typeof AccessToken === "string" || AccessToken instanceof String)){
+        localStorage .setItem(`user ${email}`, AccessToken);
+        
+      }
      }).catch(err=>{
       console.log("Failed to login",err);
+      var x = document.getElementById("login-helperText");
+      x.innerHTML = "Incorrect credentials";
      })
     }
 
@@ -131,7 +138,7 @@ const Login = () => {
             
           </div>
           </div>
-          <div className="login-helperText">
+          <div className="login-helperText" id= "login-helperText">
             {}
           </div>
           <Button 

@@ -15,7 +15,7 @@ div{
     margin: 0px;
     border: 0px;
     display: flex;
-    flex-flow: column nowrap;
+    flex-flow: row nowrap;
     overflow-x: hidden;
     /* overflow-y: hidden; */
 }
@@ -36,4 +36,5 @@ div{
     height: 100%;
     margin: 0px;
     border: 0px;
+    flex:0.1;
 }

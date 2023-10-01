@@ -1,6 +1,7 @@
 import express from "express";
 import userSchema from "../../Schemas/UserSchema.js";
 import jwt from "jsonwebtoken"; 
+import adminSchema from '../../Schemas/AdminSchema.js';
 
 const authRouter = express.Router();
 
@@ -69,7 +70,6 @@ authRouter.get("/TokenValidate", async (req, res) => {
           console.log("Token Verified");
         }
       });
-      
     }
   });
 
@@ -79,14 +79,47 @@ function fetchToken(UserName) {
   }
 
   authRouter.get("/:UserType/RefreshToken", async (req, res) => {
-    const UserType = req.body.UserType;
+    const UserType = req.params.UserType;
     const UserName = req.body.UserName;
+
     const AccessToken = fetchToken({ UserName });
     res.status(202).json({ AccessToken: AccessToken });
   });
 
  authRouter.post('/Login/:userType' , async (req, response) => {
     const type  = req.params.userType;
+    if(userType === "admin") {
+        var password ="";
+        var exists =false;
+          try{
+            console.log("Login tried for admin",req.body);
+            adminSchema.findOne({ email: req.body.email },{ password:1  })
+            .then(res=>{
+                console.log("Admin Log in response => ",res);
+                exists = true;
+        password = res.password;
+            }).catch(err=>{
+                console.log("Error in Admin Login ",err);
+
+            });
+            if(!exists){
+                if(password === req.body.password){
+                    console.log("User Successfully logged in")
+                    const AccessToken = fetchToken(req.body.email);
+                    response.status(200).send({message : "Logined in", AccessToekn : AccessToken});
+        
+            }
+            else{
+                console.log("Password Wrong");
+                response.status(500).send("Incorrect Password");
+            }
+            }
+          }catch(err){
+            console.log("Error while logging in for admin",err);
+          }
+    }
+    else{
+    console.log("Login tried for user",req.body);
     try{
     var exists = false;
     var password = null;
@@ -94,7 +127,7 @@ function fetchToken(UserName) {
     .then(res=>{
         console.log("User Found for Login",res);
         exists = true;
-        password = res.body.password;
+        password = res.password;
     }).catch(err=>{
         console.log("Error while searching for user while login",err);
         response.status(500).send("Not Found");
@@ -103,7 +136,7 @@ function fetchToken(UserName) {
         if(password === req.body.password){
             console.log("User Successfully logged in")
             const AccessToken = fetchToken(req.body.email);
-            response.status(200).send({message : "Logined in", AccessToekn : AccessToekn});
+            response.status(200).send({message : "Logined in", AccessToekn : AccessToken});
 
     }
     else{
@@ -115,6 +148,7 @@ function fetchToken(UserName) {
     catch(err){
         console.log("Error in try while login",err);
     }
+}
  })
 
 

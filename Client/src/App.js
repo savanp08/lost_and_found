@@ -16,7 +16,7 @@ function App() {
   return (
     <div className="App-Wrap">
        <Router>
-      <div className='NavDiv-InApp'>
+      <div className={'NavDiv-InApp ' + userSigned? "" : " Hide" }>
      { userSigned?
       <NavBar /> : null
      }

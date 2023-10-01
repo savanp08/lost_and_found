@@ -4,6 +4,7 @@ import SignUp from "../../Pages/Auth/Sign Up/Sign Up";
 import Home from "../../Pages/Home/Home";
 import '../../App.css';
 import Login from '../../Pages/Auth/Login/Login.jsx';
+import Admin from "../../Pages/Account/Admin/Admin";
 
 const RoutesComponent = () =>{
 
@@ -13,6 +14,7 @@ const RoutesComponent = () =>{
                 <Route exact path="/" element = {<Home/> } />
                 <Route exact path="/SignUp" element = { <SignUp/> } />
                 <Route exact path="/Login" element = { <Login/> } />
+                <Route exaxt path="/Admin" element = { <Admin/> } />
             </Routes>
         </div>
     )
