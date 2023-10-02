@@ -8,13 +8,14 @@ import './Admin.scss';
 const Admin = () => {
   const dispatch = useDispatch();
   const user = useSelector(state=> state.user);
+
   return(
     <div className="aa-AdminWrap">
       <div className="aa-AdminWrap-In1">
         
       
      <div className="aa-TopWrap">
-      <div className="aa-topwrap-inner">
+      <div className="aa-topwrap-inner Hide">
           <div className="aa-header-title-wrap">
             <span className="aa-header-title">
             { "Welcome Back " }

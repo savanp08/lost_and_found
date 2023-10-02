@@ -3,12 +3,12 @@ import './AdminClaims.scss';
 
 const AdminClaims = () => {
 
-
+   
     return(
-        <div className="admin-claims-wrap">
+        <div className="c-admin-claims-wrap">
             <div className="c01-ACD-inner-wrap">
                 <div className="c01-ACD-header-wrap">
-                    <div classname="c01-ACD-Hcontent-wrap">
+                    <div className="c01-ACD-Hcontent-wrap">
                         <div className="c01-ACD-Hstat-wrap">
                             <div className="c01-ACD-Hstat-text-wrap">
                                 <span className="c01-ACD-Hstat-text">
