@@ -7,34 +7,95 @@ body {
 div{
     margin: 0px;
     border: 0px;   
+    
 }
 
 .App-Wrap{
     width: 100vw;
-    height: 100vh;
+    height: 100%;
+    
     margin: 0px;
     border: 0px;
     display: flex;
-    flex-flow: row nowrap;
+    flex-flow: column nowrap;
     overflow-x: hidden;
-    /* overflow-y: hidden; */
+    overflow-y: hidden;
+    background: radial-gradient(ellipse at center,
+     rgba(255, 255, 255, 0.2) 0%,
+      rgba(255, 255, 255, 0) 100%),
+       radial-gradient(ellipse at 80% 5%,
+        #ffffff 0%, rgb(255 40 184 / 0%) 30%),
+         radial-gradient(ellipse at bottom left,
+          #ff006a 0%, rgb(98 190 255 / 31%) 60%),
+           linear-gradient(135deg, rgba(18, 46, 119, 0) 0%,
+            rgba(18, 46, 119, 0) 75%, #f2ffa8 100%),
+             linear-gradient(82deg, #dff7ff 0%, #f3ff99 27%, #88b8ff 74%, #82b3ff 100%);
+background-blend-mode: screen, hue, color, overlay;
+
+/* background: radial-gradient(ellipse at center,
+     rgba(255, 255, 255, 0.2) 0%,
+      rgba(255, 255, 255, 0) 100%),
+       radial-gradient(ellipse at 80% 5%,
+        #ffffff 0%, rgb(255 40 184 / 0%) 30%),
+         radial-gradient(ellipse at bottom left,
+          #ff006a 0%, rgb(98 190 255 / 31%) 60%),
+           linear-gradient(135deg, rgba(18, 46, 119, 0) 0%,
+            rgba(18, 46, 119, 0) 75%, #ecf8a7 100%),
+             linear-gradient(82deg, #dff7ff 0%, #eae9a9 27%, #88b8ff 74%, #aeb5bf 100%); */
 }
 .NavDiv-InApp{
     width: 100%;
     flex:0.1;
-    
+    overflow-x: hidden;
   }
   
   .Content-InApp{
-    width: 100%;
-    flex: 0.9;
-    
+    width: 100vw;
+    display: flex;
+    flex-flow: row nowrap;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y:hidden;
   }
-  
+.SNav-AppWrap{
+width: 15%;
+height: 100vh;
+display : flex;
+flex-flow: column wrap;
+justify-content: center;
+align-items: center;
+min-width: 140px;
+max-width: 180px;
+position: relative;
+overflow-x: hidden;
+
+}
+  .Content-AppWrap{
+  width: 85%;
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+  overflow-x: hidden;
+  }
 .Routes-Wrap{
     width: 100%;
     height: 100%;
     margin: 0px;
     border: 0px;
-    flex:0.1;
+    overflow-x: hidden;
+
 }
+.Content-MainWrapper{
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  display: flex;
+  flex-flow:  column;
+}
+
+@media only screen and (max-width:600px){
+  .SNav-AppWrap{
+    display: none;
+  }
+}
+

@@ -1,5 +1,5 @@
 .signUp-wrap{
-    width: 100vw;
+    width: 100%;
     height: 100%;
     background-color: rgb(255, 255, 255);
     display: flex;
@@ -7,7 +7,18 @@
     justify-content: flex-start;
     align-items: center;
     overflow-x: hidden;
-    background-color: purple;
+    background: radial-gradient(ellipse at center,
+    rgba(255, 255, 255, 0.2) 0%,
+     rgba(255, 255, 255, 0) 100%),
+      radial-gradient(ellipse at 80% 5%,
+       #d6d58a 0%, rgb(255 40 184 / 0%) 30%),
+        radial-gradient(ellipse at bottom left,
+         #ff006a 0%, rgb(98 190 255 / 31%) 60%),
+          linear-gradient(135deg, rgba(18, 46, 119, 0) 0%,
+           rgba(18, 46, 119, 0) 75%, #f2ffa8 100%),
+            linear-gradient(82deg, #dff7ff 0%, #f3ff99 27%, #88b8ff 74%, #82b3ff 100%);
+background-blend-mode: screen, hue, color, overlay;
+    
 }
 
 .WH100Per{
@@ -15,7 +26,7 @@
     height: 100%;
 }
 .signUp-topWrap{
-    width: 100vw;
+    width: 100%;
     height: 100vh;
     display: flex;
     justify-content: flex-start;
@@ -27,17 +38,18 @@
 
 .signUp-topRightWrap{
     height: 100%;
-    width: 65vw;
+    width: 65%;
     display: flex;
     flex-flow: column wrap;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-end;
     align-content: center;
+    
 }
 
 .bckImg-wrap{
     height: 100%;
-    width: 35vw;
+    width: 35%;
     display: flex;
     flex-flow: column wrap;
     justify-content: space-between;
@@ -141,12 +153,13 @@
 }
 
 .signUp-topTextWrap{
-    width: 65vw;
+    width: 90%;
     height: 100%;
-    background-color: rgb(36, 126, 158);
+   
     border-radius: 50% 0% 0% 50%;
-    box-shadow: -4px 4px 10px rgb(101, 98, 98),
-    4px -4px 10px rgb(101, 98, 98);
+    /* box-shadow: -4px 4px 10px rgb(101, 98, 98),
+    4px -4px 10px rgb(101, 98, 98); */
+    
 }
 
 .signUp-TopTextBox1{

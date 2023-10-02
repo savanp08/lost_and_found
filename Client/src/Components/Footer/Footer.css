@@ -3,9 +3,20 @@
     flex-flow: row wrap;
     align-items: center;
     justify-content: space-around;
-    background-color: gold;
     width: 100%;
     height: 150px;
+    align-self: flex-end;
+    background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.2) 0%,
+     rgba(255, 255, 255, 0) 100%),
+      radial-gradient(ellipse at 80% 5%, #5f5e61 0%,
+       rgb(255 40 184 / 0%) 30%),
+        radial-gradient(ellipse at bottom left, 
+        #5f5b5c 0%, rgb(98 190 255 / 31%) 60%),
+         linear-gradient(135deg, rgba(219, 215, 215, 0) 0%,
+          rgba(18, 46, 119, 0) 75%, #e9e9ed 100%),
+           linear-gradient(82deg, #dff7ff 0%, #919398 27%, #dde0e3 74%, #82b3ff 100%);
+    background-blend-mode: screen, hue, color, overlay;
+    
 }
 
 .FooterFAQWrapper{

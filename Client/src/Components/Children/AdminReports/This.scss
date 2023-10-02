@@ -1,0 +1,56 @@
+.admin-Reports-wrap{
+    display: flex;
+    background-color: white;
+    
+}
+
+.AA-After{
+    width: 92%;
+    height: 100%;
+    position: absolute;
+    top: 9.7vh;
+    left:2vw;
+    z-index: 1;
+}
+
+.c01-ARC-inner-wrap{
+    width: 90%;
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+
+}
+
+.c01-ARC-header-wrap{
+    display: flex;
+    flex-flow: row nowrap;
+    width: 100%;
+    position: relative;
+}
+
+.c01-ARC-Hcontent-wrap{
+width: 100%;
+flex-flow:column wrap;
+
+
+}
+
+.c01-ARC-Hstat-wrap{
+    width: 100%;
+    flex-flow:row wrap;
+
+}
+.c01-ARC-Hstat-text-wrap{
+    width: 34%;
+    min-width: 300px;
+    max-width: 500px;
+    display: flex;
+    flex-flow: column;
+    max-height: 260px;
+    min-height: 240px;
+    justify-content: space-around;
+    align-items: flex-start;
+    padding: 50px;
+    padding-right: 0px;
+}
+

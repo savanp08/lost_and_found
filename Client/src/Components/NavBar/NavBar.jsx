@@ -1,14 +1,24 @@
 import React from "react";
+import './common.scss';
+import './NavBar.css';
 
 
-
-const NavBar = () => {
+const SideNavBar = () => {
 
     return(
-        <div className="NavBar">
-            
+        <div className="SNavBarWrap">
+            <div className="SNavBar-LogoWrap">
+
+            </div>
+            <div className="SNavBar-IconsWrap">
+                <div className="SNavBar-IconWrap">
+
+                    
+
+                </div>
+            </div>
         </div>
     )
 }
 
-export default NavBar;
+export default SideNavBar;
