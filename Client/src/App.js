@@ -7,6 +7,7 @@ import { RespNavBar} from './Components/NavBar/NavBar/NavBar.js'
 import FOoterStand from './Components/Footer/Footer';
 import { useSelector } from 'react-redux';
 import SideNavBar from './Components/NavBar/NavBar';
+import AddReport from './Components/GlobalComponents/AddReport/AddReport';
 
 function App() {
 
@@ -33,7 +34,7 @@ function App() {
      <div className='Content-MainWrapper'>
      
      <RoutesComponent/>
-     
+     <AddReport />
      </div>
      </div>
      

@@ -1,4 +1,4 @@
-.admin-Reports-wrap{
+.Fadmin-Reports-wrap{
     display: flex;
 //    box-shadow: -3px 3px 10px rgb(117, 114, 114)
 //    ,-3px 3px 10px rgb(117, 114, 114)
@@ -9,54 +9,35 @@ all 4s ease-in-out 1s
 ;
 }
 
-.AA-After{
-    width: 92%;
-    height: 100%;
-    position: absolute;
-    top: 9.7vh;
-    left:2vw;
-    z-index: 1;
-    transition: 
-    all 4s ease-in-out 1s
-    
-    ;
-}
 
-.AA_Before{
-width: 100%;
-height: 100%;
-left:0;
-}
-
-.c01-ARC-inner-wrap{
+.c01-FARC-inner-wrap{
     width: 97%;
     height: 100%;
     display: flex;
     flex-flow: column;
-
 }
 
-.c01-ARC-header-wrap{
+.c01-FARC-header-wrap{
     display: flex;
     flex-flow: row nowrap;
     width: 100%;
     position: relative;
 }
 
-.c01-ARC-Hcontent-wrap{
+.c01-FARC-Hcontent-wrap{
 width: 100%;
 flex-flow:column wrap;
 
 
 }
 
-.c01-ARC-Hstat-wrap{
+.c01-FARC-Hstat-wrap{
     width: 100%;
     flex-flow:row wrap;
     display: flex;
 
 }
-.c01-ARC-Hstat-text-wrap{
+.c01-FARC-Hstat-text-wrap{
     width: 34%;
     min-width: 300px;
     max-width: 500px;
@@ -74,14 +55,14 @@ box-shadow: 0px 10px 15px 10px rgb(0 0 0 / 15%) ,
 inset 0px -0px 0px 1px rgb(255, 255, 255);
 }
 
-.c01-ARC-Hstat-charts-wrap{
+.c01-FARC-Hstat-charts-wrap{
     width:66%;
     display: flex;
     flex-flow: row wrap;
 
 }
 
-.co1-ARC-Hstat-chart1-wrap{
+.co1-FARC-Hstat-chart1-wrap{
     min-width: 300px;
     width: 50%;
     display: flex;
@@ -90,7 +71,7 @@ inset 0px -0px 0px 1px rgb(255, 255, 255);
     background-color: white;
 }
 
-.co1-ARC-Hstat-chart2-wrap{
+.co1-FARC-Hstat-chart2-wrap{
     min-width: 300px;
     width: 50%;
     display: flex;
@@ -99,21 +80,21 @@ inset 0px -0px 0px 1px rgb(255, 255, 255);
     background-color: white;
 }
 
-.c01-ARC-Hc-wrap{
+.c01-FARC-Hc-wrap{
     width: 100%;
     display: flex;
 }
 
-.c01-ARC-HClose-wrap{
+.c01-FARC-HClose-wrap{
     position: absolute;
     right:2px;
 }
 
-.co1-ARC-Hfilter-wrap{
+.co1-FARC-Hfilter-wrap{
 
 }
 
-.c01-ARC-Reports-wrap{
+.c01-FARC-Reports-wrap{
     display: flex;
     width: 100%;
     flex-flow: row wrap;

@@ -2,6 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AdminChats from "../../../Components/Children/AdminChats/AdminChats";
 import AdminClaims from "../../../Components/Children/AdminClaims/AdminClaims";
+import AdminFoundReports from "../../../Components/Children/AdminFoundReports/AdminFoundReports";
 import AdminReports from "../../../Components/Children/AdminReports/AdminReports";
 import './Admin.scss';
 
@@ -15,7 +16,7 @@ const Admin = () => {
         
       
      <div className="aa-TopWrap">
-      <div className="aa-topwrap-inner Hide">
+      <div className="aa-topwrap-inner">
           <div className="aa-header-title-wrap">
             <span className="aa-header-title">
             { "Welcome Back " }
@@ -69,6 +70,9 @@ const Admin = () => {
      <div className="BottomWrap">
         <div className="_01-04-01-W">
           <AdminReports  /> 
+        </div>
+        <div className="_01-04-03-W">
+          <AdminFoundReports  /> 
         </div>
         <div className="_01-04-02-W">
           <AdminClaims />

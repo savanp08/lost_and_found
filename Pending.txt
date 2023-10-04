@@ -1,0 +1,14 @@
+redirect to same page after login
+UI
+Animations
+Chat
+Queries
+User Account *
+User reports *
+User Claims *
+User chat
+User queries
+admin reports *
+admin claims *
+admin chat
+

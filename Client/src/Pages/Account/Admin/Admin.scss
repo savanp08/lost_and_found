@@ -6,6 +6,8 @@
     padding:7vh;
     padding-left: 4vh;
     position: relative;
+    min-height: 99vh;
+    max-width: 90vw;
     
 }
 
@@ -14,8 +16,6 @@
     height: 100%;
     display:flex;
     flex-flow: column;
-    min-height: 99vh;
-    max-width: 90vw;
    
 }
 
@@ -50,7 +50,7 @@
 
 .aa-header-content-wrap{
     width: 100%;
-    height: 240px;
+    height: 100%;
     display: flex;
     flex-flow: row wrap;
     justify-content: space-between;
@@ -58,7 +58,13 @@
 }
 
 .aa-header-statslist-wrap{
-background-color: white;
+background-color: rgba(255, 255, 255, 65%);
+ /* Chrome and Opera */
+box-shadow: 0px 10px 15px 10px rgb(0 0 0 / 15%) ,
+inset 0px -0px 0px 1px rgb(255, 255, 255)
+;
+padding-top: 15px;
+border-radius: 23px;
 }
 .aa-header-statslist-discr{
 text-align: center;
@@ -81,7 +87,11 @@ padding-left: 20px;
 .aa-header-onlinestats-wrap{
     width: 190px;
     height: 230px;
-    background-color: rgb(255, 255, 255);
+    background-color: rgba(255, 255, 255, 65%);
+backdrop-filter: blur(8px); /* Chrome and Opera */
+box-shadow: 0px 10px 15px 10px rgb(0 0 0 / 15%) ,
+inset 0px -0px 0px 1px rgb(255, 255, 255);
+border-radius: 20px;
 }
 
 .BottomWrap{
@@ -91,12 +101,43 @@ padding-left: 20px;
     justify-content: space-around;
     align-items: center;
     align-content: center;
-    padding:8vh
+    margin-top: 15vh;
+    height: 100%;
+    
 }
 ._01-04-01-W{
 width: 100%;
 height: 100%;
+max-width: 200px;
+max-height: 300px;
+overflow: hidden;
+box-shadow: inset 0px -0px 5px 1px rgb(127, 124, 124),
+1px 11px 21px 1px rgb(196, 192, 192)
+;
+border-radius: 13px;
 }
 
+._01-04-02-W{
+    width: 100%;
+height: 100%;
+max-width: 200px;
+max-height: 300px;
+overflow: hidden;
+box-shadow: inset 0px -0px 5px 1px rgb(127, 124, 124),
+1px 11px 21px 1px rgb(196, 192, 192)
+;
+border-radius: 13px;
+backdrop-filter: blur(8px);
+}
 
-
+._01-04-03-W{
+    width: 100%;
+height: 100%;
+max-width: 200px;
+max-height: 300px;
+overflow: hidden;
+box-shadow: inset 0px -0px 5px 1px rgb(127, 124, 124),
+1px 11px 21px 1px rgb(196, 192, 192)
+;
+border-radius: 13px;
+}

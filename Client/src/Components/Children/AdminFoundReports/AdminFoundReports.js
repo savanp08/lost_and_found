@@ -1,8 +1,8 @@
 import React from "react";
-import './This.scss';
+import './AdminFoundReports.scss';
 import { Chart } from 'react-google-charts';
 
-const AdminReports = () =>{
+const AdminFoundReports = () =>{
 
   const chart1Data = [
     ["Type","Number"],
@@ -18,30 +18,30 @@ const AdminReports = () =>{
   ];
 
   return(
-    <div className="admin-Reports-wrap">
-        <div className="c01-ARC-inner-wrap">
-            <div className="c01-ARC-header-wrap">
-                <div className="c01-ARC-Hc-wrap">
-                    <div className="c01-ARC-Hstat-wrap">
-                        <div className="c01-ARC-Hstat-text-wrap">
-                            <span className="c01-ARC-Hstat-text">
+    <div className="Fadmin-Reports-wrap">
+        <div className="c01-FARC-inner-wrap">
+            <div className="c01-FARC-header-wrap">
+                <div className="c01-FARC-Hc-wrap">
+                    <div className="c01-FARC-Hstat-wrap">
+                        <div className="c01-FARC-Hstat-text-wrap">
+                            <span className="c01-FARC-Hstat-text">
                                 Unseen Reports
                             </span>
-                            <span className="c01-ARC-Hstat-text">
+                            <span className="c01-FARC-Hstat-text">
                                 In Process Reports
                             </span>
-                            <span className="c01-ARC-Hstat-text">
+                            <span className="c01-FARC-Hstat-text">
                                 Unclaimed Things
                             </span>
-                            <span className="c01-ARC-Hstat-text">
+                            <span className="c01-FARC-Hstat-text">
                                 Public Reports
                             </span>
-                            <span className="c01-ARC-Hstat-text">
+                            <span className="c01-FARC-Hstat-text">
                                 Private Reports
                             </span>
                         </div>
-                        <div className="c01-ARC-Hstat-charts-wrap">
-                            <div className="co1-ARC-Hstat-chart1-wrap">
+                        <div className="c01-FARC-Hstat-charts-wrap">
+                            <div className="co1-FARC-Hstat-chart1-wrap">
                                 <Chart
                                 chartType="PieChart"
                                 data={chart1Data}
@@ -50,7 +50,7 @@ const AdminReports = () =>{
                                 height={"100%"}
                                 />
                             </div>
-                            <div className="co1-ARC-Hstat-chart2-wrap">
+                            <div className="co1-FARC-Hstat-chart2-wrap">
                             <Chart
                                 chartType="PieChart"
                                 data={chart2Data}
@@ -61,15 +61,15 @@ const AdminReports = () =>{
                             </div>
                         </div>
                     </div>
-                    <div className="co1-ARC-Hfilter-wrap">
+                    <div className="co1-FARC-Hfilter-wrap">
 
                     </div>
                 </div>
-                <div className="c01-ARC-HClose-wrap">
+                <div className="c01-FARC-HClose-wrap">
                     X
                 </div>
             </div>
-            <div className="c01-ARC-Reports-wrap">
+            <div className="c01-FARC-Reports-wrap">
 
             </div>
         </div>
@@ -78,4 +78,4 @@ const AdminReports = () =>{
 }
 
 
-export default AdminReports;
+export default AdminFoundReports;

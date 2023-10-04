@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import moongoose from 'mongoose';
 
 const adminSchemaX = new mongoose.Schema({
  
@@ -46,5 +45,5 @@ const adminSchemaX = new mongoose.Schema({
     }
 },{timestamps: true});
 
-const adminSchema = new mongoose.model("adminschema",adminSchemaX);
+const adminSchema = mongoose.model("adminschema",adminSchemaX);
 export default adminSchema;

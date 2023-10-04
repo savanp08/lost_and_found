@@ -88,26 +88,28 @@ function fetchToken(UserName) {
 
  authRouter.post('/Login/:userType' , async (req, response) => {
     const type  = req.params.userType;
-    if(userType === "admin") {
+    if(type === "adminX86109110213") {
         var password ="";
         var exists =false;
           try{
             console.log("Login tried for admin",req.body);
-            adminSchema.findOne({ email: req.body.email },{ password:1  })
+            await adminSchema.findOne({ email: req.body.email },{ password:1  })
             .then(res=>{
                 console.log("Admin Log in response => ",res);
+                if(res){
                 exists = true;
-        password = res.password;
+                password = res.password;
+                }
             }).catch(err=>{
                 console.log("Error in Admin Login ",err);
 
             });
-            if(!exists){
+            console.log("admin found",exists);
+            if(exists){
                 if(password === req.body.password){
                     console.log("User Successfully logged in")
                     const AccessToken = fetchToken(req.body.email);
                     response.status(200).send({message : "Logined in", AccessToekn : AccessToken});
-        
             }
             else{
                 console.log("Password Wrong");
@@ -126,8 +128,10 @@ function fetchToken(UserName) {
     await userSchema.findOne({ email : req.body.email} , { password : 1})
     .then(res=>{
         console.log("User Found for Login",res);
-        exists = true;
-        password = res.password;
+        if(res){
+          exists = true;
+          password = res.password;
+          }
     }).catch(err=>{
         console.log("Error while searching for user while login",err);
         response.status(500).send("Not Found");
