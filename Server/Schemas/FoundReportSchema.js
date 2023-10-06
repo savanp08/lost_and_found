@@ -49,6 +49,9 @@ const FoundReportSchemaX = mongoose.model({
                 required:true,
                 minlength:1
             },
+            description:{
+                type:String,
+            },
             loctation:{
                 allPlacesPossible:[],
                 buildingDetails:{

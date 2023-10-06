@@ -34,7 +34,11 @@ function App() {
      <div className='Content-MainWrapper'>
      
      <RoutesComponent/>
+     {/* <div className='App-FooterWrap'>
+     <FOoterStand/>
+     </div> */}
      <AddReport />
+     {/* <div className="OpaqueBackGround-fullscreen OpaqueBefore"></div> */}
      </div>
      </div>
      

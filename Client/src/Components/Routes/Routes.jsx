@@ -21,9 +21,7 @@ const RoutesComponent = () =>{
                 <Route exaxt path="/Test" element ={ <AdminReports/> } />
                 <Route exaxt path="/AdminLoginX86109110213" element = { <AdminLogin/> } />
             </Routes>
-            <div className='App-FooterWrap'>
-     <FOoterStand/>
-     </div>
+            
         </div>
     )
 }

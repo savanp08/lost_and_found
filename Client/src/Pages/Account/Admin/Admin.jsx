@@ -71,6 +71,7 @@ const Admin = () => {
         <div className="_01-04-01-W">
           <AdminReports  /> 
         </div>
+        
         <div className="_01-04-03-W">
           <AdminFoundReports  /> 
         </div>
