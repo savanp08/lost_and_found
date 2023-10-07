@@ -115,7 +115,7 @@
 .ar11-item-color-wrap{
     display: flex;
     width: 100%;
-    max-width: 190px;
+    max-width: 290px;
 }
 
 .ar11-item-location-box{
@@ -130,6 +130,7 @@
     align-items: center;
     border: none;
     border-top: 2px wheat solid;
+    width: 100%;
 }
 
 .ar11-item-location-wrap{
@@ -155,4 +156,29 @@
 }
 .ar11-item-description-wrap{
     width: 100%;
+}
+.ar11-item-color-wrap{
+
+}
+.ar11-item-submitBbutton-wrap{
+    display: flex;
+    flex-flow: row wrap;
+    width: 100%;
+    max-width: 200px;
+    align-items: center;
+    justify-content: center;
+}
+.ar11-item-submitButton{
+width:100%;
+max-width: 180px;
+border-radius: 25px;
+cursor: pointer;
+background-color: wheat;
+height: 40px;
+text-align: center;
+display: flex;
+flex-flow: row wrap;
+justify-content: space-around;
+align-content: center;
+align-items: center;
 }

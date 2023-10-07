@@ -6,6 +6,12 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 import { useSelector } from "react-redux";
+import AddIcon from '@mui/icons-material/Add';
+import { Chip, InputAdornment, Stack } from '@mui/material';
+import Autocomplete from '@mui/material/Autocomplete';
+import CustomColors from "../../Data/Colors";
+import Close from '@mui/icons-material/Close';
+import axios from 'axios';
 
 const AddReport = () => {
   const user = useSelector((state) => state.user);
@@ -16,8 +22,9 @@ const AddReport = () => {
       user.Name.FirstName + user.Name.MiddleName + user.Name.LastName,
     itemDetails: {
       common_type: null,
-      color: null,
+      colors: [],
       customItemName: null,
+      description: null,
       location: {
         allPlacesPossible: [],
         buildingDetails: null,
@@ -29,6 +36,7 @@ const AddReport = () => {
         pinCode: null,
         media: [],
       },
+    },
       belongsTo: null,
       claims: [],
       found: {
@@ -37,8 +45,21 @@ const AddReport = () => {
       },
       submittedAt: null,
       media: [],
-    },
+      reporterType: null,
+    
   });
+  
+  console.log(Item);
+
+
+  async function ValidateForm(e){
+    e.preventDefault();
+    SubmitForm();
+  }
+  
+  async function SubmitForm(){
+    await axios.post('/report/type')
+  }
 
   return (
     <div className="ar11-addReport-wrap Add-Report-After">
@@ -51,16 +72,50 @@ const AddReport = () => {
         <div className="ar11-content-wrap">
           <div className="ar11-content-inner-wrap">
             <div className="ar11-item-wrap">
+            <fieldset className="ar11-item-label-wrap">
+        <legend className="ar11-item-legend">
+                  Ownership
+                </legend>
+        <div className="ar11-ownership-wrap">
+          <div className="ar11-ownership-selct-wrap">
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">
+                Is the Item Yours
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="report-reporterType"
+                value={Item.reporterType}
+                label="Is It Yours"
+                onChange={(e) => {
+                  setItem({ ...Item, reporterType : e.target.value});
+                }}
+                sx={{
+                  width: "100%",
+                  minWidth: "230px",
+                }}
+
+              >
+                <MenuItem value={"User"}>Yes</MenuItem>
+                <MenuItem value={"Other"}>No</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
+          <span className="ar11-item-ownership-text">
+            Select Yes only if u have permission from the actual owner to represent this property
+          </span>
+        </div>
+        </fieldset>
                 <fieldset className="ar11-item-label-wrap">
                     <legend className="ar11-item-legend">Type</legend>
               <div className="ar11-item-type-wrap ar11-common-textField-wrap">
                 <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">Type</InputLabel>
+                  <InputLabel id="demo-simple-select-label">What Did you find</InputLabel>
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     value={Item.common_type}
-                    label="Type"
+                    label="What Did you find"
                     onChange={(e) => {
                       setItem({
                         ...Item,
@@ -70,15 +125,17 @@ const AddReport = () => {
                         },
                       });
                     }}
+                    
                   >
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
+                    
                   </Select>
                 </FormControl>
               </div>
               </fieldset>
               <fieldset className="ar11-item-label-wrap">
+                <legend className="ar11-item-legend"> 
+                Item Name
+                </legend>
               <div className="ar11-item-name-wrap">
                 <div className="ar11-item-name-firstName-wrap">
                   <TextField
@@ -89,37 +146,94 @@ const AddReport = () => {
                     sx={{
                       minWidth: "230px",
                     }}
+                    onChange={(e)=>{
+                      setItem({
+                        ...Item,
+                        itemDetails :{
+                          ...Item.itemDetails,
+                          customItemName:e.target.value,
+                          
+                        }
+                    })
+                    }}
                   />
                 </div>
               </div>
               </fieldset>
               <fieldset className="ar11-item-label-wrap">
+                <legend className="ar11-item-legend">
+                  Item Color
+                </legend>
+
               <div className="ar11-item-color-wrap">
-                <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">Color</InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="report-item-color"
-                    value={Item.itemDetails.color}
-                    label="Color"
-                    onChange={(e) => {
-                      setItem({
-                        ...Item,
-                        itemDetails: {
-                          ...Item.itemDetails,
-                          color: e.target.value,
-                        },
-                      });
-                    }}
+              
+      <Autocomplete
+        multiple
+        id="tags-standard"
+        options={CustomColors}
+        
+        
+        limitTags={3}
+        onChange={(e,values)=>{
+          setItem({
+            ...Item,
+            itemDetails:{
+              ...Item.itemDetails,
+              colors: values
+              
+            }
+          })
+        }}
+        renderInput={ params => {
+          const { InputProps, ...restParams } = params;
+          const { startAdornment, ...restInputProps } = InputProps;
+          return (
+            <TextField
+              label="Colors"
+              { ...restParams }
+              InputProps={ {
+                ...restInputProps,
+                startAdornment: (
+                  <div style={{
+                    maxHeight: '70px',
+                    overflowY: 'auto',
+                    minWidth:'230px',
+                  }}
+                  sx={{
+                    minWidth: '230px',
+                  }}
                   >
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                  </Select>
-                </FormControl>
+                    {startAdornment}
+                  </div>
+                ),
+              } }
+            />
+          );
+        } }
+      />
+   
+              
+                <div className="ar11-item-color-depictor-wrap">
+                  {/* {
+                  Item.colors.map((key,color)=>{
+                    return(
+                      <div className="ar11-item-color-depictor-singleColor"
+                      style={{
+                        
+                      }}
+                      >
+
+                      </div>
+                    )
+                  })
+                } */}
+                </div>
               </div>
               </fieldset>
               <fieldset className="ar11-item-label-wrap label-description-wrap">
+              <legend className="ar11-item-legend">
+                  Item Description
+                </legend>
               <div className="ar11-item-description-wrap">
                 <div className="ar11-item-description">
                   <TextField
@@ -127,6 +241,16 @@ const AddReport = () => {
                     label="Describe in Detail"
                     variant="outlined"
                     required="true"
+                    onChange={(e)=>{
+                      setItem({
+                        ...Item,
+                        itemDetails :{
+                          ...Item.itemDetails,
+                          description :e.target.value,
+                          
+                        }
+                    })
+                  }}
                     multiline
                     maxRows={10}
                     sx={{
@@ -140,7 +264,9 @@ const AddReport = () => {
               </div>
               </fieldset>
               <fieldset className="ar11-item-label-wrap">
-                <legend> Location </legend>
+              <legend className="ar11-item-legend">
+                  Item Location
+                </legend>
               <div className="ar11-item-location-wrap">
                 <div className="ar11-item-location-box all-possible-places">
                 <TextField
@@ -162,6 +288,20 @@ const AddReport = () => {
                     sx={{
                       minWidth: "230px",
                     }}
+                    onChange={(e)=>{
+                      setItem({
+                        ...Item,
+                        itemDetails :{
+                          ...Item.itemDetails,
+                          location:{
+                            ...Item.itemDetails.location,
+                            buildingDetails: e.target.value
+
+                          }
+                          
+                        }
+                    })
+                  }}
                   />
                 </div>
                 <div className="ar11-item-location-box univeristy">
@@ -173,6 +313,20 @@ const AddReport = () => {
                     sx={{
                       minWidth: "230px",
                     }}
+                    onChange={(e)=>{
+                      setItem({
+                        ...Item,
+                        itemDetails :{
+                          ...Item.itemDetails,
+                          location:{
+                            ...Item.itemDetails.location,
+                            university: e.target.value
+
+                          }
+                          
+                        }
+                    })
+                  }}
                   />
                 </div>
                 <div className="ar11-item-location-box street">
@@ -184,6 +338,20 @@ const AddReport = () => {
                     sx={{
                       minWidth: "230px",
                     }}
+                    onChange={(e)=>{
+                      setItem({
+                        ...Item,
+                        itemDetails :{
+                          ...Item.itemDetails,
+                          location:{
+                            ...Item.itemDetails.location,
+                            street: e.target.value
+
+                          }
+                          
+                        }
+                    })
+                  }}
                   />
                 </div>
                 <div className="ar11-item-location-box apartment">
@@ -195,6 +363,20 @@ const AddReport = () => {
                     sx={{
                       minWidth: "230px",
                     }}
+                    onChange={(e)=>{
+                      setItem({
+                        ...Item,
+                        itemDetails :{
+                          ...Item.itemDetails,
+                          location:{
+                            ...Item.itemDetails.location,
+                            apartment: e.target.value
+
+                          }
+                          
+                        }
+                    })
+                  }}
                   />
                 </div>
                 <div className="ar11-item-location-box city">
@@ -206,6 +388,20 @@ const AddReport = () => {
                     sx={{
                       minWidth: "230px",
                     }}
+                    onChange={(e)=>{
+                      setItem({
+                        ...Item,
+                        itemDetails :{
+                          ...Item.itemDetails,
+                          location:{
+                            ...Item.itemDetails.location,
+                            city: e.target.value
+
+                          }
+                          
+                        }
+                    })
+                  }}
                   />
                 </div>
                 <div className="ar11-item-location-box state">
@@ -217,30 +413,61 @@ const AddReport = () => {
                     sx={{
                       minWidth: "230px",
                     }}
+                    onChange={(e)=>{
+                      setItem({
+                        ...Item,
+                        itemDetails :{
+                          ...Item.itemDetails,
+                          location:{
+                            ...Item.itemDetails.location,
+                            state: e.target.value
+
+                          }
+                          
+                        }
+                    })
+                  }}
                   />
                 </div>
                 <div className="ar11-item-location-box pincode">
                 <TextField
                     id="report-item-location-pinCode"
-                    label="All possible Places"
+                    label="Pin Code"
                     variant="outlined"
                     required="true"
                     sx={{
                       minWidth: "230px",
                     }}
+                    onChange={(e)=>{
+                      setItem({
+                        ...Item,
+                        itemDetails :{
+                          ...Item.itemDetails,
+                          location:{
+                            ...Item.itemDetails.location,
+                            pinCode: e.target.value
+
+                          }
+                          
+                        }
+                    })
+                  }}
                   />
                 </div>
                 <fieldset className="ar11-item-label-wrap">
                     <legend className="ar11-item-legend">
                         Media
                     </legend>
-                <div className="ar11-item-location-box media">
+                <div className="ar11-item-location-media">
                 
                 </div>
                 </fieldset>
               </div>
               </fieldset>
               <fieldset className="ar11-item-label-wrap">
+              <legend className="ar11-item-legend">
+                  Submittion Location
+                </legend>
               <div className="ar11-item-submit-wrap">
                 <div className="ar11-item-submittion-location"></div>
               </div>
@@ -248,38 +475,13 @@ const AddReport = () => {
             </div>
           </div>
         </div>
-        <fieldset className="ar11-item-label-wrap">
-        <div className="ar11-ownership-wrap">
-          <div className="ar11-ownership-selct-wrap">
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">
-                Is the Item Yours
-              </InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="report-reporterType"
-                value={reporterType}
-                label="Is It Yours"
-                onChange={(e) => {
-                  setReporterType(e.target.value);
-                }}
-                sx={{
-                  width: "100%",
-                  minWidth: "230px",
-                }}
-              >
-                <MenuItem value={"User"}>Yes</MenuItem>
-                <MenuItem value={"Other"}>No</MenuItem>
-              </Select>
-            </FormControl>
-          </div>
-          <span className="ar11-item-ownership-text">
-            Select Yes only if u have permission from the actual owner
-          </span>
-        </div>
-        </fieldset>
+        
         <div className="ar11-item-submitBbutton-wrap">
-          <div className="ar11-item-submitButton">Report</div>
+          <div className="ar11-item-submitButton"
+          onClick={(e)=>[
+            ValidateForm(e)
+          ]}
+          >Report</div>
         </div>
       </div>
     </div>

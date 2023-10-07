@@ -37,12 +37,7 @@ const FoundReportSchemaX = mongoose.model({
                 required:true,
                 minlength:1
             },
-            color:{
-                type:String,
-                unique:false,
-                required:true,
-                minlength:1
-            },
+            colors:[],
             customItemName:{
                 type:String,
                 unique:false,
@@ -112,16 +107,20 @@ const FoundReportSchemaX = mongoose.model({
                 type: Boolean,
                 required:false,
             },
-            userId:{
-                type:mongoose.Types.ObjectId,
-                required : true,
-            }
+            finishedClaimId:{
+                type:mongoose.Types.ObjectId
+            },
+            
         },
         submittedAt:{
             type:String,
             required:true,
         },
         media:[],
+        reporterType:{
+            type:String,
+            required:true
+        }
 })
 
 

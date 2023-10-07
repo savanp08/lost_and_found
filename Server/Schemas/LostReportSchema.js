@@ -37,17 +37,15 @@ const LostReportSchemaX = mongoose.model({
                 required:true,
                 minlength:1
             },
-            color:{
-                type:String,
-                unique:false,
-                required:true,
-                minlength:1
-            },
+            colors:[],
             customItemName:{
                 type:String,
                 unique:false,
                 required:true,
                 minlength:1
+            },
+            description:{
+                type:String,
             },
             loctation:{
                 allPlacesPossible:[],
@@ -94,19 +92,35 @@ const LostReportSchemaX = mongoose.model({
                 },
                 media:[],
             },
+            belongsTo:{
+                type:String,
+            unique:false,
+            required: false,
+            minlength: 1,
+            }
         },
         found:{
             status:{
                 type: Boolean,
                 required:false,
             },
-            claimIds:[],
+            finishedClaimId:{
+                type:mongoose.Types.ObjectId
+            },
+            
         },
         submittedAt:{
             type:String,
             required:true,
         },
+        claims:{
+            claimIds:[]
+        },
         media:[],
+        reporterType:{
+            type:String,
+            required:true
+        }
 })
 
 
