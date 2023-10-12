@@ -63,6 +63,7 @@ reportRouter.post('/addReport', multerUpload.array("image",8), async (req,respon
             ...xx,
         })
         newReport.reportId = new mongoose.Types.ObjectId();
+        newReport.media = addMediaResponse;
        
         const joiSchema = Joi.object({
             reporterName : Joi.object({
