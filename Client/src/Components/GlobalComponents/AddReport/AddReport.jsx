@@ -60,6 +60,7 @@ const AddReport = () => {
   }
   
   async function SubmitForm(){
+    
   
     var files = document.getElementById("ar11-item-location-media-input").files;
     const formData = new FormData();
@@ -166,33 +167,50 @@ function closeForm(){
                 <fieldset className="ar11-item-label-wrap">
                     <legend className="ar11-item-legend">Type</legend>
               <div className="ar11-item-type-wrap ar11-common-textField-wrap">
-                <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">What Did you find</InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={Item.common_type}
-                    label="What Did you find"
-                    onChange={(e) => {
-                      setItem({
-                        ...Item,
-                        itemDetails: {
-                          ...Item.itemDetails,
-                          common_type: e.target.value,
-                        },
-                      });
-                    }}
-                    
+              <Autocomplete
+       
+        id="tags-standard"
+        options={ItemTypes}
+        
+        
+        limitTags={3}
+        onChange={(e,values)=>{
+          setItem({
+            ...Item,
+            itemDetails:{
+              ...Item.itemDetails,
+              colors: values
+              
+            }
+          })
+        }}
+        renderInput={ params => {
+          const { InputProps, ...restParams } = params;
+          const { startAdornment, ...restInputProps } = InputProps;
+          return (
+            <TextField
+              label="Item Type"
+              { ...restParams }
+              InputProps={ {
+                ...restInputProps,
+                startAdornment: (
+                  <div style={{
+                    maxHeight: '70px',
+                    overflowY: 'auto',
+                    minWidth:'230px',
+                  }}
+                  sx={{
+                    minWidth: '230px',
+                  }}
                   >
-                    {
-                      ItemTypes.map((item, key)=>{
-                        return(
-                          <MenuItem value={item} >{item}</MenuItem>
-                        )
-                      })
-                    }
-                  </Select>
-                </FormControl>
+                    {startAdornment}
+                  </div>
+                ),
+              } }
+            />
+          );
+        } }
+      />
               </div>
               </fieldset>
               <fieldset className="ar11-item-label-wrap">

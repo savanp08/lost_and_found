@@ -1,21 +1,19 @@
 import multer from 'multer';
 
-const storage = multer.memoryStorage();
-  
-  const upload = multer({
-    storage: storage,
-    limits: {
-      fileSize: 10000000
-   
-  // 10MB
+
+const ALLOWED_FORMATS = ['image/*'];
+const storage  = multer.memoryStorage();
+
+const multerUpload = multer({ 
+  storage : storage,
+  fileFilter: function (req, file, cb) {
+      console.log("Multer => ",file,file.mimetype)
+      if (file.mimetype.startsWith('image/')) {
+          cb(null, true); // Allow the upload
+        } else {
+          cb(new Error('Only image files are allowed!'), false); // Reject the upload 
+        }
     },
-    fileFilter: function(req, file, cb) {
-      if (file.mimetype.match(/image\/.*/)) {
-        cb(null, true);
-      } else {
-        cb(new
-   
-  Error('Only image files are allowed!'), false);
-      }
-    }
-  });
+});
+
+export default multerUpload;

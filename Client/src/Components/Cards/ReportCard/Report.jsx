@@ -11,7 +11,7 @@ const ReportCard = () => {
                 <div clasName="crc-left-wrap">
                     <div className="crc-left-title-wrap">
                         <span className="crc-left-title">
-
+                            
                         </span>
                     </div>
                     <div className="crc-left-body-wrap">

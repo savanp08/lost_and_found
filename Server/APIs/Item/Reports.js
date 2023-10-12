@@ -2,46 +2,68 @@ import express, { response } from 'express';
 import FoundReportSchema from '../../Schemas/FoundReportSchema.js'; 
 import LostReportSchema from '../../Schemas/LostReportSchema.js';
 import Joi from 'joi';
-import { v2 as cloudinary } from 'cloudinary'
 import multer from 'multer';
-
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+import fs from 'fs';
+import multerUpload from '../../MiddleWares/MulterUpload.js';
+import cloudinary from '../../EndWares/Cloudinary.js';
 
 const reportRouter  = express.Router();
 
-cloudinary.config({ 
-    cloud_name: process.env.cloud_name, 
-    api_key: process.env.api_key, 
-    api_secret: process.env.api_secret, 
-  });
-
-
-  const ALLOWED_FORMATS = ['image/*'];
-  const storage  = multer.memoryStorage();
-
-  const multerUpload = multer({ 
-    storage : storage,
-    fileFilter: function(req, file, cb) {
-        if (ALLOWED_FORMATS.includes(file.mimetype)) {
-          cb(null, true);
-        } else {
-          cb(new Error('Not supported file type!'), false);
-        }
-      }
-  });
   
+  async function addMediaToCloudinary(files) {
+    try {
+      const uploadPromises = files.map(async (file) => {
+        var tempFilePath = `./temp`;
+        
+  
+        return new Promise(async (resolve, reject) => {
+           
+           cloudinary.uploader.upload_stream( {
+            folder: "lost_and_found"
+          },
+          function(error, result) {
+            if(error){
+                console.log("Error while uploading each image to cloudinary",error);
+                reject(error);
+            }
+            else{
+                console.log("Uploaded Each Image to cloudinary",result);
+                resolve(result);
+            }
+              console.log(error, result);
+          })
+          .end(file.buffer);
+           
+          });
+        });
+       
+
+      const URLS = await Promise.all(uploadPromises);
+    const secureURLs = URLS.map((result) => result.secure_url);
+    return secureURLs;
+  } catch (error) {
+    console.log('Error while uploading images to Cloudinary:', error);
+    return -1;
+  }
+}
+
 
 reportRouter.post('/addReport', multerUpload.array("image",8), async (req,response)=>{
     try{
-        console.log(req.body)
+        
         var xx=JSON.parse(req.body.report);
         var yy=req.files;
+        const addMediaResponse = await addMediaToCloudinary(yy);
+        console.log("addMediaResponse => ",addMediaResponse);
         console.log("Found report addition fired",xx);
-        console.log("Files => ",req.file,req.files);
-        const newReport  = new FoundReportSchema({
-            // ...req.body
+       
+        var newReport  = new FoundReportSchema({
+            ...xx,
         })
-        
-        console.log("Schema testing =>",newReport);
+        newReport.reportId = new mongoose.Types.ObjectId();
+       
         const joiSchema = Joi.object({
             reporterName : Joi.object({
                 firstName :   Joi.string()
