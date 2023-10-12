@@ -891,4 +891,15 @@ const CustomColors = [
 { label: "Zomp" , code: "#39A78E" } ,
 ];
 
+const ItemTypes = [
+   "Cell phone charger",
+    "Tie", "Umbrella", 
+    "Bicycle Lock", "Sunscreen",
+     "Skateboard", "Laptop Charger", "Textbook", "Camera", "Coat", "Computer monitor", "Vest", "Pant", "Dress", "Highlighter Pen", "Computer", "Food container", "Bottled water", "Button-down shirt", "Swimsuit", "Shoe", "Shampoo", "Short", "Eraser", "Computer bag", "Laptop bag", "Airpod", "Laundry Detergent", "Luggage", "Prescription Medication", "Hole punch", "Cleat", "Underwear", "Vr headset", "Phone case", "Student body card", "ID Badge", "Library Book", "Stapler", "Highlighter", "Bicycle", "Nintendo switch", "Reusable water bottle", "Ruler", "Pocket Knife", "Student ID Holder", "USB Drive", "Earbuds", "Headphones Case", "ID Card", "Inline skate", "Crossbody bag", "Golf club", "Purse", "Lunchbox", "Water Bottle Sticker", "Coffee Mug", "Sticky note", "Dental Floss", "Paper clip", "School Supplies", "Lacrosse stick", "Sunglass", "Bicycle Helmet", "Camera battery", "Laundry Bag", "Laundry Tokens", "Sticky Notes", "Apple watch", "Jean", "Hangers", "Eyeglasses", "Yoga Mat", "Sweater", "Tumbler", "Basketball hoop", "Hat", "Computer mouse", "Nail Clippers", "Messenger bag", "Mobile Charger", "Soccer ball", "Tablet", "Colored pencil", "Blanket", "Watch", "Belt buckle", "Scissor", "Library card", "Baseball bat", "Headphones", "Money", "Briefcase", "Skirt", "Bicycle Lights", "Backpack", "Jacket", "Flip-flops", "Conditioner", "Phone Charger", "Student union card", "Tote", "Textbook Cover", "Razor", "Laptop Sleeve", "Portable charger", "Pencil", "Computer speaker", "Smartwatch", "Snack", "Accessory", "Parking pass", "Video game", "Loose Change", "Football", "Basketball", "Helmet", "Bookbag", "Mittens", "Pencil sharpener", "Hairbrush", "Toiletry", "Athletic equipment", "Coffee mug", "Tote Bag", "Belt", "Mousepad", "Scooter", "Handbag", "Water Bottle", "Socks", "Phone Case", "Toothpaste", "Pen", "Jewelry", "Campus id card", "Pillow", "Laptop", "Charger", "Crayon", "Sunglasses Case", "Laundry Card", "Glasses", "Kindle fire", "Scarf", "Hand Sanitizer", "Gym Gear", "Snacks", "Tennis racket", "Calculator", "Wallet", "Dining hall card", "Key", "Towel", "Gloves", "Thermos", "Duffel bag", "Legging", "Cellphone", "Protractor", "Boot", "Laundry Basket", "Toothbrush", "Cell phone", "Gym bag", "Headphone", "Notepad", "Hand lotion", "Slippers", "Sock", "Ipad", "T-shirt", "Wristwatch", "Notebook", "Hockey stick", "Library Card", "Sunglasses", "Glove", "Soap", "Folder", "Binder", "Calculator Case", "Umbrella Sleeve"
+   , "E-reader"
+
+]
+
 export default  CustomColors;
+
+export {ItemTypes };

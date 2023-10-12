@@ -23,19 +23,19 @@ const userSchemaX = new mongoose.Schema({
         unique: false,
     },
     Name:{
-        FirstName:{
+        firstName:{
             required: true,
             type: 'string',
             minlength: 2,
             default: null,
         },
-        MiddleName:{
+        middleName:{
             required: false,
             type: 'string',
             minlength: 0,
             default: null,
         },
-        LastName:{
+        lastName:{
             required: true,
             type: 'string',
             minlength: 2,

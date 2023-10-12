@@ -9,9 +9,11 @@ import { useSelector } from "react-redux";
 import AddIcon from '@mui/icons-material/Add';
 import { Chip, InputAdornment, Stack } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
-import CustomColors from "../../Data/Colors";
+import CustomColors from "../../Data/Options";
 import Close from '@mui/icons-material/Close';
 import axios from 'axios';
+import { ItemTypes } from "../../Data/Options"
+import AttachFileIcon from '@mui/icons-material/AttachFile';
 
 const AddReport = () => {
   const user = useSelector((state) => state.user);
@@ -58,12 +60,59 @@ const AddReport = () => {
   }
   
   async function SubmitForm(){
-    await axios.post('/report/type')
+  
+    var files = document.getElementById("ar11-item-location-media-input").files;
+    const formData = new FormData();
+    formData.append('report', JSON.stringify(Item));
+    console.log("files =>",files)
+
+    for (const file of files) {
+      console.log("Each Image =>",file,file.name);
+      formData.append("image", file, file.name);
+    }
+      console.log("Debugging FileUpload->  Type of ->",)
+    //  formData.append("image",NewFiles);
+      console.log("Debugging FileUpload-> New Files Array->",formData.getAll("image"));
+
+    await axios.post('/Report/addReport',
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            },
+          }
+    ).then(res=>{
+      console.log("Reponse from add report api => ",res);
+
+    }).catch(err=>{
+      console.log("Error while adding report => ",err);
+    })
   }
 
+function closeForm(){
+  var x = document.getElementById("ar11-addReport-wrap");
+   if(x.classList.contains("Add-Report-After"))
+   {
+    x.classList.remove("Add-Report-After");
+    x.classList.add("Hide");
+   }
+  
+}
+
   return (
-    <div className="ar11-addReport-wrap Add-Report-After">
+    <div className="ar11-addReport-wrap Add-Report-After"
+        id="ar11-addReport-wrap"
+    >
       <div className="ar11-inner-wrap">
+        <div className="ar11-close-wrap"
+        id="ar11-close-wrap"
+        onClick={(e)=>{
+          e.preventDefault();
+          closeForm();
+        }}
+        >
+          X
+        </div>
         <div className="ar11-h-wrap">
           <div className="ar11-h-title-wrap">
             <span className="ar11-h-title-text">Add Report</span>
@@ -88,7 +137,15 @@ const AddReport = () => {
                 value={Item.reporterType}
                 label="Is It Yours"
                 onChange={(e) => {
-                  setItem({ ...Item, reporterType : e.target.value});
+                  
+                 
+                    setItem({
+                      ...Item,
+                      reporterName : {...user.Name},
+                      reporterId : user.reporterId,
+                      reporterType : e.target.value,
+                    })
+                  
                 }}
                 sx={{
                   width: "100%",
@@ -127,7 +184,13 @@ const AddReport = () => {
                     }}
                     
                   >
-                    
+                    {
+                      ItemTypes.map((item, key)=>{
+                        return(
+                          <MenuItem value={item} >{item}</MenuItem>
+                        )
+                      })
+                    }
                   </Select>
                 </FormControl>
               </div>
@@ -171,7 +234,7 @@ const AddReport = () => {
         multiple
         id="tags-standard"
         options={CustomColors}
-        
+        disableCloseOnSelect
         
         limitTags={3}
         onChange={(e,values)=>{
@@ -273,7 +336,7 @@ const AddReport = () => {
                     id="report-item-location-all-possible-places"
                     label="All possible Places"
                     variant="outlined"
-                    required="true"
+                    
                     sx={{
                       minWidth: "230px",
                     }}
@@ -284,7 +347,7 @@ const AddReport = () => {
                     id="report-item-location-bullding-details"
                     label="building Details"
                     variant="outlined"
-                    required="true"
+                    
                     sx={{
                       minWidth: "230px",
                     }}
@@ -296,7 +359,6 @@ const AddReport = () => {
                           location:{
                             ...Item.itemDetails.location,
                             buildingDetails: e.target.value
-
                           }
                           
                         }
@@ -321,7 +383,6 @@ const AddReport = () => {
                           location:{
                             ...Item.itemDetails.location,
                             university: e.target.value
-
                           }
                           
                         }
@@ -359,7 +420,7 @@ const AddReport = () => {
                     id="report-item-location-apartment"
                     label="Apartment"
                     variant="outlined"
-                    required="true"
+                    
                     sx={{
                       minWidth: "230px",
                     }}
@@ -439,6 +500,7 @@ const AddReport = () => {
                       minWidth: "230px",
                     }}
                     onChange={(e)=>{
+                      
                       setItem({
                         ...Item,
                         itemDetails :{
@@ -446,7 +508,6 @@ const AddReport = () => {
                           location:{
                             ...Item.itemDetails.location,
                             pinCode: e.target.value
-
                           }
                           
                         }
@@ -459,7 +520,62 @@ const AddReport = () => {
                         Media
                     </legend>
                 <div className="ar11-item-location-media">
-                
+                    <div className="ar11-item-media-wrap">
+                      <label className="ar11-item-media" htmlFor="ar11-item-location-media-input" >
+                        
+                          <input type="file" className="ar11-item-fil-icon"  
+                          id="ar11-item-location-media-input"
+                          accept="image/*"
+                          name='files[]'
+                          multiple
+                          onChange={(e)=>{
+                            console.log(e.target.files);
+                            console.log(document.getElementById('ar11-item-location-media-input').files);
+                            var files = document.getElementById("ar11-item-location-media-input");
+                        var media=[];
+                        if(files && files.files && Object.keys(files.files).length>0){
+                          Object.keys(files.files).forEach(index=>{
+                            console.log("Debug MessageMedia->",files.files[index],files.files)
+                            media.push(URL.createObjectURL(files.files[index]));
+                          })
+                        }
+                            setItem({
+                              ...Item,
+                              itemDetails:{
+                                ...Item.itemDetails,
+                                location:{
+                                  ...Item.itemDetails.location,
+                                  media: media
+                                }
+                              }
+                            })
+                          }}
+                          />
+                          <AttachFileIcon
+                        sx={{
+                          cursor: 'pointer',
+                          position:'relative',
+                        }}
+                        onclick={(e)=>{
+                          document.getElementById('ar11-item-location-media-input');
+                        }}
+                        ></AttachFileIcon>
+                      </label>
+                    </div>
+                    <div className="ar11-media-show-input-wrap">
+                      {
+                        Item.itemDetails.location.media.map((imag,key)=>{
+
+                          return(
+                            <div className="ar11-item-location-media-show-each-wrap">
+                            <img src={imag} alt="Media Image of location" 
+                            className="ar11-item-location-media-show-each"
+                            />
+                            </div>
+                          )
+                        })
+                      }
+                    </div>
                 </div>
                 </fieldset>
               </div>

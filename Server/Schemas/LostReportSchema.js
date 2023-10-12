@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
 
-const LostReportSchemaX = mongoose.model({
+const LostReportSchemaX = new mongoose.Schema({
 
     reportId:{
-        required:true,
+        
         unique: true,
         minlength:1,
         type:mongoose.Types.ObjectId,
@@ -14,7 +14,7 @@ const LostReportSchemaX = mongoose.model({
         firstNAme:{
             type: String,
             unique:false,
-            required:true,
+            
             minlength: 1,
         },
         middleName:{
@@ -26,7 +26,7 @@ const LostReportSchemaX = mongoose.model({
         lastName:{
             type:String,
             unique:false,
-            required: true,
+            required: false,
             minlength: 1,
         }
         },
@@ -34,14 +34,14 @@ const LostReportSchemaX = mongoose.model({
             common_type:{
                 type:String,
                 unique:false,
-                required:true,
+                
                 minlength:1
             },
             colors:[],
             customItemName:{
                 type:String,
                 unique:false,
-                required:true,
+                
                 minlength:1
             },
             description:{
@@ -55,37 +55,37 @@ const LostReportSchemaX = mongoose.model({
                     default: null,
                 },
                 university: {
-                    required: true,
+                    
                     type: 'string',
                     minlength: 2,
                     default: null,
                 },
                 street: {
-                    required: true,
+                    
                     type: 'string',
                     minlength: 1,
                     default: null,
                 },
                 apartment: {
-                    required: true,
+                    
                     type: 'string',
                     minlength: 1,
                     default: null,
                 },
                 city: {
-                    required: true,
+                    
                     type: 'string',
                     minlength: 1,
                     default: null,
                 },
                 state: {
-                    required: true,
+                    
                     type: 'string',
                     minlength: 1,
                     default: null,
                 },
                 pinCode : {
-                    required: true,
+                    
                     type: 'string',
                     minlength: 1,
                     default: null,
@@ -111,7 +111,7 @@ const LostReportSchemaX = mongoose.model({
         },
         submittedAt:{
             type:String,
-            required:true,
+            
         },
         claims:{
             claimIds:[]
@@ -119,7 +119,10 @@ const LostReportSchemaX = mongoose.model({
         media:[],
         reporterType:{
             type:String,
-            required:true
+            
+        },
+        visibility:{
+            type:String,
         }
 })
 

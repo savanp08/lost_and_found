@@ -7,9 +7,9 @@ const initialState = {
     email:null,
     password:null,
     Name:{
-        FirstName:null,
-        MiddleName:null,
-        LastName:null,
+        firstName:"Test User",
+        middleName:null,
+        lastName:null,
     },
     userType: null,
     UniqueId: null,

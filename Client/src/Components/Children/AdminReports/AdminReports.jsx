@@ -1,6 +1,7 @@
 import React from "react";
 import './This.scss';
 import { Chart } from 'react-google-charts';
+import AdminReportCard from "../../Cards/AdminReportCard/AdminReportCard";
 
 const AdminReports = () =>{
 
@@ -18,7 +19,7 @@ const AdminReports = () =>{
   ];
 
   return(
-    <div className="admin-Reports-wrap">
+    <div className="admin-Reports-wrap AA-After">
         <div className="c01-ARC-inner-wrap">
             <div className="c01-ARC-header-wrap">
                 <div className="c01-ARC-Hc-wrap">
@@ -70,7 +71,7 @@ const AdminReports = () =>{
                 </div>
             </div>
             <div className="c01-ARC-Reports-wrap">
-
+                <AdminReportCard />
             </div>
         </div>
     </div>

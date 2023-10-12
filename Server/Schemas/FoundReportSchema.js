@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
 
-const FoundReportSchemaX = mongoose.model({
+const FoundReportSchemaX = new mongoose.Schema({
 
     reportId:{
-        required:true,
+        
         unique: true,
         minlength:1,
         type:mongoose.Types.ObjectId,
@@ -14,7 +14,7 @@ const FoundReportSchemaX = mongoose.model({
         firstNAme:{
             type: String,
             unique:false,
-            required:true,
+            
             minlength: 1,
         },
         middleName:{
@@ -26,7 +26,7 @@ const FoundReportSchemaX = mongoose.model({
         lastName:{
             type:String,
             unique:false,
-            required: true,
+            required: false,
             minlength: 1,
         }
         },
@@ -34,20 +34,20 @@ const FoundReportSchemaX = mongoose.model({
             common_type:{
                 type:String,
                 unique:false,
-                required:true,
+                
                 minlength:1
             },
             colors:[],
             customItemName:{
                 type:String,
                 unique:false,
-                required:true,
+                
                 minlength:1
             },
             description:{
                 type:String,
             },
-            loctation:{
+            location:{
                 allPlacesPossible:[],
                 buildingDetails:{
                     required: false,
@@ -55,37 +55,37 @@ const FoundReportSchemaX = mongoose.model({
                     default: null,
                 },
                 university: {
-                    required: true,
-                    type: 'string',
+                    
+                    type: 'string', 
                     minlength: 2,
                     default: null,
                 },
                 street: {
-                    required: true,
-                    type: 'string',
+                    
+                    type: 'string', 
                     minlength: 1,
                     default: null,
                 },
                 apartment: {
-                    required: true,
+                    
                     type: 'string',
                     minlength: 1,
                     default: null,
                 },
                 city: {
-                    required: true,
+                    
                     type: 'string',
                     minlength: 1,
                     default: null,
                 },
                 state: {
-                    required: true,
+                    
                     type: 'string',
                     minlength: 1,
                     default: null,
                 },
                 pinCode : {
-                    required: true,
+                    
                     type: 'string',
                     minlength: 1,
                     default: null,
@@ -114,12 +114,14 @@ const FoundReportSchemaX = mongoose.model({
         },
         submittedAt:{
             type:String,
-            required:true,
+            
         },
         media:[],
         reporterType:{
             type:String,
-            required:true
+        },
+        visibility:{
+            type:String,
         }
 })
 

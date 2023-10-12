@@ -28,8 +28,15 @@
     padding:4%;
     max-width: 600px;
     min-height: max-content;
+    align-items: center;
+    position: relative;
 }
-
+.ar11-close-wrap{
+    font-size: 30px;
+    cursor: pointer;
+    position: absolute;
+    align-self: flex-end;
+}
 .ar11-h-wrap{
     display: flex;
     flex-flow: row;
@@ -149,6 +156,71 @@
 
 }
 
+.ar11-item-location-media{
+    display: flex;
+    width: 100%;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.ar11-media-show-input-wrap{
+    max-height: 300px;
+    width: 300px;
+    height: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+}
+
+.ar11-media-show-input-wrap::-webkit-scrollbar-button{
+    width: 1px;
+    height: 1px;
+}
+
+.ar11-media-show-input-wrap::-webkit-scrollbar-thumb{
+    width: 1px;
+    height: 1px;
+}
+
+
+.ar11-media-show-input-wrap::-webkit-scrollbar-track-piece{
+    width: 1px;
+    height: 1px;
+}
+
+.ar11-item-location-media-show-each-wrap{
+    width: 250px;
+    height: 250px;
+    
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+    align-items: center;
+    margin-left:-10px;
+    margin:5px;
+    border-radius: 23px;
+    
+}
+
+.ar11-item-location-media-show-each{
+    width: 200px;
+    height: 200px;
+    box-shadow: 2px -2px 3px 4px rgb(110, 109, 109);
+    border-radius: 12px;
+   
+}
+
+
+.ar11-item-fil-icon{
+    display: none;
+    position:absolute;
+}
+.ar11-item-media{
+    position: relative;
+}
+
 .label-description-wrap{
     display: flex;
     width: 100%;
@@ -181,4 +253,8 @@ flex-flow: row wrap;
 justify-content: space-around;
 align-content: center;
 align-items: center;
+}
+
+.ar11-item-submitBbutton-wrap{
+
 }
