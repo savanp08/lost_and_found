@@ -12,3 +12,8 @@ admin reports *
 admin claims *
 admin chat
 
+show users in claim ids and redirect to user account on click 
+sepearte media for item and location 
+css align admin reports and other componenets
+style all pages
+implement map 
