@@ -223,7 +223,7 @@ function closeForm(){
                     id="report-item-name-Name"
                     label="Name The Item"
                     variant="outlined"
-                    required="true"
+                    required
                     sx={{
                       minWidth: "230px",
                     }}
@@ -321,7 +321,7 @@ function closeForm(){
                     id="report-item-description"
                     label="Describe in Detail"
                     variant="outlined"
-                    required="true"
+                    required
                     onChange={(e)=>{
                       setItem({
                         ...Item,
@@ -389,7 +389,8 @@ function closeForm(){
                     id="report-item-location-all-possible-places"
                     label="university"
                     variant="outlined"
-                    required="true"
+                    required
+
                     sx={{
                       minWidth: "230px",
                     }}
@@ -413,7 +414,7 @@ function closeForm(){
                     id="report-item-location-street"
                     label="Street"
                     variant="outlined"
-                    required="true"
+                    required
                     sx={{
                       minWidth: "230px",
                     }}
@@ -463,7 +464,8 @@ function closeForm(){
                     id="report-item-location-city"
                     label="City"
                     variant="outlined"
-                    required="true"
+                    required
+
                     sx={{
                       minWidth: "230px",
                     }}
@@ -488,7 +490,8 @@ function closeForm(){
                     id="report-item-location-State"
                     label="State"
                     variant="outlined"
-                    required="true"
+                    required
+
                     sx={{
                       minWidth: "230px",
                     }}
@@ -513,7 +516,8 @@ function closeForm(){
                     id="report-item-location-pinCode"
                     label="Pin Code"
                     variant="outlined"
-                    required="true"
+                    required
+
                     sx={{
                       minWidth: "230px",
                     }}
@@ -574,7 +578,7 @@ function closeForm(){
                           cursor: 'pointer',
                           position:'relative',
                         }}
-                        onclick={(e)=>{
+                        onClick={(e)=>{
                           document.getElementById('ar11-item-location-media-input');
                         }}
                         ></AttachFileIcon>

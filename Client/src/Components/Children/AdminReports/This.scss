@@ -7,6 +7,11 @@ transition:
 all 4s ease-in-out 1s
 
 ;
+align-self: center;
+flex-flow: row;
+justify-content: space-around;
+align-items: center;
+
 }
 
 .AA-After{
@@ -14,7 +19,7 @@ all 4s ease-in-out 1s
     height: 100%;
     position: absolute;
     top: 9.7vh;
-    left:2vw;
+   
     z-index: 1;
     transition: 
     all 4s ease-in-out 1s
@@ -33,7 +38,8 @@ left:0;
     height: 100%;
     display: flex;
     flex-flow: column;
-
+    align-items: center;
+    
 }
 
 .c01-ARC-header-wrap{
@@ -54,7 +60,8 @@ flex-flow:column wrap;
     width: 100%;
     flex-flow:row wrap;
     display: flex;
-
+    justify-content: space-around;
+    margin-left: 20px;
 }
 .c01-ARC-Hstat-text-wrap{
     width: 34%;
@@ -78,7 +85,8 @@ inset 0px -0px 0px 1px rgb(255, 255, 255);
     width:66%;
     display: flex;
     flex-flow: row wrap;
-
+    justify-content: space-around;
+    align-items: center;
 }
 
 .co1-ARC-Hstat-chart1-wrap{
@@ -102,6 +110,9 @@ inset 0px -0px 0px 1px rgb(255, 255, 255);
 .c01-ARC-Hc-wrap{
     width: 100%;
     display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .c01-ARC-HClose-wrap{
@@ -117,5 +128,7 @@ inset 0px -0px 0px 1px rgb(255, 255, 255);
     display: flex;
     width: 100%;
     flex-flow: row wrap;
-    
+    padding:10px;
+    margin-top: 40px;
 }
+

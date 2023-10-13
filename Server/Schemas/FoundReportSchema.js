@@ -123,7 +123,7 @@ const FoundReportSchemaX = new mongoose.Schema({
         visibility:{
             type:String,
         }
-})
+},{timestamps:true})
 
 
 const FoundReportSchema = mongoose.model("FoundReportSchema",FoundReportSchemaX);

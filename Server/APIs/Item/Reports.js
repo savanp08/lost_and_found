@@ -48,7 +48,7 @@ const reportRouter  = express.Router();
     return -1;
   }
 }
-
+ 
 
 reportRouter.post('/addReport', multerUpload.array("image",8), async (req,response)=>{
     try{
@@ -63,7 +63,7 @@ reportRouter.post('/addReport', multerUpload.array("image",8), async (req,respon
             ...xx,
         })
         newReport.reportId = new mongoose.Types.ObjectId();
-        newReport.media = addMediaResponse;
+        newReport.itemDetails.location.media = addMediaResponse;
        
         const joiSchema = Joi.object({
             reporterName : Joi.object({
@@ -138,7 +138,46 @@ reportRouter.post('/addReport', multerUpload.array("image",8), async (req,respon
 
 
 
+  reportRouter.get("/getAllReports", async (req,response)=>{
+    try{
+        console.log("Get all reports fired");
+        const allReports = await FoundReportSchema.find();
+        console.log("All reports => ",allReports);
+        response.status(200).send(allReports);
+    }
+    catch(err){
+        console.log("Error in getting all reports",err);
+        response.status(400).send(err);
+    } 
+  })
 
+  // get one report by id
+
+  reportRouter.get("/getOneReport/:id", async (req,response)=>{
+    try{
+        console.log("Get one report fired");
+        const oneReport = await FoundReportSchema.find({_id : req.params.id});
+        response.status(200).send(oneReport);
+    }
+    catch(err){
+        console.log("Error in getting one report",err);
+        response.status(400).send(err);
+    } 
+  });
+
+  // delete one report by id
+
+  reportRouter.delete("/deleteOneReport/:id", async (req,response)=>{
+    try{
+        console.log("Delete one report fired");
+        const oneReport = await FoundReportSchema.deleteOne({_id : req.params.id});
+        response.status(200).send(oneReport);
+    }
+    catch(err){
+        console.log("Error in deleting one report",err);
+        response.status(400).send(err);
+    } 
+  })
 
 
 
@@ -185,7 +224,7 @@ reportRouter.post('/EditReport/one', async (req,response)=>{
 
 reportRouter.post('/EditReport/many', async (req,response)=>{
 
-    FoundReportSchema.updateOne({ _id : req.body._id},{
+    FoundReportSchema.updateMany({ _id : req.body._id},{
         ...req.body
     })
 });

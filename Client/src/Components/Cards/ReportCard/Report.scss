@@ -1,0 +1,64 @@
+.crc-card-wrapper{
+    width: 100%;
+    max-width: 500px;
+    min-width: 300px;
+    display: flex;
+    padding:10px;
+}
+
+.src-inner-wrap{
+    width: 100%;
+    display:flex;
+    flex-flow: column wrap;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    
+}
+
+.crc-left-wrap{
+    width: 100%;
+    display: flex;
+    flex-flow: column wrap;
+
+
+}
+
+.src-left-title-wrap{
+    width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: center;
+    
+}
+
+.src-left-title{
+text-align: center;
+font-size: 25px;
+font-weight: 500;
+font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+
+}
+
+.crc-left-body-wrap{
+    width: 300px;
+    height: 300px;
+    display: flex;
+    flex-flow:row nowrap;
+    overflow-x: auto;
+}
+
+.crc-left-body-wrap{
+
+}
+    
+.crc-right-wrap{
+    width: 100%;
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+    justify-content:space-around;
+
+}
+

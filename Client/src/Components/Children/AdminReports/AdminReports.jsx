@@ -1,9 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import './This.scss';
 import { Chart } from 'react-google-charts';
 import AdminReportCard from "../../Cards/AdminReportCard/AdminReportCard";
+import axios from "axios";
 
-const AdminReports = () =>{
+const AdminReports =  () =>{
+
+    const [reports,SetReports] = useState([]);
+
+    useEffect( ()=>{
+        async function getData(){
+            await axios.get("/Report/getAllReports").then(res=>{
+                SetReports(res.data);
+                console.log("Reports fetched => " + res.data);
+            }).catch(err=>{
+                console.log("error while fetching reports => " + err);
+            })
+        }
+        getData();
+        
+    },[]);
 
   const chart1Data = [
     ["Type","Number"],
@@ -17,6 +33,8 @@ const AdminReports = () =>{
     ["Public Resports",7],
     ["Private Resports",7],
   ];
+
+  console.log(reports);
 
   return(
     <div className="admin-Reports-wrap AA-After">
@@ -71,7 +89,14 @@ const AdminReports = () =>{
                 </div>
             </div>
             <div className="c01-ARC-Reports-wrap">
-                <AdminReportCard />
+                {
+                    reports.map((report,key)=>{
+                        return(
+                            <AdminReportCard report={report} key={key}/>
+                        )
+                    })
+                }
+               
             </div>
         </div>
     </div>
