@@ -1,14 +1,41 @@
 import React, { useState } from "react";
 import './This.scss';
+import EditReport from "../../GlobalComponents/EditReport/EditReport";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { addReport } from "../../../Store/Slices/ReportSlice/ReportSlice";
 
 const AdminReportCard = ({report}) => {
 
     const [displayImages, setDisplayImages] = useState(report.media || []);
-    
-    
+    const dispatch = useDispatch();
+    function OpenEditReport(e){
+        e.preventDefault();
+       dispatch(addReport(report));
+        var x = document.getElementById("aer11-EditReport-wrap");
+        console.log(x);
+        if(x && x.classList.contains("Hide")){
+            x.classList.remove("Hide");
+            x.classList.add("Add-EditReport-After");
+        }
+    }
+
+    async function deleteReport(e){
+        e.preventDefault()
+        await axios.post('/Report/deleteOneReport',{_id:report._id})
+        .then(res=>{
+            console.log("Deleted report",res);
+            if(res.status === 200) {
+                document.getElementById(`carc-card-wrap-${toString(report._id)}`).style.display = "none !important";
+            }
+ 
+        })
+    }
 
     return(
-        <div className="carc-card-wrap">
+        <div className="carc-card-wrap"
+        id={`carc-card-wrap-${toString(report._id)}`}
+        >
         <div className="carc-inner-wrap">
             
             <div className="carc-left-wrap">
@@ -22,7 +49,7 @@ const AdminReportCard = ({report}) => {
                         <div className="carc-left-Media-switch-wrap">
                             <div className="carc-left-Media-Item-Media-wrap"
                             onClick={(e)=>{
-                                 setDisplayImages(report.media);
+                                 setDisplayImages(report.itemDetails.location.media);
                             }}
                             >
                                 I
@@ -36,10 +63,17 @@ const AdminReportCard = ({report}) => {
                             </div>
                             <div className="carc-left-edit-wrap"
                             onClick={(e)=>{
-                                
+                                OpenEditReport(e);
                            }}
                             >
                                  E
+                            </div>
+                            <div className="carc-left-edit-wrap"
+                            onClick={(e)=>{
+                                deleteReport(e);
+                           }}
+                            >
+                                 D
                             </div>
                         </div>
                     </div>
@@ -110,6 +144,7 @@ const AdminReportCard = ({report}) => {
             </div>
             </div>
         </div>
+      
     </div>
 
     )

@@ -8,6 +8,7 @@ import FOoterStand from './Components/Footer/Footer';
 import { useSelector } from 'react-redux';
 import SideNavBar from './Components/NavBar/NavBar';
 import AddReport from './Components/GlobalComponents/AddReport/AddReport';
+import LeftNav from './Components/NavBar/LeftNav/LeftNav';
 
 function App() {
 
@@ -18,14 +19,14 @@ function App() {
   return (
     <div className="App-Wrap">
        <Router>
-      <div className={'NavDiv-InApp ' + userSigned? "" : " Hide" }>
+      <div className={"app-nav-main-wrap" + (userSigned? "" : "") }>
      {/* { userSigned?
       <NavBar /> : null
      } */}
-     {
+     {/* {
       userSigned? <RespNavBar /> : null
-     }
-     
+     } */}
+     <LeftNav/>
      </div>
      <div className='Content-InApp'>
       <div className="SNav-AppWrap">

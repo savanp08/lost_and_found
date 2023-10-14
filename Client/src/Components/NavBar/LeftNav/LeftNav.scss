@@ -1,0 +1,21 @@
+.cln-main-wrap{
+    width: 100%;
+    height: 10%;
+    display: flex;
+    position: fixed;
+   display: none;
+}
+
+.cln-inner-wrap{
+width: 100%;
+height: 100%;
+display: flex;
+flex-flow: row ;
+background-color: black;
+}
+
+@media screen and (max-width:500px) {
+    .cln-main-wrap{
+        display: flex !important;
+    }
+}

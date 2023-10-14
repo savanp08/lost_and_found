@@ -2,6 +2,7 @@
     box-sizing: border-box;
     /* overflow-x: hidden; */
 }
+iframe#webpack-dev-server-client-overlay{display:none!important}
 body {
     margin: 0px 0px;
     overflow: hidden;
@@ -52,12 +53,16 @@ background-blend-mode: screen, hue, color, overlay;
     flex:0.1;
     overflow-x: hidden;
   }
-  
+  .app-nav-main-wrap{
+    height: 10vh;
+    width: 100%;
+    
+  }
   .Content-InApp{
     width: 100vw;
     display: flex;
     flex-flow: row nowrap;
-    height: 100%;
+    height: 90vh;
     overflow-x: hidden;
     overflow-y:hidden;
   }
@@ -91,7 +96,7 @@ overflow-x: hidden;
 }
 .Content-MainWrapper{
   width: 100%;
-  height: 100vh;
+  height: 100%;
   overflow-x: hidden;
   display: flex;
   flex-flow:  column wrap;

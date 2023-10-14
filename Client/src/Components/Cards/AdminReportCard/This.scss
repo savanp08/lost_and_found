@@ -6,6 +6,10 @@
     padding:10px;
     background-color: white;
     margin-top: 20px;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+    position: relative;
 }
 
 .carc-inner-wrap{
@@ -52,9 +56,11 @@ text-align: center;
 font-size: 25px;
 font-weight: 500;
 font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-max-width: 260;
+max-width: 260px;
 word-wrap:break-word;
 text-overflow: ellipsis;
+max-height: 30px;
+overflow: hidden;
 }
 
 .carc-left-body-wrap{
@@ -150,7 +156,10 @@ width: 30px;
 }
 .carc-right-location{
     width: 230px;
-    
+   
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: 40px;
 }
 
 .carc-right-description-wrap{
@@ -158,6 +167,8 @@ width: 30px;
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-around;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .carc-right-description-icon-wrap{
@@ -167,7 +178,10 @@ width: 30px;
 
 .carc-right-description{
     width: 230px;
-    
+   
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: 40px;
 }
 
 .carc-right-color-wrap{
@@ -197,6 +211,8 @@ flex-wrap: row nowrap;
 .carc-right-color-text-wrap{
     width: 230px;
     text-overflow: ellipsis;
-    word-break: break-all;
-    word-wrap: break-word;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: 40px;
 }

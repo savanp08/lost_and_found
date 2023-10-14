@@ -50,17 +50,33 @@ const reportRouter  = express.Router();
 }
  
 
-reportRouter.post('/addReport', multerUpload.array("image",8), async (req,response)=>{
+reportRouter.post('/addReport', multerUpload.fields([{
+    name: "image",
+     maxCount: 4
+},
+{
+ name :"ItemImage",
+ maxCount: 4
+}
+
+]), async (req,response)=>{
     try{
         
         var xx=JSON.parse(req.body.report);
-        var yy=req.files;
+        var yy=req.files["image"];
+        var zz=req.files["ItemImage"] || [];
+        console.log("zz => ",zz);
+        console.log("yy => ",yy);
         const addMediaResponse = await addMediaToCloudinary(yy);
+        var ItemMedia = [];
+        if(zz.length > 0){
+          ItemMedia = await addMediaToCloudinary(zz);
+        }
         console.log("addMediaResponse => ",addMediaResponse);
         console.log("Found report addition fired",xx);
        
         var newReport  = new FoundReportSchema({
-            ...xx,
+            ...xx, 
         })
         newReport.reportId = new mongoose.Types.ObjectId();
         newReport.itemDetails.location.media = addMediaResponse;
@@ -136,6 +152,105 @@ reportRouter.post('/addReport', multerUpload.array("image",8), async (req,respon
     }
 })
 
+  reportRouter.post('/EditReport' ,multerUpload.fields([{
+       name: "image",
+        maxCount: 4
+  },
+  {
+    name :"ItemImage",
+    maxCount: 4
+  }
+
+]), async(req, response)=>{
+    try{
+        
+        var xx=JSON.parse(req.body.report);
+        var yy=req.files;
+        console.log("Files =>>>>>>",yy);
+      //  const addMediaResponse = await addMediaToCloudinary(yy);
+       // console.log("addMediaResponse => ",addMediaResponse);
+        console.log("Found report edit fired",xx);
+       
+        var newReport  = new FoundReportSchema({
+            ...xx,
+        })
+        
+       // newReport.itemDetails.location.media = addMediaResponse;
+       
+        const joiSchema = Joi.object({
+            reporterName : Joi.object({
+                firstName :   Joi.string()
+                                .pattern(new RegExp('^[a-zA-Z]{1,40}$'))
+                                .min(1)
+                                .max(40),
+                middleName :  Joi.string()
+                                .pattern(new RegExp('^[a-zA-Z]{0,40}$'))
+                                .min(1)
+                                .max(40),
+                lastName :  Joi.string()
+                                .pattern(new RegExp('^[a-zA-Z]{0,40}$'))
+                                .min(1)
+                                .max(40),
+                                    }),
+            itemDetails :  Joi.object({
+                common_type: Joi.string()
+                                .pattern(new RegExp('^[a-zA-Z]{0,10}$'))
+                                .min(1)
+                                .max(40),
+                colors: Joi.array()
+                            .max(100)
+                            .items(Joi.string()
+                                        .max(30)
+                                        .required()),
+                cutomItemName: Joi.string()
+                                    .max(50)
+                                    .min(5)
+                                    .required(),
+                description : Joi.string().max(800),
+                location : Joi.object({
+                                    allPlacesPlossible : Joi.array()
+                                                            .max(100)
+                                                            .items(Joi.string().max(200)),
+                buildingDetails: Joi.string().max(100).required(),
+                university: Joi.string().max(30),
+                street : Joi.string().max(70).required(),
+                apartment : Joi.string().max(80),
+                city : Joi.string().max(50).required(),
+                state : Joi.string().max(50).required(),
+                pincode : Joi.string().max(5).required(),
+                media:Joi.string(),
+                }),
+                belongsTo : Joi.string().max(50),
+            }),
+            found : Joi.object({
+                status: Joi.bool(),
+                
+            }),
+            sumbittedAt : Joi.string().max(100),
+            claims : Joi.array().items(Joi.string().max(80)),
+            media: Joi.array().items(Joi.string()),
+            reporterType : Joi.string().max(10).required(),
+        });
+
+        const { value, error } = joiSchema.validate(newReport);
+        console.log("Validation result =>", value, "  error =>",error);
+
+        FoundReportSchema.updateOne({_id : newReport._id},{
+            $set : newReport
+        }).then(res=>{
+            console.log("New Found Report Saved",res);
+            response.status(200).send(res);
+        }).catch(err=>{
+            console.log("Error found while saving Found Report",err.message);
+            response.status(400).send(err.message);
+        })
+    }
+    catch(err){
+        console.log("erorr in Found rport addition ", err);
+    }
+} )
+
+
 
 
   reportRouter.get("/getAllReports", async (req,response)=>{
@@ -167,11 +282,18 @@ reportRouter.post('/addReport', multerUpload.array("image",8), async (req,respon
 
   // delete one report by id
 
-  reportRouter.delete("/deleteOneReport/:id", async (req,response)=>{
+  reportRouter.post("/deleteOneReport", async (req,response)=>{
     try{
-        console.log("Delete one report fired");
-        const oneReport = await FoundReportSchema.deleteOne({_id : req.params.id});
-        response.status(200).send(oneReport);
+        console.log("Delete one report fired",req.body);
+        await FoundReportSchema.deleteOne({_id : req.body._id}).then(res=>{
+            response.status(200).send(res);
+            console.log("Deleted one report successfully",res);
+        }).catch(err=>{
+            console.log("Error in deleting one report",err);
+            response.status(400).send(err);
+        })
+
+     
     }
     catch(err){
         console.log("Error in deleting one report",err);

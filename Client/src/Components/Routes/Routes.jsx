@@ -9,6 +9,8 @@ import FOoterStand from "../Footer/Footer.js";
 import AdminReports from "../Children/AdminReports/AdminReports";
 import AdminLogin from "../../Pages/Auth/Login/Admin";
 import AddReport from "../GlobalComponents/AddReport/AddReport";
+import UserReportCard from "../Cards/ReportCard/Report";
+import UserReports from "../../Pages/UserReports/UserReports";
 const RoutesComponent = () =>{
 
     return (
@@ -17,7 +19,8 @@ const RoutesComponent = () =>{
                 <Route exact path="/" element = {<Home/> } />
                 <Route exact path="/SignUp" element = { <SignUp/> } />
                 <Route exact path="/Login" element = { <Login/> } />
-                <Route exaxt path="/Admin" element = { <Admin/> } />
+                <Route exaxt path="/Admin/Account" element = { <Admin/> } />
+                <Route exaxt path="/Reports" element = {  <UserReports/> } />
                 <Route exaxt path="/Test" element ={ <AdminReports/> } />
                 <Route exaxt path="/AdminLoginX86109110213" element = { <AdminLogin/> } />
             </Routes>

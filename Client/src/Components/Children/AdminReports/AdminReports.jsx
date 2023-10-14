@@ -3,6 +3,7 @@ import './This.scss';
 import { Chart } from 'react-google-charts';
 import AdminReportCard from "../../Cards/AdminReportCard/AdminReportCard";
 import axios from "axios";
+import EditReport from "../../GlobalComponents/EditReport/EditReport";
 
 const AdminReports =  () =>{
 
@@ -95,6 +96,9 @@ const AdminReports =  () =>{
                             <AdminReportCard report={report} key={key}/>
                         )
                     })
+                }
+                {
+                      <EditReport/>
                 }
                
             </div>

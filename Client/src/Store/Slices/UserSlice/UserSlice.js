@@ -37,7 +37,8 @@ const initialState = {
     Claims: {
         count: 0,
         itemIds: [],
-    }
+    },
+    
     
 };
 
@@ -47,7 +48,7 @@ const userSlice = createSlice({
     initialState,
     reducers:{
         addUser : (state, action) => {
-            state = {...action.payload};
+             return action.payload;
         },
         getUser : (state,action) => {
             return state;
