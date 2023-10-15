@@ -6,11 +6,17 @@ import TextField from '@mui/material/TextField';
 import { FcSearch } from "react-icons/fc";
 import { InputAdornment } from "@mui/material";
 import {AiOutlineSearch } from "react-icons/ai";
+import ClaimPopUp from "../../Components/LocalComponents/ClaimPopUp";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 
 const UserReports = () => {
+   console.log("Rerender in userreports");
 
-
+   const navigate = useNavigate();
+   const dispatch = useDispatch();
+   const task = useSelector(state => state.task);
    const [reports, setReports] = useState([]);
    const [displayReports, setDisplayReports] = useState([]);
    const [filter, setFilter] = useState({
@@ -19,7 +25,8 @@ const UserReports = () => {
     date : "",
     common_type: "",
    });
-
+    
+   
    async function fetchreports(){
        await axios.get("/Report/getAllReports").then(res=>{
         console.log("response from fetch all reports=> ",res.data);
@@ -91,7 +98,13 @@ const UserReports = () => {
 
    
 
+  useEffect(()=>{
+    if(task[task.length-1].catagory === "claim"){
+        if(task.status === "success"){
 
+        }
+    }
+  },[])
 
    useEffect(()=>{
      fetchreports();
@@ -100,8 +113,13 @@ const UserReports = () => {
     return(
         <div className="ur11-main-wrap">
             <div className="ur11-inner-wrap">
+            <div className="ur11-claim-popup-main-wrap Hide"
+            id="ur11-claim-popup-main-min"
+            >
+                    <ClaimPopUp />
+                   </div>
                 <div className="ur11-top-wrap">
-                   
+                  
                 </div>
                 <div className="ur11-bottom-wrap">
                     <div className="ur11-bottom-header-wrap">

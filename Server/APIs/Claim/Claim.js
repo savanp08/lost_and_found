@@ -1,15 +1,21 @@
-import ClaimSchema from "../../Schemas/ClaimSchema";
+
 import express from "express";
+import ClaimSchema from "../../Schemas/ClaimSchema.js";
 
 const claimRouter = express.Router();
 
 claimRouter.post('/addClaim', async (req,response)=>{
-    try{
-        console.log("add claim fired",res);
-        const claim = ClaimSchema({
-            ...req.body.claim
-        });
+    try{ 
 
+        //validate claim with joi
+        
+        console.log("add claim fired",req.body);
+        const claim = new ClaimSchema({
+            ...req.body.claim,
+            claimId: new mongoose.Types.ObjectId(),
+            
+        });
+          
         claim.save()
         .then(res=>{
             console.log("added claim",res);
@@ -24,4 +30,11 @@ claimRouter.post('/addClaim', async (req,response)=>{
         console.log("error adding claim",err.message);
     }
 })
+
+
+
+
+
+
+export default claimRouter;
 

@@ -24,9 +24,9 @@ const SignUp = () =>{
     userId: newId,
     email:null,
     Name:{
-        FirstName:"",
-        MiddleName:"",
-        LastName:"",
+        firstName:"",
+        middleName:"",
+        lastName:"",
     },
     userType: null,
     UniqueId: null,
@@ -87,7 +87,7 @@ const SignUp = () =>{
        }
        console.log("Keys of user",keys);
        keys = Object.keys(user.Name);
-       keys.splice(keys.indexOf("MiddleName"),1);
+       keys.splice(keys.indexOf("middleName"),1);
        for(var i=0; i<keys.length;i++){
         var key = keys[i];
         if(user.Name[key]===null) { console.log("Returning False",key,user.Name[key])
@@ -130,8 +130,10 @@ const SignUp = () =>{
         password : password
       }).then(response=>{
         console.log(response.data);
-        if(response.data && (typeof response.data === 'string' || response.data instanceof String) && response.data === "TokenVerified"){
-            localStorage.setItem(`user ${user.email}` , response.data.AccessToken);
+        if(response.data && (typeof response.data.token === 'string' || response.data.token instanceof String) && response.data.message === "Account Created Successfully"){
+            localStorage.setItem(`user ${user.email}` , response.data.token);
+            dispatch(addUser(response.data.user));
+            
         }
       }).catch(error=>{
         console.log("Error while submitting", error);
@@ -207,9 +209,9 @@ const SignUp = () =>{
                     sx={{
                         
                     }}
-                    value={user.Name.FirstName}
+                    value={user.Name.firstName}
                     onChange={(e)=>{
-                         setUser({...user, Name : {...user.Name, FirstName : e.target.value}})
+                         setUser({...user, Name : {...user.Name, firstName : e.target.value}})
                         
                     }}
                     /> 
@@ -221,24 +223,24 @@ const SignUp = () =>{
                     sx={{
                         
                     }}
-                    value={user.Name.MiddleName}
+                    value={user.Name.middleName}
                     onChange={(e)=>{
-                         setUser({...user, Name : {...user.Name, MiddleName : e.target.value}})
+                         setUser({...user, Name : {...user.Name, middleName : e.target.value}})
                         
                     }}
                     />
                     </div>
                     <div className="signUp-formButton">
-                    <TextField id="signUp-LastName"  
+                    <TextField id="signUp-lastName"  
                     label="Last Name" 
                     variant="outlined" 
                     required
                     sx={{
                         
                     }}
-                    value={user.Name.LastName}
+                    value={user.Name.lastName}
                     onChange={(e)=>{
-                         setUser({...user, Name : {...user.Name, LastName : e.target.value}})
+                         setUser({...user, Name : {...user.Name, lastName : e.target.value}})
                         
                     }}
                     />

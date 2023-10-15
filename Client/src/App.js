@@ -5,14 +5,19 @@ import { NavLink, BrowserRouter as Router } from 'react-router-dom';
 import NavBar from './Components/NavBar/NavBar/NavBar.js';
 import { RespNavBar} from './Components/NavBar/NavBar/NavBar.js'
 import FOoterStand from './Components/Footer/Footer';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import SideNavBar from './Components/NavBar/NavBar';
 import AddReport from './Components/GlobalComponents/AddReport/AddReport';
 import LeftNav from './Components/NavBar/LeftNav/LeftNav';
 import { handler_login_popup } from './Handlers/PopUp';
+import { addRoute } from './Store/Slices/RouterSlice/RouterSlice.js'
+import { addTask } from './Store/Slices/TaskSlice/TaskSlice';
+import { open_div } from './Handlers/PopUp';
+
 function App() {
 
   const userSigned = useSelector(state => state.user.userId);
+  const dispatch = useDispatch();
   
   console.log("User SIgned?",userSigned);
   console.log(useSelector(state=>state.user))
@@ -39,7 +44,15 @@ function App() {
       <div className='app-popup-close-btn-wrap'>
         <span className='app-popup-close-btn'
         onClick={(e)=>{
-          
+          dispatch(addRoute("/Login"));
+          dispatch(addTask({
+            task:"function",
+            catagory:"claim",
+            status:"success",
+            progress:"begun",
+            function: open_div,
+            function_params : [""],
+          }))
           handler_login_popup(e);
         }}
         >
@@ -54,7 +67,8 @@ function App() {
       </span>
       <NavLink to='/Login' className='app-popup-text navlink-popup'
       onClick={(e)=>{
-
+        
+         handler_login_popup(e);
       }}
       >
         Login

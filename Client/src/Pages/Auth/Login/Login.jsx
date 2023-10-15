@@ -17,6 +17,11 @@ import './Login.css';
 import Button from '@mui/material/Button';
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import { removeRoute } from "../../../Store/Slices/RouterSlice/RouterSlice";
+import { open_div } from "../../../Handlers/PopUp";
+import { addTask } from "../../../Store/Slices/TaskSlice/TaskSlice";
+import { addUser } from "../../../Store/Slices/UserSlice/UserSlice";
+
 
 const Login = () => {
 
@@ -27,7 +32,8 @@ const Login = () => {
     const taskState = useSelector(state => state.task);
     const routerState = useSelector(state => state.router);
     const navigator = useNavigate();
-
+    const dispatch = useDispatch();
+    
     const handleMouseDownPassword = (event) => {
       event.preventDefault();
     };
@@ -40,11 +46,14 @@ const Login = () => {
      }).then(res=>{
       console.log("Loged in",res);
       const AccessToken  = res.data.AccessToken;
+      
       if(AccessToken && (typeof AccessToken === "string" || AccessToken instanceof String)){
+        dispatch(addUser(res.data.user));
         localStorage .setItem(`user ${email}`, AccessToken);
-        navigator(routerState[routerState.length-1]);
+        const route = routerState[routerState.length-1] || "/Reports";
+        if(routerState[routerState.length-1]) dispatch(removeRoute(routerState[routerState.length-1]));
         
-        
+        navigator(route);
       }
      }).catch(err=>{
       console.log("Failed to login",err);

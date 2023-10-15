@@ -5,8 +5,10 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { addReport } from "../../../Store/Slices/ReportSlice/ReportSlice";
 import { useNavigate, useNavigation } from "react-router-dom";
+import { open_div } from "../../../Handlers/PopUp";
 
 const UserReportCard = ({report}) => {
+    console.log("Rerender in user report card");
 
     const [displayImages, setDisplayImages] = useState(report.media || []);
     const dispatch = useDispatch();
@@ -14,6 +16,7 @@ const UserReportCard = ({report}) => {
     const navigation = useNavigate();
 
     async function claimReport(e,report){
+        dispatch(addReport(report));
          if(!user.userId) {
             var x = document.getElementById("app-popup-main-wrap");
             if(x.classList.contains("Hide")) {
@@ -21,14 +24,7 @@ const UserReportCard = ({report}) => {
             }
          }
          else{
-            await axios.post("/Claim/addClaim",{
-                report: report
-            }).then(res => {
-                console.log("response from claim report=> ",res.data);
-
-            }).catch(err => {
-                console.log("error from claim report=> ",err);
-            })
+            open_div("ur11-claim-popup-main-min");
          }
     }
 
@@ -132,14 +128,12 @@ const UserReportCard = ({report}) => {
                 </div>
                 <div className="curc-right-claim-button-wrap">
                     <button className="curc-right-claim-button"
-                    disabled={report.found.status}
+                   
                     onClick={(e)=>{
                         claimReport(e,report);
                     }}
                     >
-                        {
-                            report.found.status? "Claimed" : "Claim"
-                        }
+                        Claim
                     </button>
                 </div>
             </div>

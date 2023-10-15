@@ -9,6 +9,7 @@ import { fileURLToPath } from 'url';
 import mongoose from "mongoose";
 import authRouter from "./APIs/Auth/Auth.js";
 import reportRouter from "./APIs/Item/Reports.js"
+import claimRouter from "./APIs/Claim/Claim.js";
 
 dotenv.config();
 const server = express();
@@ -24,7 +25,7 @@ server.use(bodyParser.urlencoded({ extended: true }));
 
 server.use('/Auth',authRouter); 
 server.use('/Report', reportRouter);
-
+server.use('/Claim', claimRouter);
 
 const httpServer = server.listen(port, ()=>[
     console.log("listening on port", port)

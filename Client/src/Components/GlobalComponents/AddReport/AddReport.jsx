@@ -16,6 +16,7 @@ import { ItemTypes } from "../../Data/Options"
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 
 const AddReport = () => {
+  console.log("Rerender in add report");
   const user = useSelector((state) => state.user);
   const [reporterType, setReporterType] = useState("");
   const [Item, setItem] = useState({
@@ -61,7 +62,7 @@ const AddReport = () => {
   
   async function SubmitForm(){
     
-  
+    
     var files = document.getElementById("ar11-item-location-media-input").files;
     const formData = new FormData();
     formData.append('report', JSON.stringify(Item));

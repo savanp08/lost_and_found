@@ -1,11 +1,28 @@
 import mongoose from "mongoose";
-
-const ClaimSchemaX = mongoose.Schema({
-    userId:[],
+ 
+const ClaimSchemaX = new mongoose.Schema({
+    claimId:{
+        type:mongoose.Types.ObjectId,
+        required:true,
+        unique:true
+    },
     reportId:{
         type:String,
         required:false,
         unique:true
+    },
+    userId:{
+        type:String,
+        required:true,
+        unique:true
+    },
+    ownership:{
+        type:String,
+        required:true,
+    },
+    description:{
+        type:String,
+        required:true,
     }
 })
 
