@@ -10,6 +10,15 @@
     grid-template-rows: repeat(2);
 }
 
+.ur11-top-wrap{
+    width: 100%;
+    display: grid;
+    grid-template-rows: repeat(2, 2fr,1fr);
+    padding: 10px;
+    background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrvt6RB_fT45ABCmX1m9JfvwUDYK2wonNuhw&usqp=CAU");
+    min-height: 500px;
+}
+
 .ur11-bottom-wrap{
     width: 100%;
     display: grid;
@@ -18,7 +27,8 @@
 
 .ur11-bottom-header-wrap{
     width: 100%;
-    
+    position: sticky;
+    top:0px;
     min-height: 8rem;
     background-color: white;
     z-index: 1;
@@ -33,7 +43,7 @@
     width: 100%;
     display: grid;
     padding: 10px;
-    margin-top: 9rem;
+    
 } 
 
 .ur11-bottom-body-inner-wrap{
@@ -41,12 +51,12 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     column-gap: 2rem;
+    overflow-y: auto;
 }
-
-
 
 @media screen and (max-width: 768px){
     .ur11-bottom-body-inner-wrap{
         grid-template-columns: repeat(1, 1fr);
     }
 }
+

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import AccountCircle from '@mui/icons-material/AccountCircle';
@@ -15,7 +15,7 @@ import Img1 from '../../../Media/SVGs/temp3.svg';
 
 import './Login.css';
 import Button from '@mui/material/Button';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 
 const Login = () => {
@@ -24,7 +24,10 @@ const Login = () => {
     const [email,setEmail] = useState("");
     const [password,setPassword] = useState("");
     const handleClickShowPassword = () => setShowPassword((show) => !show);
-  
+    const taskState = useSelector(state => state.task);
+    const routerState = useSelector(state => state.router);
+    const navigator = useNavigate();
+
     const handleMouseDownPassword = (event) => {
       event.preventDefault();
     };
@@ -39,6 +42,8 @@ const Login = () => {
       const AccessToken  = res.data.AccessToken;
       if(AccessToken && (typeof AccessToken === "string" || AccessToken instanceof String)){
         localStorage .setItem(`user ${email}`, AccessToken);
+        navigator(routerState[routerState.length-1]);
+        
         
       }
      }).catch(err=>{

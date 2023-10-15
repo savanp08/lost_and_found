@@ -18,7 +18,6 @@ const UserReportCard = ({report}) => {
             var x = document.getElementById("app-popup-main-wrap");
             if(x.classList.contains("Hide")) {
                 x.classList.remove("Hide");
-                x.innerHTML = "Please Login to claim this report";
             }
          }
          else{

@@ -64,7 +64,7 @@ const UserReports = () => {
                     counter++;
                     map.set(words[i],words[i]);
                     break;
-                    
+
                 }
                 }
                 }
@@ -101,7 +101,7 @@ const UserReports = () => {
         <div className="ur11-main-wrap">
             <div className="ur11-inner-wrap">
                 <div className="ur11-top-wrap">
-
+                   
                 </div>
                 <div className="ur11-bottom-wrap">
                     <div className="ur11-bottom-header-wrap">
