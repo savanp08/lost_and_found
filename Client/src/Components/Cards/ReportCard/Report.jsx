@@ -2,22 +2,43 @@ import React, { useState } from "react";
 import './Report.scss';
 import EditReport from "../../GlobalComponents/EditReport/EditReport";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addReport } from "../../../Store/Slices/ReportSlice/ReportSlice";
+import { useNavigate, useNavigation } from "react-router-dom";
 
 const UserReportCard = ({report}) => {
 
     const [displayImages, setDisplayImages] = useState(report.media || []);
     const dispatch = useDispatch();
-    
+    const user  = useSelector(state => state.user);
+    const navigation = useNavigate();
 
-    
+    async function claimReport(e,report){
+         if(!user.userId) {
+            var x = document.getElementById("app-popup-main-wrap");
+            if(x.classList.contains("Hide")) {
+                x.classList.remove("Hide");
+                x.innerHTML = "Please Login to claim this report";
+            }
+         }
+         else{
+            await axios.post("/Claim/addClaim",{
+                report: report
+            }).then(res => {
+                console.log("response from claim report=> ",res.data);
+
+            }).catch(err => {
+                console.log("error from claim report=> ",err);
+            })
+         }
+    }
 
     return(
         <div className="curc-card-wrap"
-        id={`curc-card-wrap-${toString(report._id)}`}
+        id={`curc-card-wrap-${report._id}`}
         >
         <div className="curc-inner-wrap">
+            
         <div className="curc-left-Media-wrap">
                         <div className="curc-left-Media-switch-wrap">
                             <div className="curc-left-Media-Item-Media-wrap"
@@ -109,6 +130,18 @@ const UserReportCard = ({report}) => {
                     <span className="curc-right-description">
                         {report.itemDetails.description}
                     </span>
+                </div>
+                <div className="curc-right-claim-button-wrap">
+                    <button className="curc-right-claim-button"
+                    disabled={report.found.status}
+                    onClick={(e)=>{
+                        claimReport(e,report);
+                    }}
+                    >
+                        {
+                            report.found.status? "Claimed" : "Claim"
+                        }
+                    </button>
                 </div>
             </div>
             </div>

@@ -4,7 +4,7 @@
     width: 100%;
 }
 
-.ur11-inner-wra{
+.ur11-inner-wrap{
     width: 100%;
     display: grid;
     grid-template-rows: repeat(2);
@@ -13,20 +13,34 @@
 .ur11-bottom-wrap{
     width: 100%;
     display: grid;
+    position: relative;
+}
+
+.ur11-bottom-header-wrap{
+    width: 100%;
+    
+    min-height: 8rem;
+    background-color: white;
+    z-index: 1;
+    box-shadow: 2px 2px 5px 3px rgb(144, 141, 141);
+    display: flex;
+    flex-flow: column;
+    justify-content: space-around;
+    align-items: center;
 }
 
 .ur11-bottom-body-wrap{
     width: 100%;
     display: grid;
     padding: 10px;
-}
+    margin-top: 9rem;
+} 
 
 .ur11-bottom-body-inner-wrap{
     width: 100%;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     column-gap: 2rem;
-    
 }
 
 

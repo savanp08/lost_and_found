@@ -33,7 +33,16 @@ function App() {
      <SideNavBar/>
      </div>
      <div className='Content-MainWrapper'>
-     
+     <div className='app-popup-main-wrap Hide'
+     id="app-popup-main-wrap"
+     >
+      <div className='app-popup-close-btn-wrap'>
+        X
+      </div>
+      <span className='app-popup-text'>
+         
+      </span>
+     </div>
      <RoutesComponent/>
      {/* <div className='App-FooterWrap'>
      <FOoterStand/>
