@@ -44,47 +44,46 @@ catch(err){
 }
 })
 
-authRouter.get("/TokenValidate", async (req, res) => {
+authRouter.get("/TokenValidate", async (req, response) => {
     console.log("TokenValidate Called->");
   console.log(req.headers);
     const HeaderToken = req.headers["authorization"];
     const Token = HeaderToken && HeaderToken.split(" ")[1];
     console.log("This is Acquired Token->");
     console.log(Token);
-    if (Token===null) { 
-      const resval = "NoTokenFound";
-      res.send(resval);
-      console.log("Invalid Req, Token Not found Checking Password");
-    } else {
-      var reftoken = false;
-  
-      jwt.verify(Token, process.env.RefreshToken, (err, UserName) => {
-        if (err) {
-          console.log(err);
-          console.log(UserName);
-          res.send("TokenExpired");
-        } else {
-          reftoken = true;
-          console.log(UserName);
-  
-          console.log(Date.now());
-          const resval = "TokenVerified";
-          res.send({ resval });
-  
-          console.log("Token Verified");
+     const x =  jwt.verify(Token, process.env.RefreshToken);
+     if(x){
+        console.log("Token Validated",x);
+        const xy = x.UserName || x.email;
+        console.log("xy",xy);
+        const y = await userExists({body: {email :  xy}});
+        if(y) {
+          console.log("userExists reponse=>>> ",y);
+        return response.status(200).send(
+          {
+            message : "Token Validated",
+             user : y.user 
         }
-      });
-    }
+          );
+      }
+      else{
+        return response.status(400).send("Token Not Validated");
+      }
+     }
+     else{
+      console.log("Token Not Validated");
+      return response.status(400).send("Token Not Validated");
+     }
   });
 
   
-function fetchToken(UserName) {
-    return jwt.sign({ UserName }, process.env.RefreshToken, { expiresIn: "6h" });
+function fetchToken(email) {
+    return jwt.sign({ email }, process.env.RefreshToken, { expiresIn: "6h" });
   }
 
   authRouter.get("/:UserType/RefreshToken", async (req, res) => {
     const UserType = req.params.UserType;
-    const UserName = req.body.UserName;
+    const UserName = req.body.email;
 
     const AccessToken = fetchToken({ UserName });
     res.status(202).json({ AccessToken: AccessToken });

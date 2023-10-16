@@ -8,13 +8,12 @@ const ClaimSchemaX = new mongoose.Schema({
     },
     reportId:{
         type:String,
-        required:false,
-        unique:true
+        required:true,
     },
     userId:{
         type:String,
         required:true,
-        unique:true
+        
     },
     ownership:{
         type:String,

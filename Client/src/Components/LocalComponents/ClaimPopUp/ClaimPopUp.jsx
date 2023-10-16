@@ -6,9 +6,9 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { useDispatch, useSelector } from "react-redux";
-import { close_div, open_div } from "../../Handlers/PopUp";
+import { close_div, open_div } from "../../../Handlers/PopUp";
 import axios from "axios";
-import { addTask } from "../../Store/Slices/TaskSlice/TaskSlice";
+import { addTask } from "../../../Store/Slices/TaskSlice/TaskSlice";
 
 
 const ClaimPopUp = () => {
@@ -39,7 +39,7 @@ const ClaimPopUp = () => {
                 progress:"submitted",
                 claim: claim,
                 task:"function",
-                function : open_div,
+                function : "open_div",
                 function_params : [""]
             }));
             close_div("ur11-claim-popup-main-min");
@@ -83,6 +83,8 @@ const ClaimPopUp = () => {
                 id="ccp12-ownership"
                  placeholder="Is It Yours"
                 label="Is It Yours"
+                value={claim.ownership || "None"} 
+                
                 onChange={(e) => {
                   setClaim({
                   ...claim,
@@ -95,6 +97,7 @@ const ClaimPopUp = () => {
                 }}
 
               >
+                
                 <MenuItem value={"User"}>Yes</MenuItem>
                 <MenuItem value={"Other"}>No</MenuItem>
               </Select>
@@ -111,6 +114,7 @@ const ClaimPopUp = () => {
                             variant="outlined"
                             placeholder="Describe the Property"
                             multiline
+                            
                             rows={4}
                             sx={{
                                 width: '100%',
@@ -142,7 +146,8 @@ const ClaimPopUp = () => {
                     </div>
                     <div className="ccp12-claim-information-text-wrap">
                         <span className="ccp12-claim-information-text">
-                            This is a virtual assessment to determine if the property is indeed Yours
+                            This is a virtual veriffication assessment to assess the credibility of your claim and to check if the property is indeed Yours.
+                            Restrain from making false claims
                             
                         </span>
                     </div>

@@ -1,7 +1,7 @@
 
 import './App.css';
 import RoutesComponent from './Components/Routes/Routes.jsx';
-import { NavLink, BrowserRouter as Router } from 'react-router-dom';
+import { NavLink, BrowserRouter as Router, useNavigate } from 'react-router-dom';
 import NavBar from './Components/NavBar/NavBar/NavBar.js';
 import { RespNavBar} from './Components/NavBar/NavBar/NavBar.js'
 import FOoterStand from './Components/Footer/Footer';
@@ -13,11 +13,19 @@ import { handler_login_popup } from './Handlers/PopUp';
 import { addRoute } from './Store/Slices/RouterSlice/RouterSlice.js'
 import { addTask } from './Store/Slices/TaskSlice/TaskSlice';
 import { open_div } from './Handlers/PopUp';
+import { useEffect } from 'react';
+import axios from 'axios';
+import { removeUser } from './Store/Slices/UserSlice/UserSlice';
+
 
 function App() {
 
   const userSigned = useSelector(state => state.user.userId);
   const dispatch = useDispatch();
+  
+
+  
+
   
   console.log("User SIgned?",userSigned);
   console.log(useSelector(state=>state.user))
@@ -50,7 +58,7 @@ function App() {
             catagory:"claim",
             status:"success",
             progress:"begun",
-            function: open_div,
+            function: "open_div",
             function_params : [""],
           }))
           handler_login_popup(e);

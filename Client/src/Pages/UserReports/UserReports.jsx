@@ -6,9 +6,15 @@ import TextField from '@mui/material/TextField';
 import { FcSearch } from "react-icons/fc";
 import { InputAdornment } from "@mui/material";
 import {AiOutlineSearch } from "react-icons/ai";
-import ClaimPopUp from "../../Components/LocalComponents/ClaimPopUp";
+import ClaimPopUp from "../../Components/LocalComponents/ClaimPopUp/ClaimPopUp";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import Common_PopUp from "../../Components/LocalComponents/Common_PopUp/Common_PopUp";
+import { open_div } from "../../Handlers/PopUp";
+import { removeTask } from "../../Store/Slices/TaskSlice/TaskSlice";
+import { addRawData } from "../../Store/RawData/RawData";
+import AuthFunctions from "../../Handlers/Auth";
+import { addUser } from "../../Store/Slices/UserSlice/UserSlice";
 
 
 const UserReports = () => {
@@ -16,6 +22,7 @@ const UserReports = () => {
 
    const navigate = useNavigate();
    const dispatch = useDispatch();
+   const user = useSelector(state => state.user);
    const task = useSelector(state => state.task);
    const [reports, setReports] = useState([]);
    const [displayReports, setDisplayReports] = useState([]);
@@ -26,6 +33,26 @@ const UserReports = () => {
     common_type: "",
    });
     
+
+
+   useEffect(()=>{
+    async function authVerify(){
+        const flag = await AuthFunctions();
+        if(flag.message){
+         console.log("Auth Debug => user is signed in ",flag);
+         dispatch(addUser(flag.user));
+        }
+        else{
+         console.log("Auth Debug => user is not signed in ",flag);
+        //  navigate("/Login");
+        }
+    }
+    authVerify();
+    
+   },[])
+
+    
+
    
    async function fetchreports(){
        await axios.get("/Report/getAllReports").then(res=>{
@@ -99,12 +126,50 @@ const UserReports = () => {
    
 
   useEffect(()=>{
-    if(task[task.length-1].catagory === "claim"){
-        if(task.status === "success"){
-
+     console.log("task=> ",task);
+        const currentTask = task[task.length-1];
+        if(currentTask.catagory === "claim"){
+    
+        if(currentTask.progress === "submitted"){
+            if(currentTask.status === "success"){
+                open_div("ur11-claim-confirmation-main-wrap");
+                dispatch(removeTask());
+                var options = [{
+                    text: "Your Claim has been Submitted Successfully",
+                    style: {
+                        color: 'green',
+                        fontSize:'20px',
+                    }
+                },
+                {
+                    text : ` An email contating the response details and further instructions has been sent to your email address + ${user.email}`,
+                    style: {
+                        color: 'black',
+                        fontSize:'12px',
+                    }
+                },
+                {
+                    text: " The Custodians will verify your Claim and you will then receive an email shortly",
+                    style : {
+                        color: 'black',
+                        fontSize:'16px',
+                    }
+                }
+            
+            ];
+            dispatch(addRawData(options));
+            }
         }
+        else if(currentTask.progress === "begun"){
+            if(currentTask.status === "success"){
+                if(!document.getElementById("ur11-claim-popup-main-min").classList.contains("Hide"))
+                open_div("ur11-claim-popup-main-min");
+                dispatch(removeTask());
+            }
+        
     }
-  },[])
+    }
+  },[task])
 
    useEffect(()=>{
      fetchreports();
@@ -115,8 +180,17 @@ const UserReports = () => {
             <div className="ur11-inner-wrap">
             <div className="ur11-claim-popup-main-wrap Hide"
             id="ur11-claim-popup-main-min"
+
             >
                     <ClaimPopUp />
+                   </div>
+                   <div className="ur11-claim-confirmation-main-wrap Hide"
+                   id="ur11-claim-confirmation-main-wrap"
+                   >
+                    
+                        
+                        <Common_PopUp />
+                    
                    </div>
                 <div className="ur11-top-wrap">
                   

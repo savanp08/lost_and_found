@@ -131,7 +131,7 @@ const SignUp = () =>{
       }).then(response=>{
         console.log(response.data);
         if(response.data && (typeof response.data.token === 'string' || response.data.token instanceof String) && response.data.message === "Account Created Successfully"){
-            localStorage.setItem(`user ${user.email}` , response.data.token);
+            localStorage.setItem(`token` , response.data.token);
             dispatch(addUser(response.data.user));
             
         }

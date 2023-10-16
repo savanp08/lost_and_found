@@ -28,17 +28,20 @@ async function SignUp(req) {
 
 
 async function userExists(req) {
+    console.log("In method userExists => Checking if user exists", req.body);
     try {
         const res = await userSchema.findOne({ email: req.body.email });
 
-        console.log("Account Already Exists", res);
+        
 
         if (res) {
+            console.log("Account Already Exists", res); 
             return {
                 message: "true",
                 user: res,
             }
         } else {
+            console.log("Account Does Not Exists",res);
             return {
                 message: "false",
                 user: null,

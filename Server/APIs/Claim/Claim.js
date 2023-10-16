@@ -1,6 +1,8 @@
 
 import express from "express";
 import ClaimSchema from "../../Schemas/ClaimSchema.js";
+import mongoose from "mongoose";
+
 
 const claimRouter = express.Router();
 
@@ -19,15 +21,16 @@ claimRouter.post('/addClaim', async (req,response)=>{
         claim.save()
         .then(res=>{
             console.log("added claim",res);
-            response.status(200).send(res);
+           return response.status(200).send(res);
         }).catch(err=>{
             console.log("error adding claim",err);
-            response.status(500).send(err);
+            return response.status(500).send(err);
         })
 
     }
     catch(err){
         console.log("error adding claim",err.message);
+        return req.status(500).send(err.message);
     }
 })
 

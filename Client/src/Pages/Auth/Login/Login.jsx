@@ -49,10 +49,10 @@ const Login = () => {
       
       if(AccessToken && (typeof AccessToken === "string" || AccessToken instanceof String)){
         dispatch(addUser(res.data.user));
-        localStorage .setItem(`user ${email}`, AccessToken);
+        localStorage .setItem(`token`, AccessToken);
         const route = routerState[routerState.length-1] || "/Reports";
         if(routerState[routerState.length-1]) dispatch(removeRoute(routerState[routerState.length-1]));
-        
+         
         navigator(route);
       }
      }).catch(err=>{
