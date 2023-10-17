@@ -11,6 +11,7 @@ import AdminLogin from "../../Pages/Auth/Login/Admin";
 import AddReport from "../GlobalComponents/AddReport/AddReport";
 import UserReportCard from "../Cards/ReportCard/Report";
 import UserReports from "../../Pages/UserReports/UserReports";
+import UserAccount from "../../Pages/Account/User/User";
 const RoutesComponent = () =>{
 
     return (
@@ -23,6 +24,8 @@ const RoutesComponent = () =>{
                 <Route exaxt path="/Reports" element = {  <UserReports/> } />
                 <Route exaxt path="/Test" element ={ <AdminReports/> } />
                 <Route exaxt path="/AdminLoginX86109110213" element = { <AdminLogin/> } />
+                <Route exaxt path="/Account" element = { <UserAccount /> } />
+                <Route exaxt path="/AddReport" element = { <AddReport/> } />
             </Routes>
             
         </div>

@@ -8,7 +8,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import {useDispatch, useSelector} from 'react-redux';
 import { addUser } from "../../../Store/Slices/UserSlice/UserSlice";
@@ -16,6 +16,7 @@ import mongoose from "mongoose";
 
 const SignUp = () =>{
    const dispatch = useDispatch();
+   const navigate = useNavigate();
    const newId = new mongoose.Types.ObjectId().toString();
    const [password,setPassword] = useState(null);
    const ExistingUser = useSelector(state => state.user);
@@ -133,7 +134,7 @@ const SignUp = () =>{
         if(response.data && (typeof response.data.token === 'string' || response.data.token instanceof String) && response.data.message === "Account Created Successfully"){
             localStorage.setItem(`token` , response.data.token);
             dispatch(addUser(response.data.user));
-            
+            navigate(-2);
         }
       }).catch(error=>{
         console.log("Error while submitting", error);

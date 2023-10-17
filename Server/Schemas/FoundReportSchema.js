@@ -9,25 +9,28 @@ const FoundReportSchemaX = new mongoose.Schema({
         type:mongoose.Types.ObjectId,
         default:null,
     },
+    userId:{
+        type:mongoose.Types.ObjectId,
+        default:null,
+    },
 
     reporterName:{
         firstNAme:{
             type: String,
             unique:false,
             
-            minlength: 1,
+            
         },
         middleName:{
             type:String,
             unique:false,
             required:false,
-            minlength:1,
         },
         lastName:{
             type:String,
             unique:false,
             required: false,
-            minlength: 1,
+            
         }
         },
         itemDetails:{
@@ -35,14 +38,14 @@ const FoundReportSchemaX = new mongoose.Schema({
                 type:String,
                 unique:false,
                 
-                minlength:1
+               
             },
             colors:[],
             customItemName:{
                 type:String,
                 unique:false,
                 
-                minlength:1
+                
             },
             description:{
                 type:String,
@@ -63,31 +66,31 @@ const FoundReportSchemaX = new mongoose.Schema({
                 street: {
                     
                     type: 'string', 
-                    minlength: 1,
+                    
                     default: null,
                 },
                 apartment: {
                     
                     type: 'string',
-                    minlength: 1,
+                    
                     default: null,
                 },
                 city: {
                     
                     type: 'string',
-                    minlength: 1,
+                    
                     default: null,
                 },
                 state: {
                     
                     type: 'string',
-                    minlength: 1,
+                    
                     default: null,
                 },
                 pinCode : {
                     
                     type: 'string',
-                    minlength: 1,
+                    
                     default: null,
                 },
                 media:[],
@@ -96,7 +99,7 @@ const FoundReportSchemaX = new mongoose.Schema({
                 type:String,
             unique:false,
             required: false,
-            minlength: 1,
+            
             }
         },
         claims:{

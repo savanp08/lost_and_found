@@ -2,17 +2,22 @@ import React, { useState } from "react";
 import './This.scss';
 import EditReport from "../../GlobalComponents/EditReport/EditReport";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addReport } from "../../../Store/Slices/ReportSlice/ReportSlice";
 
 const AdminReportCard = ({report}) => {
+    console.log("AdminReportCard",report);
 
     const [displayImages, setDisplayImages] = useState(report.media || []);
     const dispatch = useDispatch();
-    function OpenEditReport(e){
+    const user = useSelector(state => state.user);
+
+
+    function OpenEditReport(e,id){
         e.preventDefault();
        dispatch(addReport(report));
-        var x = document.getElementById("aer11-EditReport-wrap");
+       
+        var x = document.getElementById(id);
         console.log(x);
         if(x && x.classList.contains("Hide")){
             x.classList.remove("Hide");
@@ -63,7 +68,13 @@ const AdminReportCard = ({report}) => {
                             </div>
                             <div className="carc-left-edit-wrap"
                             onClick={(e)=>{
-                                OpenEditReport(e);
+                                if(user._id) {
+                                    OpenEditReport(e,"pua15-editReport-wrap");
+                                 }
+                                 else{
+                                    
+                                    OpenEditReport(e,"aer11-EditReport-wrap")
+                                 }
                            }}
                             >
                                  E

@@ -98,7 +98,6 @@ const UserReports = () => {
                     counter++;
                     map.set(words[i],words[i]);
                     break;
-
                 }
                 }
                 }
@@ -138,26 +137,26 @@ const UserReports = () => {
                     text: "Your Claim has been Submitted Successfully",
                     style: {
                         color: 'green',
-                        fontSize:'20px',
+                        fontSize:'30px',
                     }
                 },
                 {
                     text : ` An email contating the response details and further instructions has been sent to your email address + ${user.email}`,
                     style: {
                         color: 'black',
-                        fontSize:'12px',
+                        fontSize:'16px',
                     }
                 },
                 {
                     text: " The Custodians will verify your Claim and you will then receive an email shortly",
                     style : {
                         color: 'black',
-                        fontSize:'16px',
+                        fontSize:'25px',
                     }
                 }
             
             ];
-            dispatch(addRawData(options));
+            dispatch(addRawData({options: options}));
             }
         }
         else if(currentTask.progress === "begun"){

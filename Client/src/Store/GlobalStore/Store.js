@@ -5,13 +5,16 @@ import ReportReducer from '../Slices/ReportSlice/ReportSlice.js'
 import RouterReducer from "../Slices/RouterSlice/RouterSlice.js";
 import TaskReducer from "../Slices/TaskSlice/TaskSlice.js";
 import RawData from "../RawData/RawData.js";
+import AdminSlice from "../Slices/UserSlice/AdminSlice.js";
 const store = configureStore({
     reducer: {
         user : userReducer,
+        admin : AdminSlice,
         report : ReportReducer,
         router : RouterReducer,
         task : TaskReducer,
         rawData : RawData,
+
     }
 });
 

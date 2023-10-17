@@ -35,6 +35,19 @@ claimRouter.post('/addClaim', async (req,response)=>{
 })
 
 
+claimRouter.get(`/getManyClaims/:userId`, async (req,response)=>{
+
+    try{
+        console.log("get many claims fired",req.params);
+        const claims = await ClaimSchema.find({userId : req.params.userId});
+        console.log("fetched claims",claims);
+        return response.status(200).send(claims);
+    }
+    catch(err){
+        console.log("error fetching claims",err.message);
+        return response.status(500).send(err.message);
+    }
+})
 
 
 

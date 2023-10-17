@@ -12,7 +12,7 @@ authRouter.post('/SignUp', async (req,response)=>{
     //validate using joi
 
     try{
-     const existsResponse = await userExists(req);
+     const existsResponse = await userExists(req.body.user);
      const exists = existsResponse.message;
 
      if(exists==="true"){
@@ -23,19 +23,24 @@ authRouter.post('/SignUp', async (req,response)=>{
       console.log("Error in userExists");
       return response.status(400).send("Error in userExists");
      }
-     const x = await SignUp(req);
-     if(x.message==="success"){
-      console.log("Account Created Successfully");
-      return response.status(200).send({
-        message : "Account Created Successfully",
-        user: x.user,
-        token : fetchToken(req.body.email)
-      });
+     else if(exists === "false"){
+      console.log("Reponse from userExists",exists);
+      const x = await SignUp(req);
+      if(x.message==="success"){
+        console.log("Account Created Successfully");
+        return response.status(200).send({
+          message : "Account Created Successfully",
+          user: x.user,
+          token : fetchToken(req.body.user.email.toLowerCase())
+        });
+       }
+       else{
+        console.log("Error in SignUp");
+        return response.status(400).send("Error in SignUp");
+       }
      }
-     else{
-      console.log("Error in SignUp");
-      return response.status(400).send("Error in SignUp");
-     }
+    
+     
      
 }
 catch(err){
@@ -45,6 +50,7 @@ catch(err){
 })
 
 authRouter.get("/TokenValidate", async (req, response) => {
+  try{
     console.log("TokenValidate Called->");
   console.log(req.headers);
     const HeaderToken = req.headers["authorization"];
@@ -54,9 +60,10 @@ authRouter.get("/TokenValidate", async (req, response) => {
      const x =  jwt.verify(Token, process.env.RefreshToken);
      if(x){
         console.log("Token Validated",x);
-        const xy = x.UserName || x.email;
+        var xy = x.UserName || x.email;
+        xy = xy.toLowerCase();
         console.log("xy",xy);
-        const y = await userExists({body: {email :  xy}});
+        const y = await userExists({email :  xy});
         if(y) {
           console.log("userExists reponse=>>> ",y);
         return response.status(200).send(
@@ -71,9 +78,13 @@ authRouter.get("/TokenValidate", async (req, response) => {
       }
      }
      else{
-      console.log("Token Not Validated");
+      console.log("Token Not Validated",x);
       return response.status(400).send("Token Not Validated");
      }
+    }
+    catch(err){
+      console.log("Error in Try while validating Token",err);
+    }
   });
 
   
@@ -83,7 +94,7 @@ function fetchToken(email) {
 
   authRouter.get("/:UserType/RefreshToken", async (req, res) => {
     const UserType = req.params.UserType;
-    const UserName = req.body.email;
+    const UserName = req.body.email.toLowerCase();
 
     const AccessToken = fetchToken({ UserName });
     res.status(202).json({ AccessToken: AccessToken });
@@ -96,7 +107,7 @@ function fetchToken(email) {
         var exists =false;
           try{
             console.log("Login tried for admin",req.body);
-            await adminSchema.findOne({ email: req.body.email },{ password:1  })
+            await adminSchema.findOne({ email: req.body.email.toLowerCase() },{ password:1  })
             .then(res=>{
                 console.log("Admin Log in response => ",res);
                 if(res){
@@ -111,7 +122,7 @@ function fetchToken(email) {
             if(exists){
                 if(password === req.body.password){
                     console.log("User Successfully logged in")
-                    const AccessToken = fetchToken(req.body.email);
+                    const AccessToken = fetchToken(req.body.email.toLowerCase());
                     response.status(200).send({message : "Logined in", AccessToekn : AccessToken});
             }
             else{
@@ -126,13 +137,14 @@ function fetchToken(email) {
     else{
     console.log("Login tried for user",req.body);
     try{
+      
     const x = await userExists(req);
     
     if(x.message==="true" && x.user.password){
       const password = x.user.password;
         if(password === req.body.password){
             console.log("User Successfully logged in")
-            const AccessToken = fetchToken(req.body.email);
+            const AccessToken = fetchToken(req.body.email.toLowerCase());
             response.status(200).send({message : "Logined in", AccessToken : AccessToken
             ,user : x.user
           

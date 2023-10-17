@@ -20,19 +20,19 @@ import { removeUser } from './Store/Slices/UserSlice/UserSlice';
 
 function App() {
 
-  const userSigned = useSelector(state => state.user.userId);
+  const user = useSelector(state => state.user);
   const dispatch = useDispatch();
   
 
   
 
   
-  console.log("User SIgned?",userSigned);
+  console.log("User SIgned?",user.userId);
   console.log(useSelector(state=>state.user))
   return (
     <div className="App-Wrap">
        <Router>
-      <div className={"app-nav-main-wrap" + (userSigned? "" : "") }>
+      <div className={"app-nav-main-wrap" + (user.userId? "" : "") }>
      {/* { userSigned?
       <NavBar /> : null
      } */}
@@ -89,7 +89,9 @@ function App() {
      {/* <div className='App-FooterWrap'>
      <FOoterStand/>
      </div> */}
-     <AddReport />
+     <AddReport 
+      user={user}
+     />
      {/* <div className="OpaqueBackGround-fullscreen OpaqueBefore"></div> */}
      </div>
      </div>

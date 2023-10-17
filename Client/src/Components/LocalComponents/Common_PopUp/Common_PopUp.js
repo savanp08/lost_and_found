@@ -5,16 +5,12 @@ import { useSelector } from "react-redux";
 
 const Common_PopUp = ({params}) => {
 
-    const raw_data = useSelector((state) => state.rawData) || [];
-    const [ data , setData ] =  useState([]);
+    const data = useSelector(state => state.rawData.options) || [];
+    
+    console.log("popup debug =>> data=>",data);
 
 
-
-    useEffect(()=>{
-        if(Array.isArray(raw_data)){
-            setData(raw_data);
-        }
-    },[raw_data])
+   
 
     return(
         <div className="c_p14-main-wrap">
@@ -25,12 +21,13 @@ const Common_PopUp = ({params}) => {
             >
                 X
             </div>
-            AAAAAAAAAAAAAAAA
+            
             {
                 data.map((option,key)=>{
+                    console.log("popup debug =>> ",option);
                     return(
                         <span className="c_p14-child-wrap"
-                        sx={{
+                        style={{
                             ...option.style
                         }}
                         >

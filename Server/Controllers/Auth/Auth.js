@@ -3,9 +3,12 @@ import userSchema from "../../Schemas/UserSchema.js";
 
 async function SignUp(req) {
     try {
+        console.log("In function SignUp => Account creation requested for ", req.body);
         const user = new userSchema({
             ...req.body.user,
             password: req.body.password,
+            email : req.body.user.email.toLowerCase(),
+            UniqueId : req.body.user.UniqueId.toLowerCase(),
         });
         
         console.log("In function SignUp => Account creation requested for ");
@@ -28,9 +31,11 @@ async function SignUp(req) {
 
 
 async function userExists(req) {
-    console.log("In method userExists => Checking if user exists", req.body);
+    console.log("In method userExists => Checking if user exists", req);
+
     try {
-        const res = await userSchema.findOne({ email: req.body.email });
+        console.log("Searching for user with email", req.email); 
+        const res = await userSchema.findOne({ email: req.email.toLowerCase() });
 
         
 

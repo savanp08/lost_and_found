@@ -1,0 +1,26 @@
+.c_p14-main-wrap{
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-around;
+    align-items: center;
+   position: relative;
+   padding: 10px;
+   min-height: 400px;
+}
+
+.c_p14-close-btn-wrap{
+    position: absolute;
+    right: 0px;
+    top:1px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.c_p14-child-wrap{
+    width: 85%;
+    text-align: center;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 400;
+}

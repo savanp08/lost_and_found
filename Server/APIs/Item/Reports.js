@@ -266,6 +266,21 @@ reportRouter.post('/addReport', multerUpload.fields([{
     } 
   })
 
+  //get Many Reports by userId
+    
+  reportRouter.get("/getManyReports/:userId", async (req,response)=>{
+    try{
+        console.log("Get many reports fired for user",req.params.userId);
+        const manyReports = await FoundReportSchema.find({userId : req.params.userId});
+        console.log("Many reports => ",manyReports);
+        return response.status(200).send(manyReports);
+    }
+    catch(err){
+        console.log("Error in getting many reports",err);
+        return response.status(400).send(err);
+    }
+   })
+
   // get one report by id
 
   reportRouter.get("/getOneReport/:id", async (req,response)=>{
