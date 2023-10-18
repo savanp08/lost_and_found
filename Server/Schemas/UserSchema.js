@@ -129,11 +129,9 @@ const userSchemaX = new mongoose.Schema({
             type: Number,
             default: 0,
         },
-        itemIds:{
-            required: false,
-            type: [],
-            default: [],
-        },
+        reportIds:[{
+            type:mongoose.Types.ObjectId,
+        }],
     },
     searches: {
         count: {
@@ -141,23 +139,22 @@ const userSchemaX = new mongoose.Schema({
             type: Number,
             default: 0,
         },
-        searchIds:{
-            required: false,
-            type: [],
-            default: [],
-        },
+        searchIds:[{
+            type:mongoose.Types.ObjectId,
+        }],
     },
-    Claims: {
+    claims: {
         count: {
             required: false,
             type: Number,
             default: 0,
         },
-        claimIds:{
-            required: false,
-            type: [],
-            default: [],
-        },
+        claimIds:[{
+            type:mongoose.Types.ObjectId,
+        }],
+        reportIds:[{
+            type:mongoose.Types.ObjectId,
+        }]
     }
 },{timestamps: true});
 

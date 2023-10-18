@@ -47,7 +47,7 @@ const UserReports = () => {
         //  navigate("/Login");
         }
     }
-    authVerify();
+    // authVerify();
     
    },[])
 
@@ -154,6 +154,22 @@ const UserReports = () => {
                         fontSize:'25px',
                     }
                 }
+            
+            ];
+            dispatch(addRawData({options: options}));
+            }
+            else if(currentTask.status === "failed"){
+
+                open_div("ur11-claim-confirmation-main-wrap");
+                dispatch(removeTask());
+                var options = [{
+                    text: currentTask.message,
+                    style: {
+                        color: 'black',
+                        fontSize:'30px',
+                    }
+                },
+                
             
             ];
             dispatch(addRawData({options: options}));

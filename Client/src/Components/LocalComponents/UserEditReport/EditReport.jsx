@@ -12,7 +12,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import CustomColors from "../../Data/Options";
 import Close from '@mui/icons-material/Close';
 import axios from 'axios';
-import { ItemTypes } from "../../Data/Options"
+import { ItemTypes } from "../../Data/Options";
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 
 const EditReport = () => {
@@ -140,7 +140,7 @@ function closeForm(){
               <Select
                 labelId="demo-simple-select-label"
                 id="report-reporterType"
-                value={Item.reporterType}
+                value={Item.reporterType || ""}
                 label="Is It Yours"
                 onChange={(e) => {
                   
@@ -176,10 +176,8 @@ function closeForm(){
        
         id="tags-standard"
         options={ItemTypes}
-        getOptionLabel={(option) => {
-            console.log(option);
-            return option.label }}
-        value={Item.itemDetails.common_type}
+        getOptionLabel={(option) => option.label || ""}
+        value={Item.itemDetails.common_type || ""} 
         limitTags={3}
         onChange={(e,value)=>{
             console.log("ssssss =>",e.target.value)
@@ -233,7 +231,7 @@ function closeForm(){
                     label="Item Name"
                     placeholder="Item Name"
                     variant="outlined"
-                    value={Item.itemDetails.customItemName}
+                    value={Item.itemDetails.customItemName || ""}
                     required
                     sx={{
                       minWidth: "230px",
@@ -328,7 +326,7 @@ function closeForm(){
                   <TextField
                     id="report-item-description"
                     label="Describe in Detail"
-                    value={Item.itemDetails.description}
+                    value={Item.itemDetails.description || ""}
                     variant="outlined"
                     required
                     onChange={(e)=>{
@@ -342,12 +340,13 @@ function closeForm(){
                   }}
                     multiline
                     maxRows={10}
+                    minRows={3}
                     sx={{
                       width:'100%',
                       minWidth: "230px",
                       minHeight:'100px',
                     }}
-                    minRows={3}
+                   
                   />
                 </div>
               </div>
@@ -362,7 +361,8 @@ function closeForm(){
                     id="report-item-location-all-possible-places"
                     label="All possible Places"
                     variant="outlined"
-                    value={Item.itemDetails.location.allPlacesPossible}
+
+                    value={Item.itemDetails.location.allPlacesPossible || []}
                     sx={{
                       minWidth: "230px",
                     }}
@@ -373,6 +373,7 @@ function closeForm(){
                     id="report-item-location-bullding-details"
                     label="building Details"
                     variant="outlined"
+                    value={Item.itemDetails.location.buildingDetails || ""}
                     sx={{
                       minWidth: "230px",
                     }}
@@ -396,8 +397,9 @@ function closeForm(){
                     id="report-item-location-all-possible-places"
                     label="university"
                     variant="outlined"
+                    value={Item.itemDetails.location.university || ""}
                     required
-                    value={Item.itemDetails.location.university}
+                    
                     sx={{
                       minWidth: "230px",
                     }}
@@ -421,7 +423,7 @@ function closeForm(){
                     id="report-item-location-street"
                     label="Street"
                     variant="outlined"
-                    value={Item.itemDetails.location.street}
+                    value={Item.itemDetails.location.street || ""}
                     required
                     sx={{
                       minWidth: "230px",
@@ -446,7 +448,7 @@ function closeForm(){
                     id="report-item-location-apartment"
                     label="Apartment"
                     variant="outlined"
-                    value={Item.itemDetails.location.apartment}
+                    value={Item.itemDetails.location.apartment || ""}
                     sx={{
                       minWidth: "230px",
                     }}
@@ -470,7 +472,7 @@ function closeForm(){
                     label="City"
                     variant="outlined"
                     required
-                    value={Item.itemDetails.location.city}
+                    value={Item.itemDetails.location.city || ""}
                     sx={{
                       minWidth: "230px",
                     }}
@@ -496,7 +498,7 @@ function closeForm(){
                     label="State"
                     variant="outlined"
                     required
-                    value={Item.itemDetails.location.state}
+                    value={Item.itemDetails.location.state || ""}
                     sx={{
                       minWidth: "230px",
                     }}
@@ -522,7 +524,7 @@ function closeForm(){
                     label="Pin Code"
                     variant="outlined"
                     required
-                    value={Item.itemDetails.location.pinCode}
+                    value={Item.itemDetails.location.pinCode || ""}
                     sx={{
                       minWidth: "230px",
                     }}

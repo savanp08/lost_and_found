@@ -103,7 +103,13 @@ const FoundReportSchemaX = new mongoose.Schema({
             }
         },
         claims:{
-            claimIds:[]
+            claimIds:[{
+                type:mongoose.Types.ObjectId,
+                
+            }],
+            userIds:[{
+                type: String,
+            }]
         },
         found:{
             status:{

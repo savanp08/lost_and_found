@@ -57,14 +57,21 @@ authRouter.get("/TokenValidate", async (req, response) => {
     const Token = HeaderToken && HeaderToken.split(" ")[1];
     console.log("This is Acquired Token->");
     console.log(Token);
-     const x =  jwt.verify(Token, process.env.RefreshToken);
+    var x = null;
+    try{
+      x =  jwt.verify(Token, process.env.RefreshToken);
+    }
+    catch(err){
+
+    }
+     
      if(x){
         console.log("Token Validated",x);
         var xy = x.UserName || x.email;
         xy = xy.toLowerCase();
         console.log("xy",xy);
         const y = await userExists({email :  xy});
-        if(y) {
+        if(y.user) {
           console.log("userExists reponse=>>> ",y);
         return response.status(200).send(
           {
@@ -74,16 +81,20 @@ authRouter.get("/TokenValidate", async (req, response) => {
           );
       }
       else{
-        return response.status(400).send("Token Not Validated");
+        return response.status(403).send("Token Not Validated");
       }
      }
      else{
       console.log("Token Not Validated",x);
-      return response.status(400).send("Token Not Validated");
+      return response.status(403).send("Token Not Validated");
      }
     }
     catch(err){
       console.log("Error in Try while validating Token",err);
+      return response.status(403).send({
+        message: null,
+        user:null
+      });
     }
   });
 
@@ -123,7 +134,10 @@ function fetchToken(email) {
                 if(password === req.body.password){
                     console.log("User Successfully logged in")
                     const AccessToken = fetchToken(req.body.email.toLowerCase());
-                    response.status(200).send({message : "Logined in", AccessToekn : AccessToken});
+                    const adminResponse = await adminSchema.findOne({ email: req.body.email.toLowerCase() });
+                    if(adminResponse)
+                    return response.status(200).send({message : "Logined in", AccessToken : AccessToken,admin : adminResponse });
+                  else return response.status(500).send("Error in fetching admin");
             }
             else{
                 console.log("Password Wrong");
@@ -138,9 +152,9 @@ function fetchToken(email) {
     console.log("Login tried for user",req.body);
     try{
       
-    const x = await userExists(req);
+    const x = await userExists(req.body);
     
-    if(x.message==="true" && x.user.password){
+    if(x.message==="true" && x.user){
       const password = x.user.password;
         if(password === req.body.password){
             console.log("User Successfully logged in")
@@ -153,8 +167,12 @@ function fetchToken(email) {
     }
     else{
         console.log("Password Wrong");
-        response.status(500).send("Incorrect Password");
+        response.status(500).send("Incorrect Credentials");
     }
+    }
+    else{
+        console.log("User Does Not Exists");
+        response.status(500).send("Account Does Not Exists");
     }
 }
     catch(err){

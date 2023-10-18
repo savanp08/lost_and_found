@@ -8,6 +8,7 @@ import dotenv from 'dotenv';
 import fs from 'fs';
 import multerUpload from '../../MiddleWares/MulterUpload.js';
 import cloudinary from '../../EndWares/Cloudinary.js';
+import { addDefaultClaim, addToReport, addToUser } from '../../Controllers/Claims/Claims.js';
 
 const reportRouter  = express.Router();
 
@@ -29,7 +30,7 @@ const reportRouter  = express.Router();
                 reject(error);
             }
             else{
-                console.log("Uploaded Each Image to cloudinary",result);
+                console.log("Uploaded Each Image to cloudinary",result.secure_url);
                 resolve(result);
             }
               console.log(error, result);
@@ -63,24 +64,16 @@ reportRouter.post('/addReport', multerUpload.fields([{
     try{
         
         var xx=JSON.parse(req.body.report);
-        var yy=req.files["image"];
-        var zz=req.files["ItemImage"] || [];
-        console.log("zz => ",zz);
-        console.log("yy => ",yy);
-        const addMediaResponse = await addMediaToCloudinary(yy);
-        var ItemMedia = [];
-        if(zz.length > 0){
-          ItemMedia = await addMediaToCloudinary(zz);
-        }
-        console.log("addMediaResponse => ",addMediaResponse);
+        
+       
         console.log("Found report addition fired",xx);
        
         var newReport  = new FoundReportSchema({
             ...xx, 
+            reportId : new mongoose.Types.ObjectId(),
         })
-        newReport.reportId = new mongoose.Types.ObjectId();
-        newReport.itemDetails.location.media = addMediaResponse;
-       
+        
+        
         const joiSchema = Joi.object({
             reporterName : Joi.object({
                 firstName :   Joi.string()
@@ -136,16 +129,74 @@ reportRouter.post('/addReport', multerUpload.fields([{
             reporterType : Joi.string().max(10).required(),
         });
 
+       
+        var yy=req.files["image"];
+        var zz=req.files["ItemImage"] || [];
+        console.log("zz => ",zz);
+        console.log("yy => ",yy);
+        const addMediaResponse = await addMediaToCloudinary(yy);
+        var ItemMedia = [];
+        if(zz.length > 0){
+          ItemMedia = await addMediaToCloudinary(zz);
+        }
+        console.log("addMediaResponse => ",addMediaResponse);
+        newReport.itemDetails.location.media = addMediaResponse;
+
         const { value, error } = joiSchema.validate(newReport);
         console.log("Validation result =>", value, "  error =>",error);
+        var reportSave = null;
+              try{
+          reportSave = await newReport.save();
+    }
+    catch(err){
+        console.log("erorr4 in Found rport addition ", err);
+        return response.status(400).send(err.message);
+    }
+          if(reportSave){
+            console.log("New Found Report Saved",reportSave);
+            const addClaim = await addDefaultClaim(reportSave);
 
-        newReport.save().then(res=>{
-            console.log("New Found Report Saved",res);
-            response.status(200).send(res);
-        }).catch(err=>{
-            console.log("Error found while saving Found Report",err.message);
-            response.status(400).send(err.message);
-        })
+            if(addClaim.message){
+             console.log("Successfully added default claim to the report",addClaim.claim);
+             var addtouser = null;
+             try{
+                 addtouser = await addToUser(addClaim.claim);
+             }
+             catch(err){
+                 console.log("Error in catch1 while adding claim to user",err);
+                 return response.status(400).send(err);
+             }
+             if(addtouser.err){
+                 console.log("Error while adding claim to user",addtouser.err);
+                 return response.status(400).send(addtouser.err);
+             }
+             var addtoreport = null;
+             try{
+                 addtoreport = await addToReport(addClaim.claim);
+     
+             }
+             catch(err){
+                 console.log("Error in catch2 while adding claim to report",err);
+                 return response.status(400).send(err);
+             }
+             if(addtoreport.error){
+                 console.log("Error while adding claim to report",addtoreport.err);
+                 return response.status(400).send(addtoreport.error);
+             }
+             else{
+                    console.log("Successfully added claim to report",addtoreport);
+                    return response.status(200).send(reportSave);
+             }
+            }
+            else {
+                console.log("Error10 while adding default claim to the report",addClaim.message);
+                return response.status(400).send(addClaim.message); }
+     
+        }
+        else{
+            console.log("Error 6 found while saving Found Report",err.message);
+            return response.status(400).send(err.message);
+        }
     }
     catch(err){
         console.log("erorr in Found rport addition ", err);

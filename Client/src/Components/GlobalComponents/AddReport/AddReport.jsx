@@ -28,9 +28,13 @@ const AddReport = ({params}) => {
   const [reporterType, setReporterType] = useState("");
   const [Item, setItem] = useState({
     reporterId: null,
-    userId:user.userId,
-    reporterName:
-      user.Name.FirstName + user.Name.MiddleName + user.Name.LastName,
+    userId:user._id,
+    reporterName:{
+         firstName : user.Name.firstName,
+         middleName : user.Name.middleName,
+          lastName : user.Name.lastName,
+    },
+      
     itemDetails: {
       common_type: null,
       colors: [],
@@ -90,7 +94,7 @@ const AddReport = ({params}) => {
     
     formData.append('report', JSON.stringify({
       ...Item,
-      userId : user.userId,
+      userId : user._id,
     }));
     console.log("files =>",files)
 
@@ -162,16 +166,20 @@ function closeForm(){
               <Select
                 labelId="demo-simple-select-label"
                 id="report-reporterType"
-                value={Item.reporterType}
+                value={Item.reporterType || ""}
                 label="Is It Yours"
                 onChange={(e) => {
                   
-                 
+                 const x = e.target.value === "User" ? user.userId : null;
                     setItem({
                       ...Item,
                       reporterName : {...user.Name},
                       reporterId : user.reporterId,
                       reporterType : e.target.value,
+                      claims : {
+                        ...Item.claims,
+                        userIds : e.target.value==="User"? [user.userId] : []
+                      }
                     })
                   
                 }}
@@ -198,8 +206,7 @@ function closeForm(){
        
         id="tags-standard"
         options={ItemTypes}
-        
-        
+        value={Item.itemDetails.common_type || ""}
         limitTags={3}
         onChange={(e,values)=>{
           setItem({
@@ -250,6 +257,7 @@ function closeForm(){
                     id="report-item-name-Name"
                     label="Name The Item"
                     variant="outlined"
+                    value={Item.itemDetails.customItemName || ""}
                     required
                     sx={{
                       minWidth: "230px",
@@ -280,7 +288,7 @@ function closeForm(){
         id="tags-standard"
         options={CustomColors}
         disableCloseOnSelect
-        
+        value={Item.itemDetails.colors || []}
         limitTags={3}
         onChange={(e,values)=>{
           setItem({
@@ -349,6 +357,7 @@ function closeForm(){
                     label="Describe in Detail"
                     variant="outlined"
                     required
+                    value={Item.itemDetails.description || ""}
                     onChange={(e)=>{
                       setItem({
                         ...Item,
@@ -381,7 +390,7 @@ function closeForm(){
                     id="report-item-location-all-possible-places"
                     label="All possible Places"
                     variant="outlined"
-                    
+                    value={Item.itemDetails.location.allPlacesPossible || []}
                     sx={{
                       minWidth: "230px",
                     }}
@@ -392,7 +401,7 @@ function closeForm(){
                     id="report-item-location-bullding-details"
                     label="building Details"
                     variant="outlined"
-                    
+                    value={Item.itemDetails.location.buildingDetails || ""}
                     sx={{
                       minWidth: "230px",
                     }}
@@ -413,11 +422,11 @@ function closeForm(){
                 </div>
                 <div className="ar11-item-location-box univeristy">
                 <TextField
-                    id="report-item-location-all-possible-places"
+                    id="report-item-location-university"
                     label="university"
                     variant="outlined"
                     required
-
+                    value={Item.itemDetails.location.university || ""}
                     sx={{
                       minWidth: "230px",
                     }}
@@ -441,6 +450,7 @@ function closeForm(){
                     id="report-item-location-street"
                     label="Street"
                     variant="outlined"
+                    value={Item.itemDetails.location.street || ""}
                     required
                     sx={{
                       minWidth: "230px",
@@ -466,7 +476,7 @@ function closeForm(){
                     id="report-item-location-apartment"
                     label="Apartment"
                     variant="outlined"
-                    
+                    value={Item.itemDetails.location.apartment || ""}
                     sx={{
                       minWidth: "230px",
                     }}
@@ -492,7 +502,7 @@ function closeForm(){
                     label="City"
                     variant="outlined"
                     required
-
+                    value={Item.itemDetails.location.city || ""}
                     sx={{
                       minWidth: "230px",
                     }}
@@ -518,7 +528,7 @@ function closeForm(){
                     label="State"
                     variant="outlined"
                     required
-
+                    value={Item.itemDetails.location.state || ""}
                     sx={{
                       minWidth: "230px",
                     }}
@@ -544,7 +554,7 @@ function closeForm(){
                     label="Pin Code"
                     variant="outlined"
                     required
-
+                    value={Item.itemDetails.location.pinCode || ""}
                     sx={{
                       minWidth: "230px",
                     }}

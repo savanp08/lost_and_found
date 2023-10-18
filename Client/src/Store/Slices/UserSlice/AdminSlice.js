@@ -18,8 +18,7 @@ const adminSlice = createSlice({
     name : 'admin',
     initialState,
     reducers:{
-        addUAdmin
-         : (state, action) => {
+        addAdmin : (state, action) => {
              return action.payload;
         },
         getAdmin : (state,action) => {

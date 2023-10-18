@@ -23,6 +23,7 @@ const AuthFunctions = async () => {
          return await verifyToken();
         }
         async function verifyToken(){
+          try{
            const Response =  await axios.get('/Auth/TokenValidate', {headers:{"authorization" : `Bearer ${token}`  }})
            
             if(Response.data.message === "Token Validated")
@@ -38,6 +39,12 @@ const AuthFunctions = async () => {
              console.log("Auth Debug => Token Not Verified", Response.data);
               return res;
             }
+          }
+          catch(err){
+            console.log("Auth Debug => In verify token try catch token verification throwed error", err);
+            return res;
+          }
+            console.log("Auth Debug => Token Verification Failed", Response.data);
           
        
         }

@@ -1,14 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AdminChats from "../../../Components/Children/AdminChats/AdminChats";
 import AdminClaims from "../../../Components/Children/AdminClaims/AdminClaims";
 import AdminFoundReports from "../../../Components/Children/AdminFoundReports/AdminFoundReports";
 import AdminReports from "../../../Components/Children/AdminReports/AdminReports";
 import './Admin.scss';
+import { addAdmin } from "../../../Store/Slices/UserSlice/AdminSlice";
+import AuthFunctions from "../../../Handlers/Auth";
+import { useNavigate } from "react-router-dom";
 
 const Admin = () => {
   const dispatch = useDispatch();
   const user = useSelector(state=> state.user);
+  const admin = useSelector(state=> state.admin);
+  const navigate = useNavigate();
+
+  useEffect(()=>{
+    if(admin._id){
+      console.log("Admin already logged in",admin);
+    }
+    else{
+      navigate("/AdminLoginX86109110213");
+    }
+    
+   },[])
 
   return(
     <div className="aa-AdminWrap">

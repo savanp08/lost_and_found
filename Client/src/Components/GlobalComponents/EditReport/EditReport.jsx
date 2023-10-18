@@ -12,7 +12,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import CustomColors from "../../Data/Options";
 import Close from '@mui/icons-material/Close';
 import axios from 'axios';
-import { ItemTypes } from "../../Data/Options"
+import { ItemTypes } from "../../Data/Options";
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 
 const EditReport = () => {
@@ -23,7 +23,7 @@ const EditReport = () => {
   const [Item, setItem] = useState({
     reporterId: null,
     reporterName:
-      user.Name.FirstName + user.Name.MiddleName + user.Name.LastName,
+      user.Name.firstName + user.Name.middleName + user.Name.lastName,
     itemDetails: {
       common_type: null,
       colors: [],
@@ -67,7 +67,7 @@ const EditReport = () => {
   async function SubmitForm(){
     
   
-    var files = document.getElementById("aer11-item-location-media-input").files;
+    var files = document.getElementById("lcuer16-item-location-media-input").files;
     const formData = new FormData();
     formData.append('report', JSON.stringify(Item));
     console.log("files =>",files)
@@ -96,7 +96,7 @@ const EditReport = () => {
   }
 
 function closeForm(){
-  var x = document.getElementById("aer11-EditReport-wrap");
+  var x = document.getElementById("lcuer16-EditReport-wrap");
    if(x.classList.contains("Add-EditReport-After"))
    {
     x.classList.remove("Add-EditReport-After");
@@ -106,12 +106,12 @@ function closeForm(){
 }
 
   return (
-    <div className="aer11-EditReport-wrap Hide"
-        id="aer11-EditReport-wrap"
+    <div className="lcuer16-EditReport-wrap Hide"
+        id="lcuer16-EditReport-wrap"
     >
-      <div className="aer11-inner-wrap">
-        <div className="aer11-close-wrap"
-        id="aer11-close-wrap"
+      <div className="lcuer16-inner-wrap">
+        <div className="lcuer16-close-wrap"
+        id="lcuer16-close-wrap"
         onClick={(e)=>{
           e.preventDefault();
           closeForm();
@@ -119,20 +119,20 @@ function closeForm(){
         >
           X
         </div>
-        <div className="aer11-h-wrap">
-          <div className="aer11-h-title-wrap">
-            <span className="aer11-h-title-text">Edit Report</span>
+        <div className="lcuer16-h-wrap">
+          <div className="lcuer16-h-title-wrap">
+            <span className="lcuer16-h-title-text">Edit Report</span>
           </div>
         </div>
-        <div className="aer11-content-wrap">
-          <div className="aer11-content-inner-wrap">
-            <div className="aer11-item-wrap">
-            <fieldset className="aer11-item-label-wrap">
-        <legend className="aer11-item-legend">
+        <div className="lcuer16-content-wrap">
+          <div className="lcuer16-content-inner-wrap">
+            <div className="lcuer16-item-wrap">
+            <fieldset className="lcuer16-item-label-wrap">
+        <legend className="lcuer16-item-legend">
                   Ownership
                 </legend>
-        <div className="aer11-ownership-wrap">
-          <div className="aer11-ownership-selct-wrap">
+        <div className="lcuer16-ownership-wrap">
+          <div className="lcuer16-ownership-selct-wrap">
             <FormControl fullWidth>
               <InputLabel id="demo-simple-select-label">
                 Is the Item Yours
@@ -140,7 +140,7 @@ function closeForm(){
               <Select
                 labelId="demo-simple-select-label"
                 id="report-reporterType"
-                value={Item.reporterType}
+                value={Item.reporterType || ""}
                 label="Is It Yours"
                 onChange={(e) => {
                   
@@ -164,22 +164,20 @@ function closeForm(){
               </Select>
             </FormControl>
           </div>
-          <span className="aer11-item-ownership-text">
+          <span className="lcuer16-item-ownership-text">
             Select Yes only if u have permission from the actual owner to represent this property
           </span>
         </div>
         </fieldset>
-                <fieldset className="aer11-item-label-wrap">
-                    <legend className="aer11-item-legend">Type</legend>
-              <div className="aer11-item-type-wrap aer11-common-textField-wrap">
+                <fieldset className="lcuer16-item-label-wrap">
+                    <legend className="lcuer16-item-legend">Type</legend>
+              <div className="lcuer16-item-type-wrap lcuer16-common-textField-wrap">
               <Autocomplete
        
         id="tags-standard"
         options={ItemTypes}
-        getOptionLabel={(option) => {
-            console.log(option);
-            return option.label }}
-        value={Item.itemDetails.common_type}
+        getOptionLabel={(option) => option.label || ""}
+        value={Item.itemDetails.common_type || ""} 
         limitTags={3}
         onChange={(e,value)=>{
             console.log("ssssss =>",e.target.value)
@@ -222,18 +220,18 @@ function closeForm(){
       />
               </div>
               </fieldset>
-              <fieldset className="aer11-item-label-wrap">
-                <legend className="aer11-item-legend"> 
+              <fieldset className="lcuer16-item-label-wrap">
+                <legend className="lcuer16-item-legend"> 
                 Item Name
                 </legend>
-              <div className="aer11-item-name-wrap">
-                <div className="aer11-item-name-firstName-wrap">
+              <div className="lcuer16-item-name-wrap">
+                <div className="lcuer16-item-name-firstName-wrap">
                   <TextField
                     id="report-item-name-Name"
                     label="Item Name"
                     placeholder="Item Name"
                     variant="outlined"
-                    value={Item.itemDetails.customItemName}
+                    value={Item.itemDetails.customItemName || ""}
                     required
                     sx={{
                       minWidth: "230px",
@@ -252,12 +250,12 @@ function closeForm(){
                 </div>
               </div>
               </fieldset>
-              <fieldset className="aer11-item-label-wrap">
-                <legend className="aer11-item-legend">
+              <fieldset className="lcuer16-item-label-wrap">
+                <legend className="lcuer16-item-legend">
                   Item Color
                 </legend>
 
-              <div className="aer11-item-color-wrap">
+              <div className="lcuer16-item-color-wrap">
               
       <Autocomplete
         multiple
@@ -303,11 +301,11 @@ function closeForm(){
           );
         } }
       />
-                <div className="aer11-item-color-depictor-wrap">
+                <div className="lcuer16-item-color-depictor-wrap">
                   {/* {
                   Item.colors.map((key,color)=>{
                     return(
-                      <div className="aer11-item-color-depictor-singleColor"
+                      <div className="lcuer16-item-color-depictor-singleColor"
                       style={{
                         
                       }}
@@ -319,16 +317,16 @@ function closeForm(){
                 </div>
               </div>
               </fieldset>
-              <fieldset className="aer11-item-label-wrap label-description-wrap">
-              <legend className="aer11-item-legend">
+              <fieldset className="lcuer16-item-label-wrap label-description-wrap">
+              <legend className="lcuer16-item-legend">
                   Item Description
                 </legend>
-              <div className="aer11-item-description-wrap">
-                <div className="aer11-item-description">
+              <div className="lcuer16-item-description-wrap">
+                <div className="lcuer16-item-description">
                   <TextField
                     id="report-item-description"
                     label="Describe in Detail"
-                    value={Item.itemDetails.description}
+                    value={Item.itemDetails.description || ""}
                     variant="outlined"
                     required
                     onChange={(e)=>{
@@ -342,37 +340,40 @@ function closeForm(){
                   }}
                     multiline
                     maxRows={10}
+                    minRows={3}
                     sx={{
                       width:'100%',
                       minWidth: "230px",
                       minHeight:'100px',
                     }}
-                    minRows={3}
+                   
                   />
                 </div>
               </div>
               </fieldset>
-              <fieldset className="aer11-item-label-wrap">
-              <legend className="aer11-item-legend">
+              <fieldset className="lcuer16-item-label-wrap">
+              <legend className="lcuer16-item-legend">
                   Item Location
                 </legend>
-              <div className="aer11-item-location-wrap">
-                <div className="aer11-item-location-box all-possible-places">
+              <div className="lcuer16-item-location-wrap">
+                <div className="lcuer16-item-location-box all-possible-places">
                 <TextField
                     id="report-item-location-all-possible-places"
                     label="All possible Places"
                     variant="outlined"
-                    value={Item.itemDetails.location.allPlacesPossible}
+
+                    value={Item.itemDetails.location.allPlacesPossible || []}
                     sx={{
                       minWidth: "230px",
                     }}
                   />
                 </div>
-                <div className="aer11-item-location-box building-details">
+                <div className="lcuer16-item-location-box building-details">
                 <TextField
                     id="report-item-location-bullding-details"
                     label="building Details"
                     variant="outlined"
+                    value={Item.itemDetails.location.buildingDetails || ""}
                     sx={{
                       minWidth: "230px",
                     }}
@@ -391,13 +392,14 @@ function closeForm(){
                   }}
                   />
                 </div>
-                <div className="aer11-item-location-box univeristy">
+                <div className="lcuer16-item-location-box univeristy">
                 <TextField
                     id="report-item-location-all-possible-places"
                     label="university"
                     variant="outlined"
+                    value={Item.itemDetails.location.university || ""}
                     required
-                    value={Item.itemDetails.location.university}
+                    
                     sx={{
                       minWidth: "230px",
                     }}
@@ -416,12 +418,12 @@ function closeForm(){
                   }}
                   />
                 </div>
-                <div className="aer11-item-location-box street">
+                <div className="lcuer16-item-location-box street">
                 <TextField
                     id="report-item-location-street"
                     label="Street"
                     variant="outlined"
-                    value={Item.itemDetails.location.street}
+                    value={Item.itemDetails.location.street || ""}
                     required
                     sx={{
                       minWidth: "230px",
@@ -441,12 +443,12 @@ function closeForm(){
                   }}
                   />
                 </div>
-                <div className="aer11-item-location-box apartment">
+                <div className="lcuer16-item-location-box apartment">
                 <TextField
                     id="report-item-location-apartment"
                     label="Apartment"
                     variant="outlined"
-                    value={Item.itemDetails.location.apartment}
+                    value={Item.itemDetails.location.apartment || ""}
                     sx={{
                       minWidth: "230px",
                     }}
@@ -464,13 +466,13 @@ function closeForm(){
                   }}
                   />
                 </div>
-                <div className="aer11-item-location-box city">
+                <div className="lcuer16-item-location-box city">
                 <TextField
                     id="report-item-location-city"
                     label="City"
                     variant="outlined"
                     required
-                    value={Item.itemDetails.location.city}
+                    value={Item.itemDetails.location.city || ""}
                     sx={{
                       minWidth: "230px",
                     }}
@@ -490,13 +492,13 @@ function closeForm(){
                   }}
                   />
                 </div>
-                <div className="aer11-item-location-box state">
+                <div className="lcuer16-item-location-box state">
                 <TextField
                     id="report-item-location-State"
                     label="State"
                     variant="outlined"
                     required
-                    value={Item.itemDetails.location.state}
+                    value={Item.itemDetails.location.state || ""}
                     sx={{
                       minWidth: "230px",
                     }}
@@ -516,13 +518,13 @@ function closeForm(){
                   }}
                   />
                 </div>
-                <div className="aer11-item-location-box pincode">
+                <div className="lcuer16-item-location-box pincode">
                 <TextField
                     id="report-item-location-pinCode"
                     label="Pin Code"
                     variant="outlined"
                     required
-                    value={Item.itemDetails.location.pinCode}
+                    value={Item.itemDetails.location.pinCode || ""}
                     sx={{
                       minWidth: "230px",
                     }}
@@ -542,23 +544,23 @@ function closeForm(){
                   }}
                   />
                 </div>
-                <fieldset className="aer11-item-label-wrap">
-                    <legend className="aer11-item-legend">
+                <fieldset className="lcuer16-item-label-wrap">
+                    <legend className="lcuer16-item-legend">
                         Media
                     </legend>
-                <div className="aer11-item-location-media">
-                    <div className="aer11-item-media-wrap">
-                      <label className="aer11-item-media" htmlFor="aer11-item-location-media-input" >
+                <div className="lcuer16-item-location-media">
+                    <div className="lcuer16-item-media-wrap">
+                      <label className="lcuer16-item-media" htmlFor="lcuer16-item-location-media-input" >
                         
-                          <input type="file" className="aer11-item-fil-icon"  
-                          id="aer11-item-location-media-input"
+                          <input type="file" className="lcuer16-item-fil-icon"  
+                          id="lcuer16-item-location-media-input"
                           accept="image/*"
                           name='files[]'
                           multiple
                           onChange={(e)=>{
                             console.log(e.target.files);
-                            console.log(document.getElementById('aer11-item-location-media-input').files);
-                            var files = document.getElementById("aer11-item-location-media-input");
+                            console.log(document.getElementById('lcuer16-item-location-media-input').files);
+                            var files = document.getElementById("lcuer16-item-location-media-input");
                         var media=[];
                         if(files && files.files && Object.keys(files.files).length>0){
                           Object.keys(files.files).forEach(index=>{
@@ -584,19 +586,19 @@ function closeForm(){
                           position:'relative',
                         }}
                         onClick={(e)=>{
-                          document.getElementById('aer11-item-location-media-input');
+                          document.getElementById('lcuer16-item-location-media-input');
                         }}
                         ></AttachFileIcon>
                       </label>
                     </div>
-                    <div className="aer11-media-show-input-wrap">
+                    <div className="lcuer16-media-show-input-wrap">
                       {
                         Item.itemDetails.location.media.map((imag,key)=>{
 
                           return(
-                            <div className="aer11-item-location-media-show-each-wrap">
+                            <div className="lcuer16-item-location-media-show-each-wrap">
                             <img src={imag} alt="Media Image of location" 
-                            className="aer11-item-location-media-show-each"
+                            className="lcuer16-item-location-media-show-each"
                             />
                             </div>
                           )
@@ -607,20 +609,20 @@ function closeForm(){
                 </fieldset>
               </div>
               </fieldset>
-              <fieldset className="aer11-item-label-wrap">
-              <legend className="aer11-item-legend">
+              <fieldset className="lcuer16-item-label-wrap">
+              <legend className="lcuer16-item-legend">
                   Submittion Location
                 </legend>
-              <div className="aer11-item-submit-wrap">
-                <div className="aer11-item-submittion-location"></div>
+              <div className="lcuer16-item-submit-wrap">
+                <div className="lcuer16-item-submittion-location"></div>
               </div>
               </fieldset>
             </div>
           </div>
         </div>
         
-        <div className="aer11-item-submitBbutton-wrap">
-          <div className="aer11-item-submitButton"
+        <div className="lcuer16-item-submitBbutton-wrap">
+          <div className="lcuer16-item-submitButton"
           onClick={(e)=>[
             ValidateForm(e)
           ]}

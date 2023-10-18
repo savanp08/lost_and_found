@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import AdminReportCard from "../../../Components/Cards/AdminReportCard/AdminReportCard";
 import EditReport from "../../../Components/LocalComponents/UserEditReport/EditReport";
+import EditableClaimCard from "../../../Components/Cards/EditableClaimCard/EditableClaimCard";
 
 const UserAccount = () => {
 
@@ -20,6 +21,8 @@ const UserAccount = () => {
     const [displayReports, setDisplayReports] = useState([]);
     const [claims, setClaims] = useState([]);
     const [displayClaims, setDisplayClaims] = useState([]);
+    const [reportMaps ,setReportMaps] = useState(new Map());
+    const [claimMaps ,setClaimMaps] = useState(new Map());
 
     useEffect(()=>{
         
@@ -40,10 +43,10 @@ const UserAccount = () => {
     useEffect(()=>{
        
         async function fetchAllReports(){
-            const x = user.userId;
+            const x = user._id;
             await axios.get(`/Report/getManyReports/${x}`,{
                 params:{
-                    userId : user.userId
+                    userId : user._id
                 }
             }).then(res=>{
                 console.log("response from fetch all reports=> ",res.data);
@@ -58,10 +61,10 @@ const UserAccount = () => {
         }
 
         async function fetchAllClaims(){
-            const x = user.userId;
+            const x = user._id;
             await axios.get(`/Claim/getManyClaims/${x}`,{
                 params:{
-                    userId : user.userId
+                    userId :  x
                 }
             }).then(res=>{
                 console.log("response from fetch all claims=> ",res.data);
@@ -94,7 +97,7 @@ const UserAccount = () => {
                     id="pua15-c-sort-search-input"
                     label="Search"
                     variant="outlined"
-                    placeholder="Search across types, colors, description"
+                    placeholder="Search across types, colors, description" 
                     InputProps={{
                         style: {
                             fontSize: '1.1rem',
@@ -142,6 +145,13 @@ const UserAccount = () => {
                             displayReports.map((report,key)=>{
                                 return(
                                     <AdminReportCard key={key} report={report}/>
+                                )
+                            })
+                        }
+                        {
+                            displayClaims.map((claim,key)=>{
+                                return(
+                                    <EditableClaimCard claim={claim}/>
                                 )
                             })
                         }

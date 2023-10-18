@@ -19,3 +19,5 @@ style all pages
 implement map 
 search in user reports, admin reports and other
 sorting
+implement delete status and remove delete functionality, send only non-deleted data to client
+implemnt auth middle ware for server

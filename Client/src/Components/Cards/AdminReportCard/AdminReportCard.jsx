@@ -69,7 +69,7 @@ const AdminReportCard = ({report}) => {
                             <div className="carc-left-edit-wrap"
                             onClick={(e)=>{
                                 if(user._id) {
-                                    OpenEditReport(e,"pua15-editReport-wrap");
+                                    OpenEditReport(e,"lcuer16-EditReport-wrap");
                                  }
                                  else{
                                     

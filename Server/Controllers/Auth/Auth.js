@@ -46,7 +46,7 @@ async function userExists(req) {
                 user: res,
             }
         } else {
-            console.log("Account Does Not Exists",res);
+            console.log("Account Does Not Exists",res); 
             return {
                 message: "false",
                 user: null,

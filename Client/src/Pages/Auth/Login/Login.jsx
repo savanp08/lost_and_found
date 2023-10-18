@@ -58,7 +58,7 @@ const Login = () => {
      }).catch(err=>{
       console.log("Failed to login",err);
       var x = document.getElementById("login-helperText");
-      x.innerHTML = "Incorrect credentials";
+      x.innerHTML = err.response.data.message || err.response.data || "Incorrect Crendentials";
      })
     }
 

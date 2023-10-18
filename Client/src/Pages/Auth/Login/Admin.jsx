@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import AccountCircle from '@mui/icons-material/AccountCircle';
@@ -17,6 +17,8 @@ import './Login.css';
 import Button from '@mui/material/Button';
 import { useDispatch } from "react-redux";
 import axios from "axios";
+import { addAdmin } from "../../../Store/Slices/UserSlice/AdminSlice";
+
 
 const AdminLogin = () => {
 
@@ -29,6 +31,9 @@ const AdminLogin = () => {
       event.preventDefault();
     };
 
+    const dispatch = useDispatch();
+      const navigate = useNavigate()
+
     async function LoginFun(e){
       e.preventDefault();
      axios.post('/Auth/Login/adminX86109110213',{
@@ -39,7 +44,8 @@ const AdminLogin = () => {
       const AccessToken  = res.data.AccessToken;
       if(AccessToken && (typeof AccessToken === "string" || AccessToken instanceof String)){
         localStorage .setItem(`admin ${email}`, AccessToken);
-        
+        dispatch(addAdmin(res.data.admin));
+        navigate("/Admin/Account");
       }
      }).catch(err=>{
       console.log("Failed to login",err);

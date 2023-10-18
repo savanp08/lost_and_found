@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import './This.scss';
 import { TextField } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
@@ -11,84 +11,54 @@ import axios from "axios";
 import { addTask } from "../../../Store/Slices/TaskSlice/TaskSlice";
 
 
-const ClaimPopUp = () => {
-    console.log("Rerender in claim popup");
+const ClaimEditComponent = (props , editing, setEditing) => {
+    
     const dispatch = useDispatch();
-    const InitialState ={
+    const [claim,setClaim] = useState( props.claim || {
         ownership: "",
         description: "",
         claimId :null,
         userId : null,
         reportId : null,
-    }
-    const [claim,setClaim] = useState(InitialState);
+    });
     const report = useSelector(state => state.report);
     const user = useSelector(state => state.user);
-    
-    console.log("claim pop up debug => ",claim,report,user)
 
+    console.log("Rerender in edit claim popup", claim , props);
+    
     async function submitClaim(e){
-        await axios.post('/Claim/addClaim',{
-            claim : {
-                ...claim,
-                reportId: report._id,
-                userId: user._id,
-            },
+        await axios.post('/Claim/editClaim',{
+            ...claim,
         }).then(res=>{
             console.log("Response from submit claim=> ",res.data);
-             
-            dispatch(addTask({
-                catagory:"claim",
-                status: "success",
-                progress:"submitted",
-                claim: claim,
-                task:"function",
-                function : "open_div",
-                function_params : [""]
-            }));
-            setClaim(InitialState);
-            close_div("ur11-claim-popup-main-min");
+            props.setEditing(false);
+            
             
         }).catch(err=>{
-            dispatch(addTask({
-                catagory:"claim",
-                status: "failed",
-                progress:"submitted",
-                message : err.response.data.message,
-                claim: claim,
-                task:"function",
-                function : "open_div",
-                function_params : [""]
-            }));
-            close_div("ur11-claim-popup-main-min");
             console.log("Error from submit claim=> ",err);
         })
     }
-
-    useEffect(()=>{
-         setClaim(InitialState);
-    },[report])
     
 
     return(
-        <div className="ccp12-main-wrap">
-            <div className="ccp12-close-wrap"
+        <div className="lccec19-main-wrap">
+            <div className="lccec19-close-wrap"
             onClick={(e)=>{
-                close_div("ur11-claim-popup-main-min");
+                props.setEditing(false);
             }}
             >
                 X
             </div>
-            <div className="ccp12-inner-wrap">
-                <div className="ccp12-header-wrap">
-                    <span className="ccp12-header-title">Claim</span>
+            <div className="lccec19-inner-wrap">
+                <div className="lccec19-header-wrap">
+                    <span className="lccec19-header-title">Claim</span>
                 </div>
                 
-                <div className="ccp12-body-wrap">
-                <fieldset className="ccp12-fieldset-wrap">
-                    <legend className="ccp12-legend-wrap"> Ownership </legend>
+                <div className="lccec19-body-wrap">
+                <fieldset className="lccec19-fieldset-wrap">
+                    <legend className="lccec19-legend-wrap"> Ownership </legend>
                 
-                    <div className="ccp12-ownership-wrap">
+                    <div className="lccec19-ownership-wrap">
                     <FormControl fullWidth
                     sx={{
                         display: 'flex',
@@ -100,7 +70,7 @@ const ClaimPopUp = () => {
               
               <Select
                 labelId="demo-simple-select-label"
-                id="ccp12-ownership"
+                id="lccec19-ownership"
                  placeholder="Is It Yours"
                 label="Is It Yours"
                 value={claim.ownership || "None"} 
@@ -122,22 +92,23 @@ const ClaimPopUp = () => {
                 <MenuItem value={"Other"}>No</MenuItem>
               </Select>
             </FormControl>
-                 <span className="ccp12-ownership-information-text">Is this Yours(Yes) or are u legally representing its actual owner(No)</span>
+                 <span className="lccec19-ownership-information-text">Is this Yours(Yes) or are u legally representing its actual owner(No)</span>
                     </div>
                     </fieldset>
-                    <fieldset className="ccp12-fieldset-wrap">   
-                    <legend className="ccp12-legend-wrap"> Description </legend>             
-                        <div className="ccp12-description-wrap">
+                    <fieldset className="lccec19-fieldset-wrap">   
+                    <legend className="lccec19-legend-wrap"> Description </legend>             
+                        <div className="lccec19-description-wrap">
                             <TextField 
-                            id="ccp12-description-input"
+                            id="lccec19-description-input"
                             label="Description"
                             variant="outlined"
                             placeholder="Describe the Property"
                             multiline
                             
-                            rows={4}
+                            rows='4'
                             sx={{
                                 width: '100%',
+                                height: '100%',
                             }}
                             value={claim.description || ""}
                             onChange={(e)=>{
@@ -147,25 +118,25 @@ const ClaimPopUp = () => {
                                 })
                             }}
                             />
-                            <span className="ccp12-description-information-text">Describe the Property and its contents in detail</span>
+                            <span className="lccec19-description-information-text">Describe the Property and its contents in detail</span>
                     </div>
                     </fieldset>
-                   <div className="ccp12-submitclaim-btn-wrap">
-                    <button className="ccp12-submitclaim-btn"
+                   <div className="lccec19-submitclaim-btn-wrap">
+                    <button className="lccec19-submitclaim-btn"
                     onClick={(e)=>{
                         submitClaim(e);
                     }}
                     >Claim</button>
                     </div>
-                    <div className="ccp12-submit-helper-text-wrap">
-                        <span className="ccp12-submit-helper-text"
-                        id="ccp12-submit-helper-text"
+                    <div className="lccec19-submit-helper-text-wrap">
+                        <span className="lccec19-submit-helper-text"
+                        id="lccec19-submit-helper-text"
                         >
                             
                         </span>
                     </div>
-                    <div className="ccp12-claim-information-text-wrap">
-                        <span className="ccp12-claim-information-text">
+                    <div className="lccec19-claim-information-text-wrap">
+                        <span className="lccec19-claim-information-text">
                             This is a virtual veriffication assessment to assess the credibility of your claim and to check if the property is indeed Yours.
                             Restrain from making false claims
                             
@@ -178,4 +149,4 @@ const ClaimPopUp = () => {
 }
 
 
-export default ClaimPopUp;
+export default ClaimEditComponent;
