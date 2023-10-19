@@ -1,46 +1,7 @@
 import { createSlice ,nanoid } from '@reduxjs/toolkit';
+import{initialState_user} from "../../../Components/Data/Schemas.js";
 
-
-const initialState = {
-   
-    userId: null,
-    email:null,
-    password:null,
-    Name:{
-        firstName:"Test User",
-        middleName:null,
-        lastName:null,
-    },
-    userType: null,
-    UniqueId: null,
-    nanoid: null,
-    occupation: null,
-    gender: null,
-    ethnicity: null,
-    trusted:false,
-    location: {
-        university: null,
-        street: null,
-        apartment: null,
-        city: null,
-        state: null,
-        pinCode : null,
-    },
-    reports: {
-        count: 0,
-        itemIds:[],
-    },
-    searches: {
-        count: 0,
-        searchIds: [],
-    },
-    Claims: {
-        count: 0,
-        itemIds: [],
-    },
-    
-    
-};
+const initialState = initialState_user;
 
 const userSlice = createSlice({
 

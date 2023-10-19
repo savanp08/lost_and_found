@@ -9,11 +9,14 @@ import Select from "@mui/material/Select";
 import ClaimEditComponent from '../../LocalComponents/ClaimEditComponent/ClaimEditComponent';
 import './This.scss';
 import AdminClaimEditComponent from '../../LocalComponents/AdminEditClaimComponent/AdminEditClaimComponent';
-
+import { initialState_user } from '../../Data/Schemas';
 
 const AdminEditableClaimCard = ({ claim }) => {
     const [editing, setEditing] = useState(false);
     const [updatedClaim, setUpdatedClaim] = useState(claim);
+    const [user, setUser] = useState(initialState_user);
+
+   
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
@@ -226,6 +229,15 @@ const AdminEdiatableClaimCard_BackCard = ({ claimX }) => {
                                     <span className='caecc22-claim-display-virtualAssesment-each-text'>{
                                         //claim.assessment.virtualAssesment.status
                                     }</span>
+                                    <div className='caecc22-claim-display-virtualAssesment-each-wrap'>
+                                    <span className='caecc22-claim-display-virtualAssesment-each-text'>{
+                                        "Location : "
+                                    }</span>
+                                    <div className='caecc22-claim-display-virtualAssesment-each-text'>{
+                                        
+                                    }</div>
+
+                                </div>
 
                                 </div>
                                 <div className='caecc22-claim-display-virtualAssesment-buttons-wrap'>
@@ -293,7 +305,7 @@ const AdminEdiatableClaimCard_BackCard = ({ claimX }) => {
                                 
                                     {
 
-                                        claim.assessment.virtualAssesment.status === "Not Initiated"?
+                                        claim.assessment.inPersonlAssesment.status === "Not Initiated"?
                                         (
                                             <div className='caecc22-claim-display-inPersonAssesment-buttons-wrap'>
                                     
@@ -311,16 +323,7 @@ const AdminEdiatableClaimCard_BackCard = ({ claimX }) => {
                                     <button className='caecc22-claim-display-inPersonAssesment-button'
                                     onClick={(e)=>{
                                         e.preventDefault();
-                                        setClaim({
-                                            ...claim,
-                                            "assessment": {
-                                                ...claim.assessment,
-                                                "inPersonAssesment": {
-                                                    ...claim.assessment.inPersonAssesment,
-                                                    "status": "Accepted"
-                                                }
-                                            }
-                                        })
+                                        submitInPersonAssessment("Accepted");
                                         
                                     }}
                                     >{
@@ -329,16 +332,7 @@ const AdminEdiatableClaimCard_BackCard = ({ claimX }) => {
                                     <button className='caecc22-claim-display-inPersonAssesment-button'
                                     onClick={(e)=>{
                                         e.preventDefault();
-                                        setClaim({
-                                            ...claim,
-                                            "assessment": {
-                                                ...claim.assessment,
-                                                "inPersonAssesment": {
-                                                    ...claim.assessment.inPersonAssesment,
-                                                    "status": "Rejected"
-                                                }
-                                            }
-                                        })
+                                        submitInPersonAssessment("Rejected");
                                     }}
                                     >{
                                         "Reject"
@@ -347,10 +341,6 @@ const AdminEdiatableClaimCard_BackCard = ({ claimX }) => {
                                         )
                                         }
                                 </div>
-                                        
-                                
-                                  
-                            
                             </fieldset>
         </div>
     )

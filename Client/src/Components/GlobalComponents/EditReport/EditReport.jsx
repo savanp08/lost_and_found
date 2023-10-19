@@ -14,43 +14,14 @@ import Close from '@mui/icons-material/Close';
 import axios from 'axios';
 import { ItemTypes } from "../../Data/Options";
 import AttachFileIcon from '@mui/icons-material/AttachFile';
+import { initialState_report } from "../../Data/Schemas";
 
 const EditReport = () => {
   const report = useSelector(state=> state.report);
   console.log(report);
   const user = useSelector((state) => state.user);
   const [reporterType, setReporterType] = useState("");
-  const [Item, setItem] = useState({
-    reporterId: null,
-    reporterName:
-      user.Name.firstName + user.Name.middleName + user.Name.lastName,
-    itemDetails: {
-      common_type: null,
-      colors: [],
-      customItemName: null,
-      description: null,
-      location: {
-        allPlacesPossible: [],
-        buildingDetails: null,
-        university: null,
-        street: null,
-        apartment: null,
-        city: null,
-        state: null,
-        pinCode: null,
-        media: [],
-      },
-    },
-      belongsTo: null,
-      claims: [],
-      found: {
-        status: null,
-        userId: null,
-      },
-      submittedAt: null,
-      media: [],
-      reporterType: null,
-  });
+  const [Item, setItem] = useState(initialState_report);
 
   useEffect(()=>{
     setItem(report);
@@ -185,7 +156,7 @@ function closeForm(){
             ...Item,
             itemDetails:{
               ...Item.itemDetails,
-              common_type: value
+              common_type: value.label
               
             }
           })

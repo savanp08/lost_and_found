@@ -13,3 +13,7 @@ box-shadow: -2px -1px 4px rgb(104, 98, 98) ,-3px 2px 6px rgb(117, 113, 113),
 }
 
 
+.csn30-add-report-wrap{
+    color:white;
+    cursor: pointer;
+}

@@ -17,6 +17,7 @@ import AttachFileIcon from '@mui/icons-material/AttachFile';
 import { useNavigate } from "react-router-dom";
 import AuthFunctions from "../../../Handlers/Auth";
 import { addUser } from "../../../Store/Slices/UserSlice/UserSlice";
+import { initialState_report } from "../../Data/Schemas";
 
 
 const AddReport = ({params}) => {
@@ -27,41 +28,9 @@ const AddReport = ({params}) => {
   const user = useSelector((state) => state.user);
   const [reporterType, setReporterType] = useState("");
   const [Item, setItem] = useState({
-    reporterId: null,
-    userId:user._id,
-    reporterName:{
-         firstName : user.Name.firstName,
-         middleName : user.Name.middleName,
-          lastName : user.Name.lastName,
-    },
-      
-    itemDetails: {
-      common_type: null,
-      colors: [],
-      customItemName: null,
-      description: null,
-      location: {
-        allPlacesPossible: [],
-        buildingDetails: null,
-        university: null,
-        street: null,
-        apartment: null,
-        city: null,
-        state: null,
-        pinCode: null,
-        media: [],
-      },
-    },
-      belongsTo: null,
-      claims: [],
-      found: {
-        status: null,
-        userId: null,
-      },
-      submittedAt: null,
-      media: [],
-      reporterType: null,
-    
+    ...initialState_report,
+    userId : user._id,
+    reportName : user.Name,
   });
   
   console.log(Item);
@@ -205,44 +174,48 @@ function closeForm(){
               <div className="ar11-item-type-wrap ar11-common-textField-wrap">
               <Autocomplete
        
-        id="tags-standard"
-        options={ItemTypes}
-        value={Item.itemDetails.common_type || ""}
-        limitTags={3}
-        onChange={(e,values)=>{
-          setItem({
-            ...Item,
-            itemDetails:{
-              ...Item.itemDetails,
-              common_type: e.target.value
-              
-            }
-          })
-        }}
-        renderInput={ params => {
-          const { InputProps, ...restParams } = params;
-          const { startAdornment, ...restInputProps } = InputProps;
-          return (
-            <TextField
-              label="Item Type"
-              { ...restParams }
-              InputProps={ {
-                ...restInputProps,
-                startAdornment: (
-                  <div style={{
-                    maxHeight: '70px',
-                    overflowY: 'auto',
-                    minWidth:'230px',
-                  }}
-                  sx={{
-                    minWidth: '230px',
-                  }}
-                  >
-                    {startAdornment}
-                  </div>
-                ),
-              } }
-            />
+       id="tags-standard"
+       options={ItemTypes}
+       getOptionLabel={(option) => option.label || ""}
+       value={{
+        label : Item.itemDetails.common_type || ""} }
+       limitTags={3}
+       onChange={(e,value)=>{
+           console.log("ssssss =>",e.target.value)
+         setItem({
+           ...Item,
+           itemDetails:{
+             ...Item.itemDetails,
+             common_type: value.label
+             
+           }
+         })
+       }}
+       renderInput={ params => {
+         const { InputProps, ...restParams } = params;
+         const { startAdornment, ...restInputProps } = InputProps;
+         return (
+           <TextField
+             label="Item Type"
+             { ...restParams }
+             InputProps={ {
+               ...restInputProps,
+               startAdornment: (
+                 <div style={{
+                   maxHeight: '70px',
+                   overflowY: 'auto',
+                   minWidth:'230px',
+                 }}
+                 sx={{
+                   minWidth: '230px',
+                 }}
+                 
+                 >
+                   {startAdornment}
+                 </div>
+               ),
+             } }
+           />
           );
         } }
       />
@@ -284,12 +257,12 @@ function closeForm(){
 
               <div className="ar11-item-color-wrap">
               
-      <Autocomplete
+              <Autocomplete
         multiple
         id="tags-standard"
         options={CustomColors}
         disableCloseOnSelect
-        value={Item.itemDetails.colors || []}
+        value={Item.itemDetails.colors}
         limitTags={3}
         onChange={(e,values)=>{
           setItem({

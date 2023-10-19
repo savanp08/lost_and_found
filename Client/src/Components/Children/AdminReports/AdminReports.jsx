@@ -38,7 +38,7 @@ const AdminReports =  () =>{
   console.log(reports);
 
   return(
-    <div className="admin-Reports-wrap AA-After"
+    <div className="admin-Reports-wrap AA-Before"
     id="car21-admin-Reports-wrap"
     
     >

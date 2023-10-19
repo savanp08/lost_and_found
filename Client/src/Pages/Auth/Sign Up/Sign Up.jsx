@@ -13,6 +13,7 @@ import axios from 'axios';
 import {useDispatch, useSelector} from 'react-redux';
 import { addUser } from "../../../Store/Slices/UserSlice/UserSlice";
 import mongoose from "mongoose";
+import { initialState_user } from "../../../Components/Data/Schemas";
 
 const SignUp = () =>{
    const dispatch = useDispatch();
@@ -21,43 +22,7 @@ const SignUp = () =>{
    const [password,setPassword] = useState(null);
    const ExistingUser = useSelector(state => state.user);
    console.log("Existing User =>", ExistingUser);
-   const [user,setUser] =useState({
-    userId: newId,
-    email:null,
-    Name:{
-        firstName:"",
-        middleName:"",
-        lastName:"",
-    },
-    userType: null,
-    UniqueId: null,
-    nanoid: newId,
-    occupation: null,
-    gender: null,
-    ethnicity: null,
-    trusted:false,
-    location: {
-        university: null,
-        street: null,
-        apartment: null,
-        city: null,
-        state: null,
-        pinCode : null,
-    },
-    reports: {
-        count: 0,
-        itemIds:[],
-    },
-    searches: {
-        count: 0,
-        searchIds: [],
-    },
-    Claims: {
-        count: 0,
-        itemIds: [],
-    }
-    
-   });
+   const [user,setUser] =useState(initialState_user);
      console.log(user.Name); 
 
 
@@ -72,12 +37,14 @@ const SignUp = () =>{
        keys.splice(keys.indexOf("ethnicity"),1);
        keys.splice(keys.indexOf("reports"),1);
        keys.splice(keys.indexOf("searches"),1);
-       keys.splice(keys.indexOf("Cliams"),1);
+       keys.splice(keys.indexOf("cliams"),1);
        keys.splice(keys.indexOf("userId"),1);
        keys.splice(keys.indexOf("userType"),1);
        keys.splice(keys.indexOf("nanoid"),1);
        keys.splice(keys.indexOf("userName"),1);
        keys.splice(keys.indexOf("trusted"),1);
+       keys.splice(keys.indexOf("password"),1);
+         keys.splice(keys.indexOf("_id"),1);
        for(var i=0; i<keys.length;i++){
         var key = keys[i];
         if(user[key]===null) { console.log("Returning False",key,user[key])

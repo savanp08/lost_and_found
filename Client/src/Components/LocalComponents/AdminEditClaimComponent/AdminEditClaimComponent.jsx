@@ -11,6 +11,7 @@ import axios from "axios";
 import { addTask } from "../../../Store/Slices/TaskSlice/TaskSlice";
 
 
+
 const AdminClaimEditComponent = (props , editing, setEditing) => {
     
     const dispatch = useDispatch();
@@ -71,14 +72,20 @@ const AdminClaimEditComponent = (props , editing, setEditing) => {
               <Select
                 labelId="demo-simple-select-label"
                 id="lcaec23-ownership"
-                 placeholder="Is It Yours"
-                label="Is It Yours"
-                value={claim.ownership || "None"} 
+                 placeholder="Assessment Location"
+                label="Location"
+                value={claim.assessment.inPersonAssessment.location || "None"} 
                 
                 onChange={(e) => {
                   setClaim({
                   ...claim,
-                    ownership: e.target.value,
+                    assessment: {
+                        ...claim.assessment,
+                        inPersonAssessment: {
+                        ...claim.assessment.inPersonAssessment,
+                        location: e.target.value,
+                        },
+                    },
                   });
                 }}
                 sx={{
@@ -87,9 +94,15 @@ const AdminClaimEditComponent = (props , editing, setEditing) => {
                 }}
 
               >
-                
-                <MenuItem value={"User"}>Yes</MenuItem>
-                <MenuItem value={"Other"}>No</MenuItem>
+                {
+                    claim.assessment.inPersonAssessment.allPossibleLocations.map((location, index) => {
+                        return (
+                          <MenuItem key={index} value={location}>
+                            {location}
+                          </MenuItem>
+                        );
+                    })
+                }
               </Select>
             </FormControl>
                  <span className="lcaec23-ownership-information-text">Is this Yours(Yes) or are u legally representing its actual owner(No)</span>

@@ -1,6 +1,7 @@
 * {
     box-sizing: border-box;
     /* overflow-x: hidden; */
+    scroll-behavior: smooth;
 }
 iframe#webpack-dev-server-client-overlay{display:none!important}
 body {

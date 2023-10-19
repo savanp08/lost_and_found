@@ -40,10 +40,12 @@ const ClaimSchemaX = new mongoose.Schema({
                 default:"Not Initiated",
             },
             comment:{
-                type:String
+                type:String,
+                default:null
             },
             date:{
                 type:Date,
+                default:null
             }
         },
         inPersonAssessment:{
@@ -52,15 +54,20 @@ const ClaimSchemaX = new mongoose.Schema({
                 default:"Not Initiated",
             },
             comment:{
-                type:String
+                type:String,
+                default:null
             },
             date:{
                 type:Date,
+                default:null
             },
             location:{
                 type:String,
+                default:null
             },
-            }
+            allPossibleLocations:[{
+
+            }]
         },
     },
     supportingDocuments:[{

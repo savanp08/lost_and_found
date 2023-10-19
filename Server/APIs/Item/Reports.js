@@ -64,7 +64,7 @@ reportRouter.post('/addReport', multerUpload.fields([{
     try{
         
         var xx=JSON.parse(req.body.report);
-        
+        delete xx._id;
        
         console.log("Found report addition fired",xx);
        
@@ -72,6 +72,7 @@ reportRouter.post('/addReport', multerUpload.fields([{
             ...xx, 
             reportId : new mongoose.Types.ObjectId(),
             date : new Date(),
+            
         })
         
         
@@ -133,8 +134,8 @@ reportRouter.post('/addReport', multerUpload.fields([{
        
         var yy=req.files["image"];
         var zz=req.files["ItemImage"] || [];
-        console.log("zz => ",zz);
-        console.log("yy => ",yy);
+        // console.log("zz => ",zz);
+        // console.log("yy => ",yy);
         const addMediaResponse = await addMediaToCloudinary(yy);
         var ItemMedia = [];
         if(zz.length > 0){
@@ -144,7 +145,7 @@ reportRouter.post('/addReport', multerUpload.fields([{
         newReport.itemDetails.location.media = addMediaResponse;
 
         const { value, error } = joiSchema.validate(newReport);
-        console.log("Validation result =>", value, "  error =>",error);
+        //console.log("Validation result =>", value, "  error =>",error);
         var reportSave = null;
               try{
           reportSave = await newReport.save();

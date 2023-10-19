@@ -9,9 +9,6 @@ const Common_PopUp = ({params}) => {
     
     console.log("popup debug =>> data=>",data);
 
-
-   
-
     return(
         <div className="c_p14-main-wrap">
             <div className="c_p14-close-btn-wrap"

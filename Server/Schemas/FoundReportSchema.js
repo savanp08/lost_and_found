@@ -3,7 +3,6 @@ import mongoose from 'mongoose';
 const FoundReportSchemaX = new mongoose.Schema({
 
     reportId:{
-        
         unique: true,
         minlength:1,
         type:mongoose.Types.ObjectId,
@@ -12,14 +11,13 @@ const FoundReportSchemaX = new mongoose.Schema({
     userId:{
         type:mongoose.Types.ObjectId,
         default:null,
+        required:true,
     },
 
     reporterName:{
         firstNAme:{
             type: String,
             unique:false,
-            
-            
         },
         middleName:{
             type:String,
@@ -30,22 +28,17 @@ const FoundReportSchemaX = new mongoose.Schema({
             type:String,
             unique:false,
             required: false,
-            
         }
         },
         itemDetails:{
             common_type:{
                 type:String,
                 unique:false,
-                
-               
             },
             colors:[],
             customItemName:{
                 type:String,
                 unique:false,
-                
-                
             },
             description:{
                 type:String,
@@ -58,39 +51,28 @@ const FoundReportSchemaX = new mongoose.Schema({
                     default: null,
                 },
                 university: {
-                    
                     type: 'string', 
                     minlength: 2,
                     default: null,
                 },
                 street: {
-                    
                     type: 'string', 
-                    
                     default: null,
                 },
                 apartment: {
-                    
                     type: 'string',
-                    
                     default: null,
                 },
                 city: {
-                    
                     type: 'string',
-                    
                     default: null,
                 },
                 state: {
-                    
                     type: 'string',
-                    
                     default: null,
                 },
                 pinCode : {
-                    
                     type: 'string',
-                    
                     default: null,
                 },
                 media:[],
@@ -99,13 +81,11 @@ const FoundReportSchemaX = new mongoose.Schema({
                 type:String,
             unique:false,
             required: false,
-            
-            }
+            }  
         },
         claims:{
             claimIds:[{
                 type:mongoose.Types.ObjectId,
-                
             }],
             userIds:[{
                 type: String,
@@ -123,7 +103,7 @@ const FoundReportSchemaX = new mongoose.Schema({
             }
             
         },
-        submittedAt:{
+        custodyAt:{
             type:String,
             
         },
@@ -143,7 +123,10 @@ const FoundReportSchemaX = new mongoose.Schema({
                 type:String,
                 default:"active"
             }
-        }
+        },
+        updates:[{
+            type:String,
+        }],
 },{timestamps:true})
 
 

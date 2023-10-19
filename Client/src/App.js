@@ -15,7 +15,8 @@ import { addTask } from './Store/Slices/TaskSlice/TaskSlice';
 import { open_div } from './Handlers/PopUp';
 import { useEffect } from 'react';
 import axios from 'axios';
-import { removeUser } from './Store/Slices/UserSlice/UserSlice';
+import { addUser, removeUser } from './Store/Slices/UserSlice/UserSlice';
+import AuthFunctions from './Handlers/Auth';
 
 
 function App() {
@@ -23,12 +24,22 @@ function App() {
   const user = useSelector(state => state.user);
   const dispatch = useDispatch();
   
-
-  
-
-  
   console.log("User SIgned?",user.userId);
-  console.log(useSelector(state=>state.user))
+  console.log(user);
+
+  useEffect(()=>{
+    async function fetchUser(){
+       const res = await AuthFunctions();
+       if(res.message && res.user){
+        dispatch(addUser(res.user));
+       }
+    }
+    fetchUser();
+  },[])
+
+  
+
+
   return (
     <div className="App-Wrap">
        <Router>
