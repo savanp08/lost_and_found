@@ -114,11 +114,13 @@ const FoundReportSchemaX = new mongoose.Schema({
         found:{
             status:{
                 type: Boolean,
-                required:false,
             },
             finishedClaimId:{
                 type:mongoose.Types.ObjectId
             },
+            userId:{
+                type:mongoose.Types.ObjectId
+            }
             
         },
         submittedAt:{
@@ -131,6 +133,16 @@ const FoundReportSchemaX = new mongoose.Schema({
         },
         visibility:{
             type:String,
+        },
+        date:{
+            type: Date,
+            default: Date.now(),
+        },
+        delete:{
+            status:{
+                type:String,
+                default:"active"
+            }
         }
 },{timestamps:true})
 

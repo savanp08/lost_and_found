@@ -87,6 +87,21 @@ claimRouter.post('/addClaim', async (req,response)=>{
 })
 
 
+claimRouter.get(`/getAllClaims`, async (req,response)=>{
+
+    try{
+        console.log("get many claims fired");
+        const claims = await ClaimSchema.find();
+        console.log("fetched claims",claims);
+        return response.status(200).send(claims);
+    }
+    catch(err){
+        console.log("error fetching claims",err.message);
+        return response.status(500).send(err.message);
+    }
+})
+
+
 claimRouter.get(`/getManyClaims/:userId`, async (req,response)=>{
 
     try{
@@ -122,13 +137,15 @@ claimRouter.get(`/getManyClaims/:userId`, async (req,response)=>{
  });
 
 
-  claimRouter.delete("/deleteClaim/:claimId", async (req,response)=>{
+  claimRouter.post("/deleteClaim", async (req,response)=>{
     try{       
-        console.log("delete claim fired",req.params);
+        console.log("delete claim fired",req.body);
         
-        
-
-        const res  = await ClaimSchema.deleteOne({ _id : req.params.claimId});
+        const res  = await ClaimSchema.updateOne({ _id : req.body._id},{
+            $set : {
+                "delete.status" : "deleted",
+            }
+        });
         if(res.error){
             console.log("error in delete claim",res.error);
             return response.status(500).send(res.error);
@@ -143,6 +160,30 @@ claimRouter.get(`/getManyClaims/:userId`, async (req,response)=>{
         return response.status(500).send(err.message);
     }
   });
+
+  claimRouter.post("/editClaim/AssesmentUpdate/Virtual", async (req,response)=>{
+    try{
+        console.log("edit virtual Assessment claim fired",req.body);
+        const res  = await ClaimSchema.updateOne({ _id : req.body._id},{
+            $set : {
+                "assesment" : req.body.assesment,
+            }
+        });
+        if(res.error){
+            console.log("error in edit claim",res.error);
+            return response.status(500).send(res.error);
+
+        }
+        else{
+            console.log("edited claim",res);
+            return response.status(200).send(res);
+        }
+    }
+    catch(err){
+        console.log("error editing claim",err.message);
+        return response.status(500).send(err.message);
+    }
+  })
 
 
 export default claimRouter;

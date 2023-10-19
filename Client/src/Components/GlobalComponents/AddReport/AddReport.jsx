@@ -70,15 +70,16 @@ const AddReport = ({params}) => {
     async function authVerify(){
       const flag = await AuthFunctions();
       if(flag.message){
-       console.log("Auth Debug => user is signed in ",flag);
+       console.log("Auth Debug in add  report => user is signed in ",flag);
        dispatch(addUser(flag.user));
       }
       else{
-       console.log("Auth Debug => user is not signed in ",flag);
+       console.log("Auth Debug in add report=> user is not signed in ",flag);
         navigate("/Login");
       }
   }
-  authVerify();
+  
+   //authVerify();
   },[])
 
   async function ValidateForm(e){
@@ -132,7 +133,7 @@ function closeForm(){
 }
 
   return (
-    <div className="ar11-addReport-wrap Add-Report-After"
+    <div className="ar11-addReport-wrap Hide"
         id="ar11-addReport-wrap"
     >
       <div className="ar11-inner-wrap">

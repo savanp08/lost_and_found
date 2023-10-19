@@ -1,52 +1,150 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import './AdminClaims.scss';
+import { Chart } from 'react-google-charts';
+import AdminReportCard from "../../Cards/AdminReportCard/AdminReportCard";
+import AdminEditableClaimCard from "../../Cards/AdminEditableClaimCard/AdminEditableClaimCard";
+import axios from "axios";
+import EditReport from "../../GlobalComponents/EditReport/EditReport";
 
-const AdminClaims = () => {
+const AdminClaims =  () =>{
 
-   
-    return(
-        <div className="c-admin-claims-wrap">
-            <div className="c01-ACD-inner-wrap">
-                <div className="c01-ACD-header-wrap">
-                    <div className="c01-ACD-Hcontent-wrap">
-                        <div className="c01-ACD-Hstat-wrap">
-                            <div className="c01-ACD-Hstat-text-wrap">
-                                <span className="c01-ACD-Hstat-text">
-                                    Unseen Claims
-                                </span>
-                                <span className="c01-ACD-Hstat-text">
-                                    In Process Claims
-                                </span>
-                                <span className="c01-ACD-Hstat-text">
-                                    Unclaimed Things
-                                </span>
-                                <span className="c01-ACD-Hstat-text">
-                                    Completed Claims
-                                </span>
-                            </div>
-                            <div className="c01-ACD-Hstat-charts-wrap">
-                                <div className="co1-ACD-Hstat-chart1-wrap">
-                                    
-                                </div>
-                                <div className="co1-ACD-Hstat-chart2-wrap">
-                                    
-                                </div>
-                            </div>
+    const [claims,setClaims] = useState([]);
+    const [reports,setReports] = useState(new Map());
+
+    useEffect( ()=>{
+        async function getData(){
+            await axios.get("/Claim/getAllClaims").then(res=>{
+                setClaims(res.data);
+                console.log("claims fetched => " , res.data);
+            }).catch(err=>{
+                console.log("error while fetching claims => " , err);
+            })
+        }
+        async function getReports(){
+            await axios.get("/Report/getAllReports").then(res=>{
+                if(res.data && Array.isArray(res.data)){
+                    res.data.map(report=>{
+                        reports.set(report._id,report);
+                        return 0;
+                    })
+                    setReports(new Map(reports));
+                }
+                console.log("reports fetched => " , res.data);
+            }).catch(err=>{
+                console.log("error while fetching reports => " , err);
+            })
+        }
+        getData();
+        getReports();
+        
+    },[]);
+
+    console.log("AdminClaims",claims);
+    console.log("Claims debug => AdminClaims Reports",reports);
+
+  const chart1Data = [
+    ["Type","Number"],
+    ["Unseen claims",3],
+    ["In Process claims",4],
+    ["Unclaimed claims",5],
+    ["Completed Claims",7],
+  ];
+  const chart2Data = [
+    ["Type","Number"],
+    ["Public Claims",7],
+    ["Private Claims",7],
+  ];
+
+  console.log(claims);
+
+  return(
+    <div className="cac24-admin-claims-wrap AA-After"
+    id="cac24-admin-claims-wrap"
+    
+    >
+        <div className="cac24-ARC-inner-wrap">
+            <div className="cac24-ARC-header-wrap">
+                <div className="cac24-ARC-Hc-wrap">
+                    <div className="cac24-ARC-Hstat-wrap">
+                        <div className="cac24-ARC-Hstat-text-wrap">
+                            <span className="cac24-ARC-Hstat-text">
+                                Unseen claims
+                            </span>
+                            <span className="cac24-ARC-Hstat-text">
+                                In Process claims
+                            </span>
+                            <span className="cac24-ARC-Hstat-text">
+                                Unclaimed Things
+                            </span>
+                            <span className="cac24-ARC-Hstat-text">
+                                Public claims
+                            </span>
+                            <span className="cac24-ARC-Hstat-text">
+                                Private claims
+                            </span>
                         </div>
-                        <div className="co1-ACD-Hfilter-wrap">
-
+                        <div className="cac24-ARC-Hstat-charts-wrap">
+                            <div className="co1-ARC-Hstat-chart1-wrap">
+                                <Chart
+                                chartType="PieChart"
+                                data={chart1Data}
+                                options={{title : "Progress of claims"}}
+                                width={"100%"}
+                                height={"100%"}
+                                />
+                            </div>
+                            <div className="co1-ARC-Hstat-chart2-wrap">
+                            <Chart
+                                chartType="PieChart"
+                                data={chart2Data}
+                                options={{title : "Types of claims"}}
+                                width={"100%"}
+                                height={"100%"}
+                                />
+                            </div>
                         </div>
                     </div>
-                    <div className="c01-ACD-HClose-wrap">
-                        
+                    <div className="co1-ARC-Hfilter-wrap">
+
                     </div>
                 </div>
-                <div className="c01-ACD-claims-wrap">
-
+                <div className="cac24-ARC-HClose-wrap"
+                onClick={(e)=>{
+                    e.preventDefault();
+                    var x=document.getElementById("cac24-admin-claims-wrap");
+                    if(x.classList.contains("AA-After")){
+                        x.classList.remove("AA-After");
+                        x.classList.add("AA-Before");
+                    }
+                    else if(x.classList.contains("AA-Before")){
+                        x.classList.remove("AA-Before");
+                        x.classList.add("AA-After");
+                    }
+                }}
+                >
+                    X
                 </div>
             </div>
+            <div className="cac24-ARC-claims-wrap">
+                { claims.length > 0 && reports.size>0?(
+                    claims.map((claim,key)=>{
+                        return(
+                            <div className="cac24-claims-each-wrap" key={key}>
+                            <AdminEditableClaimCard claim={claim} />
+                            <AdminReportCard report={reports.get(claim.reportId)}/>
+                            </div>
+                        )
+                    })
+                )
+                : "No Data to display"
+                }
+                
+               
+            </div>
         </div>
-    )
+    </div>
+)
 }
+
 
 export default AdminClaims;

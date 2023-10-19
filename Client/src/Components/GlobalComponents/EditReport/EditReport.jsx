@@ -67,7 +67,7 @@ const EditReport = () => {
   async function SubmitForm(){
     
   
-    var files = document.getElementById("lcuer16-item-location-media-input").files;
+    var files = document.getElementById("gcaer26-item-location-media-input").files;
     const formData = new FormData();
     formData.append('report', JSON.stringify(Item));
     console.log("files =>",files)
@@ -96,7 +96,7 @@ const EditReport = () => {
   }
 
 function closeForm(){
-  var x = document.getElementById("lcuer16-EditReport-wrap");
+  var x = document.getElementById("gcaer26-EditReport-wrap");
    if(x.classList.contains("Add-EditReport-After"))
    {
     x.classList.remove("Add-EditReport-After");
@@ -106,12 +106,12 @@ function closeForm(){
 }
 
   return (
-    <div className="lcuer16-EditReport-wrap Hide"
-        id="lcuer16-EditReport-wrap"
+    <div className="gcaer26-EditReport-wrap Hide"
+        id="gcaer26-EditReport-wrap"
     >
-      <div className="lcuer16-inner-wrap">
-        <div className="lcuer16-close-wrap"
-        id="lcuer16-close-wrap"
+      <div className="gcaer26-inner-wrap">
+        <div className="gcaer26-close-wrap"
+        id="gcaer26-close-wrap"
         onClick={(e)=>{
           e.preventDefault();
           closeForm();
@@ -119,20 +119,20 @@ function closeForm(){
         >
           X
         </div>
-        <div className="lcuer16-h-wrap">
-          <div className="lcuer16-h-title-wrap">
-            <span className="lcuer16-h-title-text">Edit Report</span>
+        <div className="gcaer26-h-wrap">
+          <div className="gcaer26-h-title-wrap">
+            <span className="gcaer26-h-title-text">Edit Report</span>
           </div>
         </div>
-        <div className="lcuer16-content-wrap">
-          <div className="lcuer16-content-inner-wrap">
-            <div className="lcuer16-item-wrap">
-            <fieldset className="lcuer16-item-label-wrap">
-        <legend className="lcuer16-item-legend">
+        <div className="gcaer26-content-wrap">
+          <div className="gcaer26-content-inner-wrap">
+            <div className="gcaer26-item-wrap">
+            <fieldset className="gcaer26-item-label-wrap">
+        <legend className="gcaer26-item-legend">
                   Ownership
                 </legend>
-        <div className="lcuer16-ownership-wrap">
-          <div className="lcuer16-ownership-selct-wrap">
+        <div className="gcaer26-ownership-wrap">
+          <div className="gcaer26-ownership-selct-wrap">
             <FormControl fullWidth>
               <InputLabel id="demo-simple-select-label">
                 Is the Item Yours
@@ -164,14 +164,14 @@ function closeForm(){
               </Select>
             </FormControl>
           </div>
-          <span className="lcuer16-item-ownership-text">
+          <span className="gcaer26-item-ownership-text">
             Select Yes only if u have permission from the actual owner to represent this property
           </span>
         </div>
         </fieldset>
-                <fieldset className="lcuer16-item-label-wrap">
-                    <legend className="lcuer16-item-legend">Type</legend>
-              <div className="lcuer16-item-type-wrap lcuer16-common-textField-wrap">
+                <fieldset className="gcaer26-item-label-wrap">
+                    <legend className="gcaer26-item-legend">Type</legend>
+              <div className="gcaer26-item-type-wrap gcaer26-common-textField-wrap">
               <Autocomplete
        
         id="tags-standard"
@@ -220,12 +220,12 @@ function closeForm(){
       />
               </div>
               </fieldset>
-              <fieldset className="lcuer16-item-label-wrap">
-                <legend className="lcuer16-item-legend"> 
+              <fieldset className="gcaer26-item-label-wrap">
+                <legend className="gcaer26-item-legend"> 
                 Item Name
                 </legend>
-              <div className="lcuer16-item-name-wrap">
-                <div className="lcuer16-item-name-firstName-wrap">
+              <div className="gcaer26-item-name-wrap">
+                <div className="gcaer26-item-name-firstName-wrap">
                   <TextField
                     id="report-item-name-Name"
                     label="Item Name"
@@ -250,12 +250,12 @@ function closeForm(){
                 </div>
               </div>
               </fieldset>
-              <fieldset className="lcuer16-item-label-wrap">
-                <legend className="lcuer16-item-legend">
+              <fieldset className="gcaer26-item-label-wrap">
+                <legend className="gcaer26-item-legend">
                   Item Color
                 </legend>
 
-              <div className="lcuer16-item-color-wrap">
+              <div className="gcaer26-item-color-wrap">
               
       <Autocomplete
         multiple
@@ -301,11 +301,11 @@ function closeForm(){
           );
         } }
       />
-                <div className="lcuer16-item-color-depictor-wrap">
+                <div className="gcaer26-item-color-depictor-wrap">
                   {/* {
                   Item.colors.map((key,color)=>{
                     return(
-                      <div className="lcuer16-item-color-depictor-singleColor"
+                      <div className="gcaer26-item-color-depictor-singleColor"
                       style={{
                         
                       }}
@@ -317,12 +317,12 @@ function closeForm(){
                 </div>
               </div>
               </fieldset>
-              <fieldset className="lcuer16-item-label-wrap label-description-wrap">
-              <legend className="lcuer16-item-legend">
+              <fieldset className="gcaer26-item-label-wrap label-description-wrap">
+              <legend className="gcaer26-item-legend">
                   Item Description
                 </legend>
-              <div className="lcuer16-item-description-wrap">
-                <div className="lcuer16-item-description">
+              <div className="gcaer26-item-description-wrap">
+                <div className="gcaer26-item-description">
                   <TextField
                     id="report-item-description"
                     label="Describe in Detail"
@@ -351,12 +351,12 @@ function closeForm(){
                 </div>
               </div>
               </fieldset>
-              <fieldset className="lcuer16-item-label-wrap">
-              <legend className="lcuer16-item-legend">
+              <fieldset className="gcaer26-item-label-wrap">
+              <legend className="gcaer26-item-legend">
                   Item Location
                 </legend>
-              <div className="lcuer16-item-location-wrap">
-                <div className="lcuer16-item-location-box all-possible-places">
+              <div className="gcaer26-item-location-wrap">
+                <div className="gcaer26-item-location-box all-possible-places">
                 <TextField
                     id="report-item-location-all-possible-places"
                     label="All possible Places"
@@ -368,7 +368,7 @@ function closeForm(){
                     }}
                   />
                 </div>
-                <div className="lcuer16-item-location-box building-details">
+                <div className="gcaer26-item-location-box building-details">
                 <TextField
                     id="report-item-location-bullding-details"
                     label="building Details"
@@ -392,7 +392,7 @@ function closeForm(){
                   }}
                   />
                 </div>
-                <div className="lcuer16-item-location-box univeristy">
+                <div className="gcaer26-item-location-box univeristy">
                 <TextField
                     id="report-item-location-all-possible-places"
                     label="university"
@@ -418,7 +418,7 @@ function closeForm(){
                   }}
                   />
                 </div>
-                <div className="lcuer16-item-location-box street">
+                <div className="gcaer26-item-location-box street">
                 <TextField
                     id="report-item-location-street"
                     label="Street"
@@ -443,7 +443,7 @@ function closeForm(){
                   }}
                   />
                 </div>
-                <div className="lcuer16-item-location-box apartment">
+                <div className="gcaer26-item-location-box apartment">
                 <TextField
                     id="report-item-location-apartment"
                     label="Apartment"
@@ -466,7 +466,7 @@ function closeForm(){
                   }}
                   />
                 </div>
-                <div className="lcuer16-item-location-box city">
+                <div className="gcaer26-item-location-box city">
                 <TextField
                     id="report-item-location-city"
                     label="City"
@@ -492,7 +492,7 @@ function closeForm(){
                   }}
                   />
                 </div>
-                <div className="lcuer16-item-location-box state">
+                <div className="gcaer26-item-location-box state">
                 <TextField
                     id="report-item-location-State"
                     label="State"
@@ -518,7 +518,7 @@ function closeForm(){
                   }}
                   />
                 </div>
-                <div className="lcuer16-item-location-box pincode">
+                <div className="gcaer26-item-location-box pincode">
                 <TextField
                     id="report-item-location-pinCode"
                     label="Pin Code"
@@ -544,23 +544,23 @@ function closeForm(){
                   }}
                   />
                 </div>
-                <fieldset className="lcuer16-item-label-wrap">
-                    <legend className="lcuer16-item-legend">
+                <fieldset className="gcaer26-item-label-wrap">
+                    <legend className="gcaer26-item-legend">
                         Media
                     </legend>
-                <div className="lcuer16-item-location-media">
-                    <div className="lcuer16-item-media-wrap">
-                      <label className="lcuer16-item-media" htmlFor="lcuer16-item-location-media-input" >
+                <div className="gcaer26-item-location-media">
+                    <div className="gcaer26-item-media-wrap">
+                      <label className="gcaer26-item-media" htmlFor="gcaer26-item-location-media-input" >
                         
-                          <input type="file" className="lcuer16-item-fil-icon"  
-                          id="lcuer16-item-location-media-input"
+                          <input type="file" className="gcaer26-item-fil-icon"  
+                          id="gcaer26-item-location-media-input"
                           accept="image/*"
                           name='files[]'
                           multiple
                           onChange={(e)=>{
                             console.log(e.target.files);
-                            console.log(document.getElementById('lcuer16-item-location-media-input').files);
-                            var files = document.getElementById("lcuer16-item-location-media-input");
+                            console.log(document.getElementById('gcaer26-item-location-media-input').files);
+                            var files = document.getElementById("gcaer26-item-location-media-input");
                         var media=[];
                         if(files && files.files && Object.keys(files.files).length>0){
                           Object.keys(files.files).forEach(index=>{
@@ -586,19 +586,19 @@ function closeForm(){
                           position:'relative',
                         }}
                         onClick={(e)=>{
-                          document.getElementById('lcuer16-item-location-media-input');
+                          document.getElementById('gcaer26-item-location-media-input');
                         }}
                         ></AttachFileIcon>
                       </label>
                     </div>
-                    <div className="lcuer16-media-show-input-wrap">
+                    <div className="gcaer26-media-show-input-wrap">
                       {
                         Item.itemDetails.location.media.map((imag,key)=>{
 
                           return(
-                            <div className="lcuer16-item-location-media-show-each-wrap">
+                            <div className="gcaer26-item-location-media-show-each-wrap">
                             <img src={imag} alt="Media Image of location" 
-                            className="lcuer16-item-location-media-show-each"
+                            className="gcaer26-item-location-media-show-each"
                             />
                             </div>
                           )
@@ -609,20 +609,20 @@ function closeForm(){
                 </fieldset>
               </div>
               </fieldset>
-              <fieldset className="lcuer16-item-label-wrap">
-              <legend className="lcuer16-item-legend">
+              <fieldset className="gcaer26-item-label-wrap">
+              <legend className="gcaer26-item-legend">
                   Submittion Location
                 </legend>
-              <div className="lcuer16-item-submit-wrap">
-                <div className="lcuer16-item-submittion-location"></div>
+              <div className="gcaer26-item-submit-wrap">
+                <div className="gcaer26-item-submittion-location"></div>
               </div>
               </fieldset>
             </div>
           </div>
         </div>
         
-        <div className="lcuer16-item-submitBbutton-wrap">
-          <div className="lcuer16-item-submitButton"
+        <div className="gcaer26-item-submitBbutton-wrap">
+          <div className="gcaer26-item-submitButton"
           onClick={(e)=>[
             ValidateForm(e)
           ]}

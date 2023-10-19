@@ -4,7 +4,7 @@
 //    ,-3px 3px 10px rgb(117, 114, 114)
 //    ;
 transition: 
-all 4s ease-in-out 1s
+all 1s ease-in-out 1s
 
 ;
 align-self: center;
@@ -12,25 +12,29 @@ flex-flow: row;
 justify-content: space-around;
 align-items: center;
 margin: 10px;
+overflow-x: hidden;
 }
 
 .AA-After{
-    width: 92%;
+    width: 100%;
     height: 100%;
     position: absolute;
-    top: 9.7vh;
-   
+    top: 30px;
+    overflow-y: auto;
+    left: 0px;
     z-index: 1;
     transition: 
-    all 4s ease-in-out 1s
-    
+    all 1s ease-in-out 1s
     ;
 }
 
-.AA_Before{
+.AA-Before{
 width: 100%;
 height: 100%;
-left:0;
+left:-23px;
+top:0px;
+margin: 0px !important;
+cursor: pointer;
 }
 
 .c01-ARC-inner-wrap{
@@ -118,6 +122,8 @@ inset 0px -0px 0px 1px rgb(255, 255, 255);
 .c01-ARC-HClose-wrap{
     position: absolute;
     right:2px;
+    font-size: large;
+    cursor: pointer;
 }
 
 .co1-ARC-Hfilter-wrap{
@@ -125,11 +131,18 @@ inset 0px -0px 0px 1px rgb(255, 255, 255);
 }
 
 .c01-ARC-Reports-wrap{
-    display: flex;
     width: 100%;
-    flex-flow: row wrap;
-    padding:10px;
-    margin-top: 40px;
-    justify-content: space-around;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 2rem;
+    row-gap: 2rem;
+    padding: 10px;
 }
 
+
+
+@media screen and (max-width:860px){
+    .c01-ARC-Reports-wrap{
+        grid-template-columns: repeat(1, 1fr);
+    }
+}

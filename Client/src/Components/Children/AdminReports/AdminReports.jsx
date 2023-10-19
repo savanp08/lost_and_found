@@ -38,7 +38,10 @@ const AdminReports =  () =>{
   console.log(reports);
 
   return(
-    <div className="admin-Reports-wrap AA-After">
+    <div className="admin-Reports-wrap AA-After"
+    id="car21-admin-Reports-wrap"
+    
+    >
         <div className="c01-ARC-inner-wrap">
             <div className="c01-ARC-header-wrap">
                 <div className="c01-ARC-Hc-wrap">
@@ -85,7 +88,20 @@ const AdminReports =  () =>{
 
                     </div>
                 </div>
-                <div className="c01-ARC-HClose-wrap">
+                <div className="c01-ARC-HClose-wrap"
+                onClick={(e)=>{
+                    e.preventDefault();
+                    var x=document.getElementById("car21-admin-Reports-wrap");
+                    if(x.classList.contains("AA-After")){
+                        x.classList.remove("AA-After");
+                        x.classList.add("AA-Before");
+                    }
+                    else if(x.classList.contains("AA-Before")){
+                        x.classList.remove("AA-Before");
+                        x.classList.add("AA-After");
+                    }
+                }}
+                >
                     X
                 </div>
             </div>
@@ -97,9 +113,7 @@ const AdminReports =  () =>{
                         )
                     })
                 }
-                {
-                      <EditReport/>
-                }
+                
                
             </div>
         </div>

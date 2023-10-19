@@ -71,6 +71,7 @@ reportRouter.post('/addReport', multerUpload.fields([{
         var newReport  = new FoundReportSchema({
             ...xx, 
             reportId : new mongoose.Types.ObjectId(),
+            date : new Date(),
         })
         
         
@@ -351,7 +352,11 @@ reportRouter.post('/addReport', multerUpload.fields([{
   reportRouter.post("/deleteOneReport", async (req,response)=>{
     try{
         console.log("Delete one report fired",req.body);
-        await FoundReportSchema.deleteOne({_id : req.body._id}).then(res=>{
+        await FoundReportSchema.updateOne({_id : req.body._id},{
+            $set : {
+                "delete.status" : "deleted"
+            }
+        }).then(res=>{
             response.status(200).send(res);
             console.log("Deleted one report successfully",res);
         }).catch(err=>{

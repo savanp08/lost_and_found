@@ -1,0 +1,148 @@
+
+.lcaec23-main-wrap{
+    width: 100%;
+    max-width: 600px;
+    padding:10px;
+    box-shadow: 0px 0px 29px 1px rgba(0,0,0,0.75);
+    position: relative;
+}
+
+.lcaec23-inner-wrap{
+    width: 100%;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.lcaec23-close-wrap{
+    font-size: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    right:20px;
+}
+
+.lcaec23-header-wrap{
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+    flex-flow: row wrap;
+}
+
+.lcaec23-header-title{
+    font-size: 25px;
+    font-weight: 450;
+    color: #746e6e;
+    text-align: center;
+
+}
+
+.lcaec23-body-wrap{
+display: flex;
+width: 100%;
+flex-flow: column wrap;
+justify-content: space-around;
+align-items: center;
+}
+
+.lcaec23-fieldset-wrap{
+    width: 100%;
+    display: flex;
+    border: none;
+    border-top: 5px solid wheat ;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+    padding: 10px;
+}
+.lcaec23-legend-wrap{
+    font-size: 1.1rem;
+    font-weight: 500;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+   
+}
+.lcaec23-ownership-wrap{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+}
+
+.lcaec23-ownership-information-text{
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 400;
+    margin-top:10px;
+    margin-bottom: 10px;
+}
+
+.lcaec23-description-wrap{
+    width: 80%;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
+
+}
+
+.lcaec23-description-information-text{
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 400;
+    margin-top:10px;
+    margin-bottom: 10px;
+}
+
+
+.lcaec23-submitclaim-btn-wrap{
+display: flex;
+flex-flow: row wrap;
+justify-content: space-around;
+align-items: center;
+}
+
+.lcaec23-submitclaim-btn{
+text-align: center;
+font-size: 1.5rem;
+border-radius: 30px;
+font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+font-weight: 500;
+border: none;
+background-color: wheat;
+min-width: 150px;
+min-height: 40px;
+cursor: pointer;
+}
+
+.lcaec23-submit-helper-text-wrap{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
+
+}
+
+.lcaec23-submit-helper-text{
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 400;
+    margin-top:10px;
+    margin-bottom: 10px;
+}
+
+.lcaec23-claim-information-text-wrap{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.lcaec23-claim-information-text{
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 400;
+}

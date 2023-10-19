@@ -7,8 +7,7 @@
     padding-left: 4vh;
     position: relative;
     min-height: 99vh;
-    max-width: 90vw;
-    
+    overflow-x: hidden;
 }
 
 .aa-AdminWrap-In1{
@@ -123,25 +122,32 @@ align-items: center;
 
 ._01-04-02-W{
     width: 100%;
-height: 100%;
-max-width: 200px;
-max-height: 300px;
-overflow: hidden;
-box-shadow: inset 0px -0px 5px 1px rgb(127, 124, 124),
-1px 11px 21px 1px rgb(196, 192, 192)
-;
-border-radius: 13px;
-backdrop-filter: blur(8px);
+    height: 100%;
+    max-width: 200px;
+    max-height: 300px;
+    overflow: hidden;
+    box-shadow: inset 0px -0px 5px 1px rgb(127, 124, 124),
+    1px 11px 21px 1px rgb(196, 192, 192)
+    ;
+    border-radius: 13px;
+    display: flex;
+    flex-flow: row wrap;
+    
+    align-items: center;
 }
 
 ._01-04-03-W{
     width: 100%;
-height: 100%;
-max-width: 200px;
-max-height: 300px;
-overflow: hidden;
-box-shadow: inset 0px -0px 5px 1px rgb(127, 124, 124),
-1px 11px 21px 1px rgb(196, 192, 192)
-;
-border-radius: 13px;
+    height: 100%;
+    max-width: 200px;
+    max-height: 300px;
+    overflow: hidden;
+    box-shadow: inset 0px -0px 5px 1px rgb(127, 124, 124),
+    1px 11px 21px 1px rgb(196, 192, 192)
+    ;
+    border-radius: 13px;
+    display: flex;
+    flex-flow: row wrap;
+    
+    align-items: center;
 }

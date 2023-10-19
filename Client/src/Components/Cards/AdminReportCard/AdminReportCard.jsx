@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import './This.scss';
 import EditReport from "../../GlobalComponents/EditReport/EditReport";
 import axios from "axios";
@@ -6,19 +6,59 @@ import { useDispatch, useSelector } from "react-redux";
 import { addReport } from "../../../Store/Slices/ReportSlice/ReportSlice";
 
 const AdminReportCard = ({report}) => {
-    console.log("AdminReportCard",report);
-
+    
+    const initialState = {
+        _id:null,
+        reporterId: null,
+        reporterName: {
+          firstName: null,
+          middleName: null,
+          lastName: null,
+        },
+        itemDetails: {
+          common_type: null,
+          colors: [],
+          customItemName: null,
+          description: null,
+          location: {
+            allPlacesPossible: [],
+            buildingDetails: null,
+            university: null,
+            street: null,
+            apartment: null,
+            city: null,
+            state: null,
+            pinCode: null,
+            media: [],
+          },
+        },
+          belongsTo: null,
+          claims: [],
+          found: {
+            status: null,
+            userId: null,
+          },
+          submittedAt: null,
+          media: [],
+          reporterType: null,
+    }
+    
+    
     const [displayImages, setDisplayImages] = useState(report.media || []);
     const dispatch = useDispatch();
-    const user = useSelector(state => state.user);
+    const user = useSelector(state => state.user); 
+    
+    console.log("Rerender in edit report popup", report);
+    
 
+    
 
     function OpenEditReport(e,id){
         e.preventDefault();
        dispatch(addReport(report));
        
         var x = document.getElementById(id);
-        console.log(x);
+        console.log("edit report debug =>",x);
         if(x && x.classList.contains("Hide")){
             x.classList.remove("Hide");
             x.classList.add("Add-EditReport-After");
@@ -45,6 +85,19 @@ const AdminReportCard = ({report}) => {
             
             <div className="carc-left-wrap">
                 <div className="carc-left-title-wrap">
+                    <div className="carc-rportId-text-wrap">
+                    <span className="carc-rportId-text">
+                        {report._id}
+                    </span>
+                    <div className="carc-rportId-text-icon-wrap"
+                    onClick={(e)=>{
+                        navigator.clipboard.writeText(report._id);
+                    }}
+                    >
+                        Copy Id
+
+                    </div>
+                    </div>
                     <span className="carc-left-title">
                         {report.itemDetails.customItemName}
                     </span>
@@ -72,8 +125,8 @@ const AdminReportCard = ({report}) => {
                                     OpenEditReport(e,"lcuer16-EditReport-wrap");
                                  }
                                  else{
-                                    
-                                    OpenEditReport(e,"aer11-EditReport-wrap")
+                                    console.log("debug => opening admin edit report")
+                                    OpenEditReport(e,"gcaer26-EditReport-wrap")
                                  }
                            }}
                             >
