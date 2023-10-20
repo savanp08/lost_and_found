@@ -105,7 +105,8 @@ const LostReportSchemaX = new mongoose.Schema({
                 required:false,
             },
             finishedClaimId:{
-                type:mongoose.Types.ObjectId
+                type:mongoose.Types.ObjectId,
+                
             },
             
         },

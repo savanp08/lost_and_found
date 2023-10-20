@@ -61,6 +61,7 @@ const initialState_user = {
     },
     userType: null,
     UniqueId: null,
+    phone:null,
     nanoid: null,
     occupation: null,
     gender: null,
@@ -100,8 +101,8 @@ const initialState_claim = {
         status: null,
     },
     status: null,
-    assesment: {
-        virtualAssesment: {
+    assessment: {
+        virtualAssessment: {
             status: null,
             comment: null,
             date: null

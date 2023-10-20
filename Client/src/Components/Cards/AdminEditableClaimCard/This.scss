@@ -2,10 +2,14 @@
 
 .caecc22-main-wrap{
     width: 100%;
-    max-width: 500px;
-    padding:10px;
-    box-shadow: 0px 0px 29px 1px rgba(0,0,0,0.75);
+    max-width: 300px;
     
+    
+    height: 100%;
+    max-height: 550px;
+    min-height: 550px;   
+    justify-self: center;
+    align-self: center;
 }
 
 .caecc22-edit-wrap{
@@ -14,6 +18,7 @@
     flex-flow: column wrap;
     justify-content: space-around;
     align-items: center;
+    height: 100%;
 }
 
 .caecc22-claim-report-display-wrap{
@@ -23,6 +28,7 @@
     justify-content: flex-start;
     align-items: flex-start;
     padding-top: 15px;
+    height: 100%;
 }
 .caecc22-claim-options-wrap{
     min-width: 34px;
@@ -41,16 +47,8 @@
 
 
 
-.caecc22-claim-display-wrap{
-    width: 100%;
-    display: flex;
-    flex-flow: column wrap;
-    justify-content: space-around;
-    align-items: center;
-}
-
 .caecc22-claim-fieldset-wrap{
-    width: 70%;
+    width: 95%;
     display: flex;
     border: none;
     border-top: 5px solid wheat ;
@@ -58,7 +56,7 @@
     justify-content: space-around;
     align-items: center;
     text-align: center;
-    padding: 10px;
+    
 }
 
 .caecc22-claim-legend-wrap{
@@ -68,7 +66,7 @@
     justify-content: space-around;
     align-items: center;
     text-align: center;
-    padding: 10px;
+    padding: 5px;
     font-size: 20px;
     font-weight: 450;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
@@ -135,8 +133,8 @@
     text-overflow: ellipsis;
     white-space: wrap;
     max-height: 96px;
-    
-    
+    max-width: 230px;
+    width: 100%;
 }
 
 .caecc22-helper-text-wrap{
@@ -160,4 +158,60 @@
     background-color: wheat;
     cursor: pointer;
     box-shadow: 0px 0px 9px 1px rgba(0,0,0,0.75);
+}
+
+.caecc22-claim-display-back-wrap{
+    display: flex;
+    position: absolute;
+    backface-visibility: hidden;
+         height: 100%;
+         width: 100%;
+        flex-flow: column wrap;
+        justify-content: space-around;
+        align-items: center;
+         transform: rotateY(180deg);
+         padding-right: 10px;
+}
+
+
+.caecc22-flip-div{
+    transform: rotateY(180deg);
+
+}
+
+.caecc22-claim-back-after-flip{
+   
+    transform: rotateY(180deg);
+}
+
+.caecc22-claim-front-after-flip{
+    
+}
+
+.caecc22-claim-display-front-wrap{
+    display: flex;
+    width: 100%;
+    
+    flex-flow: column wrap;
+    justify-content: space-around;
+    align-items: center;
+    position: absolute;
+    backface-visibility: hidden;
+    padding-right: 10px;
+}
+
+
+
+.caecc22-claim-display-wrap{
+    width: 100%;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-around;
+    align-items: center;
+    position: relative;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 1s;
+    box-shadow: 0px 0px 29px 1px rgba(0,0,0,0.75);
+    
 }

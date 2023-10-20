@@ -1,6 +1,7 @@
-.SNavBarWrap{
+.csn30-SNavBarWrap{
 background-color: black;
 width: 10%;
+max-width: 130px;
 height: 80%;
 min-width: 90px;    
 border-radius: 20px;
@@ -12,8 +13,86 @@ box-shadow: -2px -1px 4px rgb(104, 98, 98) ,-3px 2px 6px rgb(117, 113, 113),
 ;
 }
 
+.csn30-SNavBar-IconsWrap{
+    display: flex;
+    width: 100%;
+    height: 80%;
+    flex-flow: column wrap;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.csn30-SNavBar-LogoWrap{
+    cursor: pointer;
+    display:flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+    height: 20%;
+}
 
 .csn30-add-report-wrap{
     color:white;
     cursor: pointer;
+    display:flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
 }
+
+.csn30-add-report-icon-wrap:hover{
+    color: rgb(255, 255, 255);
+    background-color: rgb(0, 0, 0);
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 4px rgb(255, 255, 255) ;
+    transition: 0.5s;
+    top:calc(2px);
+}
+
+.csn30-icon-wrap-each{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+
+}
+
+.csn30-icon-svg:hover{
+
+        color: rgb(255, 255, 255);
+        background-color: rgb(0, 0, 0);
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px 4px rgb(255, 255, 255) ;
+        transition: 0.5s;
+        top:100px;
+    
+}
+
+
+.csn30-img-icon{
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+
+}
+
+.csn30-icon-svg{
+    cursor: pointer;
+}
+
+.csn30-icon-wrap-account-wrap{
+    display: flex;
+    position: relative;
+    z-index: 0;
+}
+
+.csn30-icon-wrap-each-login-wrap30{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+    
+  
+}
+

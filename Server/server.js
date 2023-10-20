@@ -10,6 +10,9 @@ import mongoose from "mongoose";
 import authRouter from "./APIs/Auth/Auth.js";
 import reportRouter from "./APIs/Item/Reports.js"
 import claimRouter from "./APIs/Claim/Claim.js";
+import { sendSignUpConfirmationMail } from "./Controllers/Mailer/Mailer.js";
+import userRouter from "./APIs/User/User.js";
+
 
 dotenv.config();
 const server = express();
@@ -26,6 +29,7 @@ server.use(bodyParser.urlencoded({ extended: true }));
 server.use('/Auth',authRouter); 
 server.use('/Report', reportRouter);
 server.use('/Claim', claimRouter);
+server.use('/User', userRouter);
 
 const httpServer = server.listen(port, ()=>[
     console.log("listening on port", port)
@@ -44,3 +48,48 @@ mongoose.connect(DbUri || process.env.DbUri,
 .catch((error) => { 
     console.log(error.message);
 });
+
+
+const domainUrl = "http://localhost:3000";
+
+export{
+    domainUrl,
+}
+
+
+
+
+
+
+
+
+
+
+
+
+// headers: new Headers({
+//     'Authorization': 'Bearer 3dcd4b054fcb4ee29579def22fc20ab3',
+//     "Access-Control-Allow-Origin": "*",
+//   "Content-Type": "application/json",
+// });
+
+// async function fetchData (){
+//     await fetch("https://api.football-data.org/v4/competitions",{
+//         method : "GET",
+//         headers : {
+//             "X-Auth-Token" : "3dcd4b054fcb4ee29579def22fc20ab3",
+//             "Content-Type" : "application/json",
+//             'Authorization': 'Bearer 3dcd4b054fcb4ee29579def22fc20ab3',
+//             "Access-Control-Allow-Origin": "*",
+//         }
+//     }).then(res=>{
+//         console.log("Response =>>>>>>>", res);
+//         console.log( "Json=>",res.json());
+//         console.log("Body =>>>",res.body)
+//         console.log("Body =>>>",res.body);
+//     }).catch(err=>{
+//         console.log("Error =>>>>>>>", err);
+//     })
+// } 
+
+// fetchData();

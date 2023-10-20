@@ -1,9 +1,9 @@
-import userSchema from "../../Schemas/UserSchema";
+import userSchema from "../../Schemas/UserSchema.js";
 import express from "express";
 
-const userRouter  = expressRouter();
+const userRouter  = express.Router();
 
-userRouter.post('/FindAll', async (req,response)=>{
+userRouter.get('/getAllUsers', async (req,response)=>{
     try{
         console.log("user search fired",req.body);
 
@@ -72,3 +72,6 @@ userRouter.post('./UpdateAll', async (req,response)=>{
         console.log("error fetching one user",err.message);
     }
  })
+
+
+ export default userRouter;

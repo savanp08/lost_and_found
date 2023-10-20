@@ -3,6 +3,7 @@ import userSchema from "../../Schemas/UserSchema.js";
 import jwt from "jsonwebtoken"; 
 import adminSchema from '../../Schemas/AdminSchema.js';
 import { SignUp, userExists } from "../../Controllers/Auth/Auth.js";
+import { sendSignUpConfirmationMail } from "../../Controllers/Mailer/Mailer.js";
 
 const authRouter = express.Router();
  
@@ -28,11 +29,23 @@ authRouter.post('/SignUp', async (req,response)=>{
       const x = await SignUp(req);
       if(x.message==="success"){
         console.log("Account Created Successfully");
+
+        try{
+              sendSignUpConfirmationMail(x.user);
+        }
+        catch(err){
+          console.log("APIs/Auth/Auth.js 1 => Error in sending signup confirmation mail",err);     //    1
+        }
+
+
+
         return response.status(200).send({
           message : "Account Created Successfully",
           user: x.user,
           token : fetchToken(req.body.user.email.toLowerCase())
         });
+
+        
        }
        else{
         console.log("Error in SignUp");

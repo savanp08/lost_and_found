@@ -33,8 +33,8 @@ const ClaimSchemaX = new mongoose.Schema({
         type:String,
         default:"pending",
     },
-    assesment:{
-        virtualAssesment:{
+    assessment:{
+        virtualAssessment:{
             status:{
                 type:String,
                 default:"Not Initiated",
@@ -69,6 +69,24 @@ const ClaimSchemaX = new mongoose.Schema({
 
             }]
         },
+    },
+    schedule:{
+        inPersonAssessment:{
+            date:{
+                type:Date,
+                default:null
+            }
+        },
+        pickUp:{
+            date:{
+                type:Date,
+                default:null
+            },
+            status:{
+                type:String,
+                default:"Not Initiated",
+            }
+        }
     },
     supportingDocuments:[{
         type:String,

@@ -34,6 +34,9 @@ const ClaimPopUp = () => {
                 reportId: report._id,
                 userId: user._id,
             },
+            user:{
+                ...user
+            }
         }).then(res=>{
             console.log("Response from submit claim=> ",res.data);
              

@@ -55,6 +55,14 @@ const userSchemaX = new mongoose.Schema({
         default: null,
         unique: true,
     },
+    phone:{
+        
+        type: 'string',
+        minlength: 3,
+        default: null,
+        unique: true,
+    
+    },
     nanoid: {
         required: true,
         type: 'string',
@@ -121,6 +129,7 @@ const userSchemaX = new mongoose.Schema({
             type: 'string',
             minlength: 1,
             default: null,
+            
         },
     },
     reports: {

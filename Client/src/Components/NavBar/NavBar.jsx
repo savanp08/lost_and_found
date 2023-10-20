@@ -2,43 +2,121 @@ import React from "react";
 import './common.scss';
 import './NavBar.css';
 import { useSelector } from "react-redux";
-
+import AddReportIcon from "../../Styles/SVGs/post_add_white_48dp.svg";
+import {
+    logo_test
+} from "../../Media/Images/Logo.js";
+import {
+    useNavigate
+} from 'react-router-dom';
 
 const SideNavBar = () => {
 
     const user = useSelector(state=> state.user);
+    const navigate = useNavigate();
 
     return(
-        <div className="SNavBarWrap">
-            <div className="SNavBar-LogoWrap">
-
+        <div className="csn30-SNavBarWrap">
+            <div className="csn30-SNavBar-LogoWrap">
+            <img className="csn30-icon-svg csn30-img-icon"
+                 src={logo_test} alt="Logo" 
+                 onClick={(e)=>{
+                    e.preventDefault();
+                    navigate("/Home");
+                 }}
+                 />
             </div>
-            <div className="SNavBar-IconsWrap">
-                <div className="SNavBar-IconWrap">
+            
+                <div className="csn30-SNavBar-IconsWrap">
                 <div className="csn30-add-report-wrap"
+                
+                >
+                         <svg 
+                         onClick={(e)=>{
+                            e.preventDefault();
+                            if(user._id){
+                            var x = document.getElementById("ar11-addReport-wrap");
+                            if(x.classList.contains("Hide")){
+                                x.classList.remove("Hide");
+                                x.classList.add("Add-Report-After");
+                            }
+                            else{
+                                x.classList.remove("Add-Report-After");
+                                x.classList.add("Hide");
+                            }
+                        }
+                        else{
+                            alert("Please login to add a report");
+                        }
+                        }}
+                         className="csn30-add-report-icon-wrap"
+                         xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 20 20" height="48px" viewBox="0 0 20 20" width="48px" fill="#FFFFFF"><g><rect fill="none" height="20" width="20" x="0"/></g><g><g/><g><path d="M14,15H5V6h6V5H5C4.45,5,4,5.45,4,6V15c0,0.55,0.45,1,1,1H14c0.55,0,1-0.45,1-1V9h-1V15z"/><polygon points="7,8 7,9 11,9 12,9 12,8"/><rect height="1" width="5" x="7" y="10"/><rect height="1" width="5" x="7" y="12"/><polygon points="15,3 14,3 14,5 14,5 12,5 12,6 14,6 14,8 15,8 15,6 15,6 17,6 17,5 15,5"/></g></g></svg>
+                </div>
+                <div className="csn30-icon-wrap-each">
+                <svg
                 onClick={(e)=>{
                     e.preventDefault();
+                    navigate("/Home");
+                 }}
+                className="csn30-icon-svg"
+                xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 0 24 24" width="44px" fill="#FFFFFF"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 5.69l5 4.5V18h-2v-6H9v6H7v-7.81l5-4.5M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z"/></svg>
+                </div>
+                <div className="csn30-icon-wrap-each">
+                <svg 
+                onClick={(e)=>{
+                    e.preventDefault();
+                    navigate("/Reports");
+                 }}
+                className="csn30-icon-svg"
+                xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 0 24 24" width="44px" fill="#FFFFFF"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z"/></svg>
+                </div>
+                <div className="csn30-icon-wrap-account-wrap">
+                <svg 
+                onClick={(e)=>{
                     if(user._id){
-                    var x = document.getElementById("ar11-addReport-wrap");
-                    if(x.classList.contains("Hide")){
-                        x.classList.remove("Hide");
-                        x.classList.add("Add-Report-After");
+                        e.preventDefault();
+                        navigate("/Account");
                     }
                     else{
-                        x.classList.remove("Add-Report-After");
-                        x.classList.add("Hide");
+                     var x = document.getElementById("csn30-login-icon");
+                     if(x.classList.contains("Hide")){
+                         x.classList.remove("Hide");
+                     }
+                     else {
+                         x.classList.add("Hide");
+                     }
                     }
-                }
-                else{
-                    alert("Please login to add a report");
-                }
                 }}
-                >
-                         Add
+                className="csn30-icon-svg"
+                xmlns="http://www.w3.org/2000/svg" height="44px" viewBox="0 0 24 24" width="44px" fill="#FFFFFF"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 5.9c1.16 0 2.1.94 2.1 2.1s-.94 2.1-2.1 2.1S9.9 9.16 9.9 8s.94-2.1 2.1-2.1m0 9c2.97 0 6.1 1.46 6.1 2.1v1.1H5.9V17c0-.64 3.13-2.1 6.1-2.1M12 4C9.79 4 8 5.79 8 8s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 9c-2.67 0-8 1.34-8 4v3h16v-3c0-2.66-5.33-4-8-4z"/></svg>
+                  
                 </div>
+
+                <div className="csn30-icon-wrap-each-login-wrap30 Hide"
+                  id="csn30-login-icon"
+                  >
+                <svg 
+                onClick={(e)=>{
+                    e.preventDefault();
+                    navigate("/Login");
+ 
+                }}
+                
+                className="csn30-icon-svg"
+                xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 20 20" height="38px" viewBox="0 0 20 20" width="38px" fill="#FFFFFF"><g><rect fill="none" height="20" width="20" x="0"/></g><g><path d="M17.5,8.5h-6.75C10.11,6.48,8.24,5,6,5c-2.76,0-5,2.24-5,5s2.24,5,5,5c2.24,0,4.11-1.48,4.75-3.5h0.75L13,13l1.5-1.5L16,13 l3-3L17.5,8.5z M6,12.5c-1.38,0-2.5-1.12-2.5-2.5S4.62,7.5,6,7.5S8.5,8.62,8.5,10S7.38,12.5,6,12.5z"/></g></svg>
+                  </div>
+
+
+
+
+                {/* <div className="csn30-icon-wrap-each">
+                <svg className="csn30-icon-svg"
+                xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 20 20" height="44px" viewBox="0 0 20 20" width="44px" fill="#FFFFFF"><g><rect fill="none" height="20" width="20"/></g><g><g><path d="M10 5.5c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm0 4.5c-.83 0-1.5-.67-1.5-1.5S9.17 7 10 7s1.5.67 1.5 1.5S10.83 10 10 10z"/><path d="M10 2c-4.42 0-8 3.58-8 8s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm0 14.5c-1.49 0-2.86-.51-3.96-1.36C7.19 14.42 8.55 14 10 14s2.81.42 3.96 1.14c-1.1.85-2.47 1.36-3.96 1.36zm5.07-2.44c-1.44-.99-3.19-1.56-5.07-1.56s-3.62.58-5.07 1.56C4.04 12.95 3.5 11.54 3.5 10c0-3.58 2.92-6.5 6.5-6.5s6.5 2.92 6.5 6.5c0 1.54-.54 2.95-1.43 4.06z"/></g></g></svg>
+                </div> */}
+                 
                 </div>
             </div>
-        </div>
+        
     )
 }
 

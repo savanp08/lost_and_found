@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import userSchema from "../../Schemas/UserSchema.js";
 import { addToReport, addToUser } from "../../Controllers/Claims/Claims.js";
 import FoundReportSchema from "../../Schemas/FoundReportSchema.js";
+import { sendClaimConfirmationMail } from "../../Controllers/Mailer/Mailer.js";
 
 
 const claimRouter = express.Router();
@@ -72,6 +73,13 @@ claimRouter.post('/addClaim', async (req,response)=>{
                 }
                 else{
                     console.log("added claim",xx);
+                    try{
+                          sendClaimConfirmationMail(saveClaim,req.body.user);
+                    }
+                    catch(err){
+                        console.log("Error APIs/Claim/Claim.js => 90 error in catch2 while addtoReport adding claim",err);  // 90
+                        return response.status(500).send(err);
+                    }
                     return response.status(200).send(xx);
                 }
                
@@ -116,6 +124,24 @@ claimRouter.get(`/getManyClaims/:userId`, async (req,response)=>{
         return response.status(500).send(err.message);
     }
 })
+
+
+   claimRouter.post("/getManyClaims/In/:userId", async (req,response)=>{
+    try{
+        console.log("get many claims fired",req.body);
+        const claims = await ClaimSchema.find({_id : 
+           { $in:     
+            req.body.claimIds  }
+        });
+        console.log("fetched claims",claims);
+        return response.status(200).send(claims);
+    }
+    catch(err){
+        console.log("error fetching claims",err.message);
+        return response.status(500).send(err.message);
+    }
+   })
+
 
  claimRouter.post("/editClaim", async (req,response)=>{
     try{
@@ -162,17 +188,17 @@ claimRouter.get(`/getManyClaims/:userId`, async (req,response)=>{
     }
   });
 
-  claimRouter.post("/editClaim/AssesmentUpdate/Virtual", async (req,response)=>{
+  claimRouter.post("/editClaim/AssessmentUpdate/Virtual", async (req,response)=>{
     try{
         console.log("edit virtual Assessment claim fired",req.body);
         const res  = await ClaimSchema.updateOne({ _id : req.body._id},{
             $set : {
-                "assesment" : req.body.assesment,
+                "assessment" : {...req.body.assessment,  "virtualAssessment.date" : Date.now() }
+            },
                 $push : {
                     updates : "Virtual Assessment Updated",
                 },
-                "assessment.virtualAssesment.date" : Date.now(),
-            }
+            
         });
         if(res.error){
             console.log("error in edit claim",res.error);
@@ -190,23 +216,22 @@ claimRouter.get(`/getManyClaims/:userId`, async (req,response)=>{
     }
   })
 
-  claimRouter.post("/editClaim/AssesmentUpdate/InPerson", async (req,response)=>{
+  claimRouter.post("/editClaim/AssessmentUpdate/InPerson", async (req,response)=>{
     try{
         var update = "In Person Assessment Updated";
-        if(req.body.assesment.inPersonAssessment.status === "Initiated"){
+        if(req.body.assessment.inPersonAssessment.status === "Initiated"){
             update = "In Person Assessment is required at "+
-            req.body.assesment.inPersonAssessment.location+"  on "
-            +req.body.assesment.inPersonAssessment.date;
+            req.body.assessment.inPersonAssessment.location+"  on "
+            +req.body.assessment.inPersonAssessment.date;
         }
         console.log("edit In Person Assessment claim fired",req.body);
         const res  = await ClaimSchema.updateOne({ _id : req.body._id},{
             $set : {
-                "assesment" : req.body.assesment,
+                "assessment" : {...req.body.assessment,  "inPersonAssessment.date" : Date.now() }
+            },
                 $push : {
                     updates : update,
                 },
-                "assessment.inPersonAssessment.date" : Date.now(),
-            }
         });
         if(res.error){
             console.log("error in edit claim",res.error);
@@ -215,15 +240,13 @@ claimRouter.get(`/getManyClaims/:userId`, async (req,response)=>{
         }
         else{
             console.log("edited claim",res);
-            if(req.body.assesment.inPersonAssessment.status === "Accepted"){
+            if(req.body.assessment.inPersonAssessment.status === "Accepted"){
                 try{
+                    var x = req.body;
+                    delete x._id;
                     var reportUpdated = await FoundReportSchema.updateOne({_id : req.body.reportId},{
                         $set : {
-                            found : {
-                                status : true,
-                                userId : req.body.userId,
-                                finishedClaimId : req.body._id,
-                            }
+                            ...x,
                         }
                     });
                 }
@@ -240,6 +263,40 @@ claimRouter.get(`/getManyClaims/:userId`, async (req,response)=>{
     }
   })
 
+
+   claimRouter.post("/editClaim/PickUp", async (req, response)=>{
+    try{
+        var x = {
+            ...req.body
+        }
+        delete x._id;
+        console.log("edit pick up claim fired",req.body);
+        var x=null;
+        try{
+          x=await ClaimSchema.updateOne({ _id : req.body._id},{
+            ...x,
+            
+        
+        });
+        }
+    
+    catch(err){
+        console.log("Error APIs/Claim/Claims.js => 13 In catch in edit",err.message);   // 13
+        return response.status(500).send(err.message);
+    }
+    if(x.error){
+        console.log("Error APIs/Claim/Claims.js => 14 In catch",x.error)   // 14
+        return response.status(500).send(x.error);
+    }
+    else{
+        console.log("APIs/Claim/Claims.js => 15 edited claim",x);    // 15
+        return response.status(200).send(x);
+    }
+}
+    catch(err){
+        console.log("Error APIs/Claim/Claims.js => 12 In catch",err)     // 12
+    }
+   })
 
 export default claimRouter;
 

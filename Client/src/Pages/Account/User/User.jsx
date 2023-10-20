@@ -21,8 +21,10 @@ const UserAccount = () => {
     const [displayReports, setDisplayReports] = useState([]);
     const [claims, setClaims] = useState([]);
     const [displayClaims, setDisplayClaims] = useState([]);
-    const [reportMaps ,setReportMaps] = useState(new Map());
-    const [claimMaps ,setClaimMaps] = useState(new Map());
+    const [reportsMap ,setReportsMap] = useState(new Map());
+    const [claimsMap ,setClaimsMap] = useState(new Map());
+    const [displayType , setDisplayType] = useState("reports");
+    const [count,setCount] = useState(0);
 
     useEffect(()=>{
         
@@ -44,15 +46,17 @@ const UserAccount = () => {
        
         async function fetchAllReports(){
             const x = user._id;
-            await axios.get(`/Report/getManyReports/${x}`,{
-                params:{
-                    userId : user._id
-                }
+            await axios.post(`/Report/getManyReports/In/${x}`,{
+                
+                    reportIds : user.claims.reportIds,
+                
             }).then(res=>{
                 console.log("response from fetch all reports=> ",res.data);
-                if(Array.isArray(res.data)){
-                    setReports(res.data);
-                    setDisplayReports(res.data);
+                if(res.data && Array.isArray(res.data)){
+                    res.data.forEach(report=>{
+                        reportsMap.set(report._id,report);
+                    })
+                    setReportsMap(new Map(reportsMap));
                 }
             }).catch(err=>{
                      console.log("error from fetch all reports=> ",err);
@@ -60,33 +64,37 @@ const UserAccount = () => {
             })
         }
 
+       
+
         async function fetchAllClaims(){
             const x = user._id;
-            await axios.get(`/Claim/getManyClaims/${x}`,{
-                params:{
-                    userId :  x
-                }
+            await axios.post(`/Claim/getManyClaims/In/${x}`,{
+                
+                    claimIds : user.claims.claimIds,
+                
             }).then(res=>{
                 console.log("response from fetch all claims=> ",res.data);
-                if(Array.isArray(res.data)){
-                    setClaims(res.data);
-                    setDisplayClaims(res.data); 
-                    // fetchAllReports();
-                    
+                if(res.data && Array.isArray(res.data)){
+                    res.data.forEach(claim=>{
+                        claimsMap.set(claim._id,claim);
+                    })
+                    setClaimsMap(new Map(claimsMap));
                 }
             }).catch(err=>{
                      console.log("error from fetch all claims=> ",err);
 
             })
         }
-        if(user.userId){
+        
         fetchAllClaims();
          fetchAllReports();
-        }
         
 
     },[user])
 
+    useEffect(()=>{
+        setCount(count+1);
+ },[reportsMap,claimsMap])
 
     const SortComponent = () => {
 
@@ -142,19 +150,26 @@ const UserAccount = () => {
                     </div>
                     <div className="pua15-cards-content-wrap">
                         {
-                            displayReports.map((report,key)=>{
-                                return(
-                                    <AdminReportCard key={key} report={report}/>
-                                )
-                            })
+                            // displayType === "reports"? (
+                                
+                            //         Array.from(reportsMap).map(([key,report])=>{
+                            //             return(
+                            //                 <AdminReportCard key={key} report={report}/>
+                            //             )
+                            //         })
+                                
+                            // ):(
+                                Array.from(claimsMap).map(([key,claim])=>{
+                                    return(
+                                        <div className="cac24-claims-each-wrap" key={key}>
+                                        <EditableClaimCard claim={claim} user={user} report={reportsMap.get(claim.reportId)}/>
+                                        <AdminReportCard report={reportsMap.get(claim.reportId)}/>
+                                        </div>
+                                    )
+                                })
+                    //        )
                         }
-                        {
-                            displayClaims.map((claim,key)=>{
-                                return(
-                                    <EditableClaimCard claim={claim}/>
-                                )
-                            })
-                        }
+                   
                       
                     </div>
                 </div>

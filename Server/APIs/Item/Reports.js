@@ -9,6 +9,7 @@ import fs from 'fs';
 import multerUpload from '../../MiddleWares/MulterUpload.js';
 import cloudinary from '../../EndWares/Cloudinary.js';
 import { addDefaultClaim, addToReport, addToUser } from '../../Controllers/Claims/Claims.js';
+import { sendSignUpConfirmationMail } from '../../Controllers/Mailer/Mailer.js';
 
 const reportRouter  = express.Router();
 
@@ -326,6 +327,7 @@ reportRouter.post('/addReport', multerUpload.fields([{
         console.log("Get many reports fired for user",req.params.userId);
         const manyReports = await FoundReportSchema.find({userId : req.params.userId});
         console.log("Many reports => ",manyReports);
+        
         return response.status(200).send(manyReports);
     }
     catch(err){
@@ -347,6 +349,24 @@ reportRouter.post('/addReport', multerUpload.fields([{
         response.status(400).send(err);
     } 
   });
+
+   reportRouter.post("/getManyReports/In/:userId", async (req,response)=>{
+    try{
+        console.log("Get many reports fired for user",req.body);
+        const manyReports = await FoundReportSchema.find({_id :{
+             $in : req.body.reportIds 
+            }
+        });
+        console.log("Many reports => ",manyReports);
+        
+        return response.status(200).send(manyReports);
+    }
+    catch(err){
+        console.log("Error in getting many reports",err);
+        return response.status(400).send(err);
+    }
+   })
+
 
   // delete one report by id
 

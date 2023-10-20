@@ -24,6 +24,7 @@ background: radial-gradient(ellipse at center,
              linear-gradient(82deg, #dff7ff 0%, #f3ff99 27%, #88b8ff 74%, #82b3ff 100%);
 background-blend-mode: screen, hue, color, overlay;
 overflow-x: hidden;
+backdrop-filter: blur(98px); /* Chrome and Opera */
 }
 
 .AA-After{
@@ -49,7 +50,7 @@ cursor: pointer;
 }
 
 .cac24-ARC-inner-wrap{
-    width: 97%;
+    width: 100%;
     height: 100%;
     display: flex;
     flex-flow: column;
@@ -151,15 +152,31 @@ inset 0px -0px 0px 1px rgb(255, 255, 255);
 }
 
 .cac24-claims-each-wrap{
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-around;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    justify-content: center;
     align-items: center;
-    width: 100%;
-
 }
 
 
-@media screen and (max-width:860px){
-    
+
+@media screen and (max-width:800px){
+    .cac24-ARC-claims-wrap{
+        grid-template-columns: repeat(1, 1fr);
+    }
+    .cac24-claims-each-wrap{
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+@media only screen and (max-width:1000px) and (min-width:800px){
+.cac24-claims-each-wrap{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-content: center;
+    align-items: center;
+}
 }

@@ -9,13 +9,15 @@ import Select from "@mui/material/Select";
 import ClaimEditComponent from '../../LocalComponents/ClaimEditComponent/ClaimEditComponent';
 import './This.scss';
 import AdminClaimEditComponent from '../../LocalComponents/AdminEditClaimComponent/AdminEditClaimComponent';
-import { initialState_user } from '../../Data/Schemas';
+import { initialState_claim, initialState_user } from '../../Data/Schemas';
 
-const AdminEditableClaimCard = ({ claim }) => {
+const AdminEditableClaimCard = (props) => {
+    const [claim, setClaim] = useState(props.claim || initialState_claim);
     const [editing, setEditing] = useState(false);
-    const [updatedClaim, setUpdatedClaim] = useState(claim);
+    const [updatedClaim, setUpdatedClaim] = useState(props.claim);
     const [user, setUser] = useState(initialState_user);
-
+    const [claim_user, setClaim_user] = useState(props.user || initialState_user);
+    const [flip,setFlip] = useState(false);
    
 
     const handleInputChange = (event) => {
@@ -23,6 +25,7 @@ const AdminEditableClaimCard = ({ claim }) => {
         setUpdatedClaim({ ...updatedClaim, [name]: value });
     };
 
+    console.log("Claim Card debug => ",claim, claim_user);
     
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -65,7 +68,11 @@ const AdminEditableClaimCard = ({ claim }) => {
                 ) : (
                     <div className='caecc22-claim-report-display-wrap'>
                         <div className='caecc22-claim-options-wrap'>
-                            <div className='caecc22-claim-option-each-wrap'>
+                            <div className='caecc22-claim-option-each-wrap'
+                            onClick={(e)=>{
+                                setFlip(!flip);
+                            }}
+                            >
                                 R
                             </div>
                             <div className='caecc22-claim-option-each-wrap'
@@ -77,14 +84,31 @@ const AdminEditableClaimCard = ({ claim }) => {
                             </div>
                             
                         </div>
-                        <div className='caecc22-claim-display-wrap'>
-                            <div className='caecc22-claim-display-front-wrap'>
+                        <div className={'caecc22-claim-display-wrap' + (flip? " caecc22-flip-div" : "") }>
+                            <div className={'caecc22-claim-display-front-wrap' +  (flip? " caecc22-claim-front-after-flip" : "")  }>
                         <fieldset className={'caecc22-claim-fieldset-wrap' + (claim.delete.status === "deleted"? " caecc22-claim-deleted-fieldset" : "")}>
-                                <legend className='caecc22-claim-legend-wrap'>Property Claimed</legend>
+                                <legend className='caecc22-claim-legend-wrap'>Property Name</legend>
                             <div className='caecc22-claim-propertyName-wrap'>
                                 <span className='caecc22-claim-PropertyName-text caecc22-preventOverflow'>{
-                                    "Property Name"
+                                    
+                                        props.report.itemDetails.customItemName
+                                    
 
+                                }</span>
+                            </div>
+                            </fieldset>
+                            <fieldset className={'caecc22-claim-fieldset-wrap' + (claim.delete.status === "deleted"? " caecc22-claim-deleted-fieldset" : "")}>
+                                <legend className='caecc22-claim-legend-wrap'>Claimant</legend>
+                            <div className='caecc22-claim-claimant-wrap'>
+                                <span className='caecc22-claim-claimant-text caecc22-preventOverflow'>
+                                    Name : { <span className="caecc22-claim-claimant-name-text">{claim_user.Name.firstName +
+                                     (claim_user.Name.middleName? claim_user.Name.lastName : "") + claim_user.Name.lastName}</span>
+                                }</span>
+                                <span className='caecc22-claim-claimant-text caecc22-preventOverflow'>
+                                    email : { <span className="caecc22-claim-claimant-name-text">{claim_user.email}</span>
+                                }</span>
+                                <span className='caecc22-claim-claimant-text caecc22-preventOverflow'>
+                                    uniqueId : { <span className="caecc22-claim-claimant-name-text">{claim_user.UniqueId}</span>
                                 }</span>
                             </div>
                             </fieldset>
@@ -113,14 +137,15 @@ const AdminEditableClaimCard = ({ claim }) => {
                                 setEditing(true);
                             }}
                             > Edit
-
                             </button>
                         </div>
-                        </div>
-                        <div className='caecc22-claim-display-back-wrap'>
+                        
+                        <div className={'caecc22-claim-display-back-wrap'  + (flip? " caecc22-claim-back-after-flip" : "") }
+                        
+                        >
                             <AdminEdiatableClaimCard_BackCard claimX={claim}/>
                         </div>
-                       
+                        </div>
                     </div>
                 )}
             </div>
@@ -130,84 +155,220 @@ const AdminEditableClaimCard = ({ claim }) => {
 
 
 const AdminEdiatableClaimCard_BackCard = ({ claimX }) => {
+
     const [claim, setClaim] = useState(claimX || null);
+    const [editBack,setEditBack] = useState(false);
 
-
-    const submitVirtualAssesment = async (status) => {
+    const submitVirtualAssessment = async (status) => {
 
         try {
-            await axios.post('/Claim/editClaim/AssesmentUpdate/Virtual', {
+            await axios.post('/Claim/editClaim/AssessmentUpdate/Virtual', {
                 ...claim,
                 "assessment": {
                     ...claim.assessment,
-                    "virtualAssesment": {
-                        ...claim.assessment.virtualAssesment,
+                    "virtualAssessment": {
+                        ...claim.assessment.virtualAssessment,
                         "status": status
                     }
                 }
 
             }).then(res => {
-                console.log("Response from virtual assesment claim=> ", res.data)
+                console.log("Response from virtual assessment claim=> ", res.data)
 
                 
 
             }).catch(err => {
-                console.log("Error from virtual assesment claim=> ", err);
+                console.log("Error from virtual assessment claim=> ", err);
             })
            
         } catch (error) {
-            console.error("Error from  virtual assesment claim=>",error);
+            console.error("Error from  virtual assessment claim=>",error);
         }
     }
 
     const submitInPersonAssessment = async (status) => {
         try {
-            await axios.post('/Claim/editClaim/AssesmentUpdate/InPerson', {
+            await axios.post('/Claim/editClaim/AssessmentUpdate/InPerson', {
                 ...claim,
                 "assessment": {
                     ...claim.assessment,
-                    "inPersonAssesment": {
-                        ...claim.assessment.inPersonAssesment,
+                    "inPersonAssessment": {
+                        ...claim.assessment.inPersonAssessment,
                         "status": status
                     }
                 }
             }).then(res => {
-                console.log("Response from inPerson assesment claim=> ", res.data)
+                console.log("Response from inPerson assessment claim=> ", res.data)
 
                 
 
             }).catch(err => {
-                console.log("Error from inPerson assesment claim=> ", err);
+                console.log("Error from inPerson assessment claim=> ", err);
             })
            
         } catch (error) {
-            console.error("Error from  inPerson assesment claim=>",error);
+            console.error("Error from  inPerson assessment claim=>",error);
         }
+    }
+
+    async function submitPickUp(status){
+        await axios.post("/Claim/editClaim/PickUp",{
+            ...claim,
+            schedule:{
+                ...claim.schedule,
+                pickUp:{
+                    ...claim.schedule.pickUp,
+                    status:status
+                }
+            }
+        })
     }
 
 
     if(!claim) return <></>
     return(
         <div className='caecc22-claim-display-back-main-wrap'>
+            {
+                !editBack? ( 
+            <div className='caecc22-claim-display-back-display-wrap'>
+                <fieldset className={'caecc22-claim-fieldset-wrap' + (claim.delete.status === "deleted"? " caecc22-claim-deleted-fieldset" : "")}>
+                                <legend className='caecc22-claim-legend-wrap'>Virtual Assessment</legend>
+                            <div className='caecc22-claim-back-virtualAssessment-wrap'>
+                                <span className='caecc22-claim-each22-text caecc22-preventOverflow'>{
+                                    
+                                    "Status :"
+                                }</span>
+                                <span className='caecc22-claim-each22-answer-text caecc22-preventOverflow'>{
+                                    
+                                    claim.assessment.virtualAssessment.status 
+                                }</span>
+                            </div>
+                            <div className='caecc22-claim-back-virtualAssessment-wrap'>
+                                <span className='caecc22-claim-each22-text caecc22-preventOverflow'>{
+                                    
+                                    "Last Update :"
+                                }</span>
+                                <span className='caecc22-claim-each22-answer-text caecc22-preventOverflow'>{
+                                    
+                                    claim.assessment.virtualAssessment.date
+                                }</span>
+                            </div>
+                            <div className='caecc22-claim-back-virtualAssessment-wrap'>
+                                <span className='caecc22-claim-each22-text caecc22-preventOverflow'>{
+                                    
+                                    "Comment :"
+                                }</span>
+                                <span className='caecc22-claim-each22-answer-text caecc22-preventOverflow'>{
+                                    
+                                    claim.assessment.virtualAssessment.comment
+                                }</span>
+                            </div>
+                            </fieldset>
+                            <fieldset className={'caecc22-claim-fieldset-wrap' + (claim.delete.status === "deleted"? " caecc22-claim-deleted-fieldset" : "")}>
+                                <legend className='caecc22-claim-legend-wrap'>In Person Assessment</legend>
+                            <div className='caecc22-claim-back-inPersonAssessment-wrap'>
+                                <span className='caecc22-claim-each22-text caecc22-preventOverflow'>{
+                                    
+                                    "Status :"
+                                }</span>
+                                <span className='caecc22-claim-each22-answer-text caecc22-preventOverflow'>{
+                                    
+                                    claim.assessment.inPersonAssessment.status 
+                                }</span>
+                            </div>
+                            <div className='caecc22-claim-back-inPersonAssessment-wrap'>
+                                <span className='caecc22-claim-each22-text caecc22-preventOverflow'>{
+                                    
+                                    "Last Update :"
+                                }</span>
+                                <span className='caecc22-claim-each22-answer-text caecc22-preventOverflow'>{
+                                    
+                                    claim.assessment.inPersonAssessment.date
+                                }</span>
+                            </div>
+                            <div className='caecc22-claim-back-inPersonAssessment-wrap'>
+                                <span className='caecc22-claim-each22-text caecc22-preventOverflow'>{
+                                    
+                                    "Comment :"
+                                }</span>
+                                <span className='caecc22-claim-each22-answer-text caecc22-preventOverflow'>{
+                                    
+                                    claim.assessment.inPersonAssessment.comment
+                                }</span>
+                            </div>
+                            <div className='caecc22-claim-back-inPersonAssessment-wrap'>
+                                <span className='caecc22-claim-each22-text caecc22-preventOverflow'>{
+                                    
+                                    "Scheduled On :"
+                                }</span>
+                                <span className='caecc22-claim-each22-answer-text caecc22-preventOverflow'>{
+                                    
+                                    claim.schedule.inPersonAssessment.date
+                                }</span>
+                            </div>
+                            </fieldset>
+                            <fieldset className={'caecc22-claim-fieldset-wrap' + (claim.delete.status === "deleted"? " caecc22-claim-deleted-fieldset" : "")}>
+                                <legend className='caecc22-claim-legend-wrap'>Pick Up</legend>
+                            <div className='caecc22-claim-back-pickUp-wrap'>
+                                <span className='caecc22-claim-each22-text caecc22-preventOverflow'>{
+                                    
+                                    "Scheduled On :"
+                                }</span>
+                                <span className='caecc22-claim-each22-answer-text caecc22-preventOverflow'>{
+                                    
+                                    claim.schedule.pickUp.date
+                                }</span>
+                            </div>
+                            <div className='caecc22-claim-back-pickUp-wrap'>
+                                <span className='caecc22-claim-each22-text caecc22-preventOverflow'>{
+                                    
+                                    "Status :"
+                                }</span>
+                                <span className='caecc22-claim-each22-answer-text caecc22-preventOverflow'>{
+                                    
+                                    claim.schedule.pickUp.status
+                                }</span>
+                            </div>
+                            </fieldset>
+                            <div className='caecc22-claim-back-buttons-wrap'>
+                                <button className='caecc22-claim-back-edit-button'
+                                onClick={(e)=>{
+                                    
+                                    setEditBack(true)
+                                }}
+                                >
+                                    Edit
+                                </button>
+                            </div>
+            </div>
+                ) :(
+            <div className='caecc22-claim-display-back-edit-wrap'>
             <fieldset className={'caecc22-claim-fieldset-wrap' + (claim.delete.status === "deleted"? " caecc22-claim-deleted-fieldset" : "")}>
-                                <legend className='caecc22-claim-legend-wrap'>Virtual Assesment</legend>
-                            <div className='caecc22-claim-display-virtualAssesment-wrap'>
-                                <div className='caecc22-claim-display-virtualAssesment-each-wrap'>
-                                    <span className='caecc22-claim-display-virtualAssesment-each-text'>{
+                <div className="caecc22-claim-back-edit-close-wrap"
+                onClick={(e)=>{
+                    setEditBack(false);
+                }}
+                >
+                    X
+                </div>
+                                <legend className='caecc22-claim-legend-wrap'>Virtual Assessment</legend>
+                            <div className='caecc22-claim-display-virtualAssessment-wrap'>
+                                <div className='caecc22-claim-display-virtualAssessment-each-wrap'>
+                                    <span className='caecc22-claim-display-virtualAssessment-each-text'>{
                                         "Status : "
                                     }</span>
-                                    <span className='caecc22-claim-display-virtualAssesment-each-text'>{
-                                        //claim.assessment.virtualAssesment.status
+                                    <span className='caecc22-claim-display-virtualAssessment-each-text'>{
+                                        //claim.assessment.virtualAssessment.status
                                     }</span>
 
                                 </div>
-                                <div className='caecc22-claim-display-virtualAssesment-each-wrap'>
-                                    <span className='caecc22-claim-display-virtualAssesment-each-text'>{
+                                <div className='caecc22-claim-display-virtualAssessment-each-wrap'>
+                                    <span className='caecc22-claim-display-virtualAssessment-each-text'>{
                                         "Comment : "
                                     }</span>
                                     {
                                         <TextField
-                                        id="caecc22-claim-display-virtualAssesment-each-textfield"
+                                        id="caecc22-claim-display-virtualAssessment-each-textfield"
                                         label="Comment"
                                         variant="outlined"
                                         placeholder="Comment"
@@ -217,42 +378,48 @@ const AdminEdiatableClaimCard_BackCard = ({ claimX }) => {
                                             width: '100%',
                                             height: '100%',
                                         }}
-                                        value={"None"}
+                                        value={claim.assessment.virtualAssessment.comment ||  ""}
                                         onChange={(e) => {
-                                            //setClaim({
-                                            //...claim,
-                                            //description: e.target.value,
-                                            //})
+                                            setClaim({
+                                                ...claim,
+                                                  assessment :{
+                                                    ...claim.assessment,
+                                                      virtualAssessment: {
+                                                        ...claim.assessment.virtualAssessment,
+                                                          comment: e.target.value
+                                                  }
+                                                }
+                                            })
                                         }}
                                         />
                                     }
-                                    <span className='caecc22-claim-display-virtualAssesment-each-text'>{
-                                        //claim.assessment.virtualAssesment.status
+                                    <span className='caecc22-claim-display-virtualAssessment-each-text'>{
+                                        //claim.assessment.virtualAssessment.status
                                     }</span>
-                                    <div className='caecc22-claim-display-virtualAssesment-each-wrap'>
-                                    <span className='caecc22-claim-display-virtualAssesment-each-text'>{
+                                    <div className='caecc22-claim-display-virtualAssessment-each-wrap'>
+                                    <span className='caecc22-claim-display-virtualAssessment-each-text'>{
                                         "Location : "
                                     }</span>
-                                    <div className='caecc22-claim-display-virtualAssesment-each-text'>{
+                                    <div className='caecc22-claim-display-virtualAssessment-each-text'>{
                                         
                                     }</div>
 
                                 </div>
 
                                 </div>
-                                <div className='caecc22-claim-display-virtualAssesment-buttons-wrap'>
-                                    <button className='caecc22-claim-display-virtualAssesment-button'
+                                <div className='caecc22-claim-display-virtualAssessment-buttons-wrap'>
+                                    <button className='caecc22-claim-display-virtualAssessment-button'
                                     onClick={(e)=>{
                                         e.preventDefault();
-                                        submitVirtualAssesment("Accepted");
+                                        submitVirtualAssessment("Accepted");
                                     }}
                                     >{
                                         "Accept"
                                     }</button>
-                                    <button className='caecc22-claim-display-virtualAssesment-button'
+                                    <button className='caecc22-claim-display-virtualAssessment-button'
                                     onClick={(e)=>{
                                         e.preventDefault();
-                                         submitVirtualAssesment("Rejected");
+                                         submitVirtualAssessment("Rejected");
                                     }}
                                     >{
                                         "Reject"
@@ -262,24 +429,24 @@ const AdminEdiatableClaimCard_BackCard = ({ claimX }) => {
                             </div>
                             </fieldset>
                             <fieldset className={'caecc22-claim-fieldset-wrap' + (claim.delete.status === "deleted"? " caecc22-claim-deleted-fieldset" : "")}>
-                            <legend className='caecc22-claim-legend-wrap'>InPerson Assesment</legend>
-                            <div className='caecc22-claim-display-inPersonAssesment-wrap'>
-                                <div className='caecc22-claim-display-inPersonAssesment-each-wrap'>
-                                    <span className='caecc22-claim-display-inPersonAssesment-each-text'>{
-                                        "InPerson Assesment"
+                            <legend className='caecc22-claim-legend-wrap'>InPerson Assessment</legend>
+                            <div className='caecc22-claim-display-inPersonAssessment-wrap'>
+                                <div className='caecc22-claim-display-inPersonAssessment-each-wrap'>
+                                    <span className='caecc22-claim-display-inPersonAssessment-each-text'>{
+                                        "InPerson Assessment"
                                     }</span>
-                                    <span className='caecc22-claim-display-inPersonAssesment-each-text'>{
-                                        //claim.assessment.inPersonAssesment.status
+                                    <span className='caecc22-claim-display-inPersonAssessment-each-text'>{
+                                        //claim.assessment.inPersonAssessment.status
                                     }</span>
 
                                 </div>
-                                <div className='caecc22-claim-display-inPersonAssesment-each-wrap'>
-                                    <span className='caecc22-claim-display-inPersonAssesment-each-text'>{
+                                <div className='caecc22-claim-display-inPersonAssessment-each-wrap'>
+                                    <span className='caecc22-claim-display-inPersonAssessment-each-text'>{
                                         "Comment : "
                                     }</span>
                                     {
                                         <TextField
-                                        id="caecc22-claim-display-inPersonAssesment-each-textfield"
+                                        id="caecc22-claim-display-inPersonAssessment-each-textfield"
                                         label="Comment"
                                         variant="outlined"
                                         placeholder="Comment"
@@ -289,27 +456,45 @@ const AdminEdiatableClaimCard_BackCard = ({ claimX }) => {
                                             width: '100%',
                                             height: '100%',
                                         }}
-                                        value={"None"}
+                                        value={claim.assessment.inPersonAssessment.comment || ""}
                                         onChange={(e) => {
-                                            //setClaim({
-                                            //...claim,
-                                            //description: e.target.value,
-                                            //})
+                                         
+                                            setClaim({
+                                              ...claim,
+                                                assessment: {
+                                                  ...claim.assessment,
+                                                    inPersonAssessment: {
+                                                      ...claim.assessment.inPersonAssessment,
+                                                        comment: e.target.value
+                                                    }
+                                                }
+                                            })
                                         }}
                                         />
                                     }
-                                    <span className='caecc22-claim-display-inPersonAssesment-each-text'>{
-                                        //claim.assessment.inPersonAssesment.status
+                                    <span className='caecc22-claim-display-inPersonAssessment-each-text'>{
+                                        //claim.assessment.inPersonAssessment.status
+                                    }</span>
+                                    </div>
+                                    <div className='caecc22-claim-display-inPersonAssessment-each-wrap'>
+                                    <span className='caecc22-claim-display-inPersonAssessment-each-text'>{
+                                        "Schedule On : "
+                                    }</span>
+                                    {
+                                        
+                                    }
+                                    <span className='caecc22-claim-display-inPersonAssessment-each-text'>{
+                                        //claim.assessment.inPersonAssessment.status
                                     }</span>
                                     </div>
                                 
                                     {
 
-                                        claim.assessment.inPersonlAssesment.status === "Not Initiated"?
+                                        claim.assessment.inPersonAssessment.status === "Not Initiated"?
                                         (
-                                            <div className='caecc22-claim-display-inPersonAssesment-buttons-wrap'>
+                                            <div className='caecc22-claim-display-inPersonAssessment-buttons-wrap'>
                                     
-                                    <div className='caecc22-claim-display-inPersonAssesment-each-wrap'
+                                    <div className='caecc22-claim-display-inPersonAssessment-each-wrap'
                                     onClick={(e)=>{
                                         e.preventDefault();
                                         submitInPersonAssessment("Initiated");
@@ -319,8 +504,8 @@ const AdminEdiatableClaimCard_BackCard = ({ claimX }) => {
                                     </div>
                                     </div>
                                         ):(
-                                    <div className='caecc22-claim-display-inPersonAssesment-buttons-wrap'>
-                                    <button className='caecc22-claim-display-inPersonAssesment-button'
+                                    <div className='caecc22-claim-display-inPersonAssessment-buttons-wrap'>
+                                    <button className='caecc22-claim-display-inPersonAssessment-button'
                                     onClick={(e)=>{
                                         e.preventDefault();
                                         submitInPersonAssessment("Accepted");
@@ -329,7 +514,7 @@ const AdminEdiatableClaimCard_BackCard = ({ claimX }) => {
                                     >{
                                         "Accept"
                                     }</button>
-                                    <button className='caecc22-claim-display-inPersonAssesment-button'
+                                    <button className='caecc22-claim-display-inPersonAssessment-button'
                                     onClick={(e)=>{
                                         e.preventDefault();
                                         submitInPersonAssessment("Rejected");
@@ -341,7 +526,51 @@ const AdminEdiatableClaimCard_BackCard = ({ claimX }) => {
                                         )
                                         }
                                 </div>
+                                
                             </fieldset>
+                            <fieldset className={'caecc22-claim-fieldset-wrap' + (claim.delete.status === "deleted"? " caecc22-claim-deleted-fieldset" : "")}>
+                            <legend className='caecc22-claim-legend-wrap'>Pick Up</legend>
+                             {
+
+                                        claim.schedule.pickUp.status === "Not Initiated"?
+                                        (
+                                            <div className='caecc22-claim-display-inPersonAssessment-buttons-wrap'>
+                                    
+                                    <div className='caecc22-claim-display-inPersonAssessment-each-wrap'
+                                    onClick={(e)=>{
+                                        e.preventDefault();
+                                        submitPickUp("Initiated");
+                                    }}
+                                    >
+                                        Initiate
+                                    </div>
+                                    </div>
+                                        ):(
+                                    <div className='caecc22-claim-display-inPersonAssessment-buttons-wrap'>
+                                    <button className='caecc22-claim-display-inPersonAssessment-button'
+                                    onClick={(e)=>{
+                                        e.preventDefault();
+                                        submitPickUp("Successful");
+                                        
+                                    }}
+                                    >{
+                                        "Successful"
+                                    }</button>
+                                    <button className='caecc22-claim-display-inPersonAssessment-button'
+                                    onClick={(e)=>{
+                                        e.preventDefault();
+                                        submitPickUp("Failed");
+                                    }}
+                                    >{
+                                        "Failed"
+                                    }</button>
+                                    </div>
+                                        )
+                                        }
+                            </fieldset>
+                            </div>
+                )
+}
         </div>
     )
 }

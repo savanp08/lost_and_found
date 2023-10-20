@@ -1,15 +1,14 @@
 .carc-card-wrap{
     width: 100%;
-    max-width:540px;
+    max-width:600px;
     min-width: 270px;
     display: flex;
     padding:10px;
-    background-color: white;
     margin-top: 20px;
     flex-flow: row wrap;
     justify-content: center;
     align-items: center;
-    position: relative;
+    box-shadow: 0px 0px 20px 6px rgb(171, 167, 167);
 }
 
 .carc-inner-wrap{
@@ -54,16 +53,6 @@
     
 }
 
-.carc-left-wrap{
-    width: 100%;
-    display: flex;
-    flex-flow: column wrap;
-    min-width: 260px;
-    max-width: 260px;
-    justify-content: space-around;
-    align-items: center;
-}
-
 .carc-left-title-wrap{
     width: 100%;
     display: flex;
@@ -86,18 +75,9 @@ max-height: 30px;
 overflow: hidden;
 }
 
-.carc-left-body-wrap{
-    width: 100%;
-    height: 100%;
-    min-width: 26px;
-    min-height: 260px;
-    display: flex;
-    flex-flow:row nowrap;
-    overflow-x: auto;
-}
+
 .carc-left-Media-wrap{
     width: 20px;
-    
     display: flex;
     flex-flow:column nowrap;
     overflow-x: auto;
@@ -125,19 +105,7 @@ overflow: hidden;
     margin-top: 20px;
     cursor: pointer;
 }
-.carc-right-wrap{
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-flow: column wrap;
-    align-items: center;
-    justify-content:space-around;
-    min-width: 260px;
-    min-height: 260px;
-    max-width: 260px;
-    max-height: 260px;
-    background-color: white;
-}
+
 .carc-right-body-wrap{
     width: 100%;
     height: 100%;
@@ -148,13 +116,14 @@ overflow: hidden;
 }
 
 .carc-left-Media-Images-wrap{
-    max-width: 240px;
+    max-width: 40%;
     height: 100%;
     min-width: 240px;
     min-height: 240px;
+    max-height: 240px;
     display: flex;
-    flex-flow: row ;
-    overflow-x: auto;
+    flex-flow: column ;
+    overflow-y: auto;
 }
 
 .carc-left-body-each-img{
@@ -238,4 +207,105 @@ flex-wrap: row nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     max-height: 40px;
+}
+
+.carc-top-header-wrap{
+  width: 100%;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-around;
+    align-items: center;    
+}
+
+
+.carc-bottom-main-wrap{
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;    
+    min-height: 200px;
+    margin-top: 50px;
+}
+
+.carc-options-wrap{
+    min-width: 35px;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.carc-botom-main-body-wrap{
+    width: 100%;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-around;
+    align-items: center;
+    position: relative;
+    min-height: 200px;
+    transform-style: preserve-3d;
+    transition: transform 1s;
+    
+}
+
+
+.carc-reporteditable-flip-container{
+transform: rotateY(180deg);
+
+}
+
+.carc-left-body-wrap{
+    width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
+    background-color: white;
+    backface-visibility: hidden;
+    padding: 10px;
+}
+.carc-right-wrap{
+    width: 100%;
+    
+    max-width: 300px;
+    min-width: 500px;
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+    justify-content:space-around;
+    backface-visibility: hidden;
+    background-color: white;
+    position: absolute;
+    transform: rotateY(180deg);
+
+}
+
+.carc-left-details-wrap{
+    
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-around;
+    align-items: center;
+    min-height: 30px;
+}
+
+.carc-left-details-each-text{
+    font-size: 20px;
+    font-weight: 500;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    max-width: 200px;
+    
+    text-overflow: ellipsis;
+    max-height: 30px;
+    overflow: hidden;
+}
+
+.carc-left-details-each-wrap{
+    width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 30px;
 }

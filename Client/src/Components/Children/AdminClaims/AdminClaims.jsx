@@ -10,6 +10,7 @@ const AdminClaims =  () =>{
 
     const [claims,setClaims] = useState([]);
     const [reports,setReports] = useState(new Map());
+    const [users, setUsers] = useState(new Map());
 
     useEffect( ()=>{
         async function getData(){
@@ -34,13 +35,31 @@ const AdminClaims =  () =>{
                 console.log("error while fetching reports => " , err);
             })
         }
+
+        async function getUsers(){
+            await axios.get("/User/getAllUsers").then(res=>{
+                if(res.data && Array.isArray(res.data)){
+                    res.data.map(user=>{
+                        users.set(user._id,user);
+                        return 0;
+                    })
+                    setUsers(new Map(users));
+                }
+                console.log("Admin Claim Debug => users fetched => " , res.data);
+            }).catch(err=>{
+                console.log("error while fetching users => " , err);
+            })
+        }
+        
+        getUsers();
         getData();
         getReports();
         
     },[]);
 
-    console.log("AdminClaims",claims);
+    console.log("Claims debug => adminClaims Claims",claims);
     console.log("Claims debug => AdminClaims Reports",reports);
+    console.log("Claims debug => AdminClaims Users",users);
 
   const chart1Data = [
     ["Type","Number"],
@@ -130,7 +149,7 @@ const AdminClaims =  () =>{
                     claims.map((claim,key)=>{
                         return(
                             <div className="cac24-claims-each-wrap" key={key}>
-                            <AdminEditableClaimCard claim={claim} />
+                            <AdminEditableClaimCard claim={claim} user={users.get(claim.userId)} report={reports.get(claim.reportId)}/>
                             <AdminReportCard report={reports.get(claim.reportId)}/>
                             </div>
                         )

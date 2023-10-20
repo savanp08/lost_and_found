@@ -1,39 +1,54 @@
 
 
-.cecc17-main-wrap{
+.cuecc34-main-wrap{
     width: 100%;
-    max-width: 500px;
-    padding:10px;
-    box-shadow: 0px 0px 29px 1px rgba(0,0,0,0.75);
+    max-width: 300px;
+    
+    
+    height: 100%;
+    max-height: 550px;
+    min-height: 550px;   
+    justify-self: center;
+    align-self: center;
+}
+
+.cuecc34-edit-wrap{
+    width: 100%;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+}
+
+.cuecc34-claim-report-display-wrap{
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding-top: 15px;
+    height: 100%;
+}
+.cuecc34-claim-options-wrap{
+    min-width: 34px;
+    height: 100%;
     
 }
 
-.cecc17-edit-wrap{
-    width: 100%;
+.cuecc34-claim-option-each-wrap{
     display: flex;
-    flex-flow: column wrap;
+    flex-flow: row wrap;
     justify-content: space-around;
     align-items: center;
+    padding-top: 10px;
+    cursor: pointer;
 }
 
-.cecc17-claim-report-display-wrap{
-    width: 100%;
-    display: flex;
-    flex-flow: column wrap;
-    justify-content: space-around;
-    align-items: center;
-}
 
-.cecc17-claim-display-wrap{
-    width: 100%;
-    display: flex;
-    flex-flow: column wrap;
-    justify-content: space-around;
-    align-items: center;
-}
 
-.cecc17-claim-fieldset-wrap{
-    width: 70%;
+.cuecc34-claim-fieldset-wrap{
+    width: 95%;
     display: flex;
     border: none;
     border-top: 5px solid wheat ;
@@ -41,23 +56,23 @@
     justify-content: space-around;
     align-items: center;
     text-align: center;
-    padding: 10px;
+    
 }
 
-.cecc17-claim-legend-wrap{
+.cuecc34-claim-legend-wrap{
     
     display: flex;
     flex-flow: row wrap;
     justify-content: space-around;
     align-items: center;
     text-align: center;
-    padding: 10px;
+    padding: 5px;
     font-size: 20px;
     font-weight: 450;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
-.cecc17-claim-propertyName-wrap{
+.cuecc34-claim-propertyName-wrap{
     width: 100%;
     display: flex;
     flex-flow: row wrap;
@@ -67,7 +82,7 @@
 
 }
 
-.cecc17-claim-PropertyName-text{
+.cuecc34-claim-PropertyName-text{
     text-align: center;
     font-size: 1.1rem;
     font-weight: 500;
@@ -75,7 +90,7 @@
    
 }
 
-.cecc17-claim-ownership-wrap{
+.cuecc34-claim-ownership-wrap{
     width: 100%;
     display: flex;
     flex-flow: row wrap;
@@ -83,14 +98,14 @@
     align-items: center;
 }
 
-.cecc17-claim-ownership-text{
+.cuecc34-claim-ownership-text{
     text-align: center;
     font-size: 1rem;
     font-weight: 400;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
-.cecc17-claim-description-wrap{
+.cuecc34-claim-description-wrap{
     width: 100%;
     display: flex;
     flex-flow: row wrap;
@@ -99,30 +114,30 @@
 
 }
 
-.cecc17-claim-ownership-text{
+.cuecc34-claim-ownership-text{
     text-align: center;
     font-size: 1rem;
     font-weight: 400;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
-.cecc17-claim-description-text{
+.cuecc34-claim-description-text{
     text-align: center;
     font-size: 1rem;
     font-weight: 400;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
-.cecc17-preventOverflow{
+.cuecc34-preventOverflow{
     overflow-y: auto;
     text-overflow: ellipsis;
     white-space: wrap;
     max-height: 96px;
-    
-    
+    max-width: 230px;
+    width: 100%;
 }
 
-.cecc17-helper-text-wrap{
+.cuecc34-helper-text-wrap{
     width: 90%;
     text-align: center;
     font-size: 0.9rem;
@@ -131,7 +146,7 @@
 
 }
 
-.cecc17-edit-option-button{
+.cuecc34-edit-option-button{
     width: 130px;
     height: 50px;
     font-size: 20px;
@@ -143,4 +158,60 @@
     background-color: wheat;
     cursor: pointer;
     box-shadow: 0px 0px 9px 1px rgba(0,0,0,0.75);
+}
+
+.cuecc34-claim-display-back-wrap{
+    display: flex;
+    position: absolute;
+    backface-visibility: hidden;
+         height: 100%;
+         width: 100%;
+        flex-flow: column wrap;
+        justify-content: space-around;
+        align-items: center;
+         transform: rotateY(180deg);
+         padding-right: 10px;
+}
+
+
+.cuecc34-flip-div{
+    transform: rotateY(180deg);
+
+}
+
+.cuecc34-claim-back-after-flip{
+   
+    transform: rotateY(180deg);
+}
+
+.cuecc34-claim-front-after-flip{
+    
+}
+
+.cuecc34-claim-display-front-wrap{
+    display: flex;
+    width: 100%;
+    
+    flex-flow: column wrap;
+    justify-content: space-around;
+    align-items: center;
+    position: absolute;
+    backface-visibility: hidden;
+    padding-right: 10px;
+}
+
+
+
+.cuecc34-claim-display-wrap{
+    width: 100%;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-around;
+    align-items: center;
+    position: relative;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 1s;
+    box-shadow: 0px 0px 29px 1px rgba(0,0,0,0.75);
+    
 }
