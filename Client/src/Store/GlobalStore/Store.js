@@ -6,6 +6,7 @@ import RouterReducer from "../Slices/RouterSlice/RouterSlice.js";
 import TaskReducer from "../Slices/TaskSlice/TaskSlice.js";
 import RawData from "../RawData/RawData.js";
 import AdminSlice from "../Slices/UserSlice/AdminSlice.js";
+import GMapSlice from "../Slices/GMapSlice/GMapSlice.js";
 const store = configureStore({
     reducer: {
         user : userReducer,
@@ -14,7 +15,7 @@ const store = configureStore({
         router : RouterReducer,
         task : TaskReducer,
         rawData : RawData,
-
+        gMap : GMapSlice,
     }
 });
 

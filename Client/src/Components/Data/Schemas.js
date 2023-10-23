@@ -23,6 +23,10 @@ reporterName:{
             city: null,
             state: null,
             pinCode : null,
+            coordinates : {
+                lat: null,
+                lng: null,
+            },
             media:[],
         },
         belongsTo: null,
@@ -74,6 +78,10 @@ const initialState_user = {
         city: null,
         state: null,
         pinCode : null,
+        coordinates : {
+            lat: null,
+            lng: null,
+        },
     },
     reports: {
         count: 0,

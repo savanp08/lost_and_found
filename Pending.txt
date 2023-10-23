@@ -21,3 +21,7 @@ search in user reports, admin reports and other
 sorting
 implement delete status and remove delete functionality, send only non-deleted data to client
 implemnt auth middle ware for server
+make edit reports fixed
+add filter and search for admin user and reports
+add edit details for usera
+add schedule

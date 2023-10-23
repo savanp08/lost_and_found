@@ -5,6 +5,12 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { addReport } from "../../../Store/Slices/ReportSlice/ReportSlice";
 import { initialState_report } from "../../Data/Schemas";
+import { useNavigate } from "react-router-dom";
+import {
+    open_div
+} from "../../../Handlers/PopUp";
+
+
 
 const UserReportCard = ({report}) => {
     
@@ -16,6 +22,8 @@ const UserReportCard = ({report}) => {
     const dispatch = useDispatch();
     const user = useSelector(state => state.user); 
     
+    const navigation = useNavigate();
+    
     console.log("Rerender in edit report popup", local_report,report);
     
 
@@ -26,7 +34,18 @@ const UserReportCard = ({report}) => {
         }
     },[report]);
 
-   
+    async function claimReport(e,report){
+        dispatch(addReport(report));
+         if(!user.userId) {
+            var x = document.getElementById("app-popup-main-wrap");
+            if(x.classList.contains("Hide")) {
+                x.classList.remove("Hide");
+            }
+         }
+         else{
+            open_div("ur11-claim-popup-main-min");
+         }
+    }
 
     return(
         <div className="carc-card-wrap"
@@ -104,7 +123,13 @@ const UserReportCard = ({report}) => {
                                     </span>
                             </span>
                             </div>
-
+                            <div className="carc-left-details-each-wrap">
+                            <span className="carc-left-details-each-text">
+                                Submitted At : <span className="carc-left-details-each-text-value">
+                                    {local_report.custodyAt }
+                                    </span>
+                            </span>
+                            </div>
                             <div className="carc-right-location-wrap">
                     <div className="carc-right-location-icon-wrap">
                         Lo:
@@ -167,6 +192,16 @@ const UserReportCard = ({report}) => {
             </div>
             </div>
             </div>
+            <div className="curc-right-claim-button-wrap">
+                    <button className="curc-right-claim-button"
+
+                    onClick={(e)=>{
+                        claimReport(e,report);
+                    }}
+                    >
+                        Claim
+                    </button>
+                </div>
             </div>
       
     </div>

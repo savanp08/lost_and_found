@@ -12,6 +12,7 @@ const AdminReportCard = ({report}) => {
     
     const [local_report , setLocalReport] = useState(report || initialState);
     const [displayImages, setDisplayImages] = useState((report? report.media : []) || []);
+    const [imageType, setImageType] = useState(0);
     const [flip,setFlip] = useState(false);
     const dispatch = useDispatch();
     const user = useSelector(state => state.user); 
@@ -50,6 +51,10 @@ const AdminReportCard = ({report}) => {
         })
     }
 
+
+
+    
+
     return(
         <div className="carc-card-wrap"
         id={`carc-card-wrap-${local_report._id}`}
@@ -79,7 +84,9 @@ const AdminReportCard = ({report}) => {
                         <div className="carc-options-wrap">
                             <div className="carc-left-Media-Item-Media-wrap"
                             onClick={(e)=>{
-                                 setDisplayImages(local_report.itemDetails.location.media);
+                                 if(imageType === 1) setDisplayImages(local_report.itemDetails.location.media);
+                                 else setDisplayImages(local_report.media);
+                                 setImageType((imageType + 1)%2);
                             }}
                             >
                                 I
@@ -142,6 +149,13 @@ const AdminReportCard = ({report}) => {
                             <span className="carc-left-details-each-text">
                                 ownership : <span className="carc-left-details-each-text-value">
                                     {local_report.reporterType === "user"? "Self" : "Other"}
+                                    </span>
+                            </span>
+                            </div>
+                            <div className="carc-left-details-each-wrap">
+                            <span className="carc-left-details-each-text">
+                                Submitted At : <span className="carc-left-details-each-text-value">
+                                    {local_report.custodyAt }
                                     </span>
                             </span>
                             </div>

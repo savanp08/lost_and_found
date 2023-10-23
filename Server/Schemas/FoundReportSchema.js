@@ -75,6 +75,16 @@ const FoundReportSchemaX = new mongoose.Schema({
                     type: 'string',
                     default: null,
                 },
+                coordinates : {
+                    lat: {
+                        type: String,
+                        default: null,
+                    },
+                    lng: {
+                        type: String,
+                        default: null,
+                    },
+                },
                 media:[],
             },
             belongsTo:{

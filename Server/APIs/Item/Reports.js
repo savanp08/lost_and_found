@@ -142,6 +142,9 @@ reportRouter.post('/addReport', multerUpload.fields([{
         if(zz.length > 0){
           ItemMedia = await addMediaToCloudinary(zz);
         }
+        if(ItemMedia.length > 0){
+            newReport.media = ItemMedia;
+        }
         console.log("addMediaResponse => ",addMediaResponse);
         newReport.itemDetails.location.media = addMediaResponse;
 

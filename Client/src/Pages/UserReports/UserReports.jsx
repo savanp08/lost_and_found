@@ -15,6 +15,7 @@ import { removeTask } from "../../Store/Slices/TaskSlice/TaskSlice";
 import { addRawData } from "../../Store/RawData/RawData";
 import AuthFunctions from "../../Handlers/Auth";
 import { addUser } from "../../Store/Slices/UserSlice/UserSlice";
+import GMaps_ReprtForm from "../../Components/LocalComponents/GoogleMaps_ReportForm/GMaps_ReportForm";
 
 
 const UserReports = () => {
@@ -208,7 +209,7 @@ const UserReports = () => {
                     
                    </div>
                 <div className="ur11-top-wrap">
-                  
+                 <GMaps_ReprtForm />
                 </div>
                 <div className="ur11-bottom-wrap">
                     <div className="ur11-bottom-header-wrap">

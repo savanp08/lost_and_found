@@ -17,7 +17,16 @@ import { useEffect } from 'react';
 import axios from 'axios';
 import { addUser, removeUser } from './Store/Slices/UserSlice/UserSlice';
 import AuthFunctions from './Handlers/Auth';
+import { 
+  GoogleMap, 
+  Marker, 
+  useLoadScript ,
+  DirectionsRenderer,
+  Circle,
+  MarkerClusterer,
 
+} from "@react-google-maps/api";
+import { setIsLoaded } from './Store/Slices/GMapSlice/GMapSlice';
 
 function App() {
 
@@ -26,6 +35,8 @@ function App() {
   
   console.log("User SIgned?",user.userId);
   console.log(user);
+
+
 
   useEffect(()=>{
     async function fetchUser(){
@@ -36,6 +47,19 @@ function App() {
     }
     fetchUser();
   },[])
+
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KE,
+    libraries: ["places"],
+  });
+
+    
+  useEffect(()=>{
+    if(isLoaded === true){
+    console.log("gMaps debug => is Loaded ", isLoaded);
+    dispatch(setIsLoaded(true));
+  }
+},[isLoaded])
 
   
 
@@ -103,6 +127,7 @@ function App() {
      <AddReport 
       user={user}
      />
+     
      {/* <div className="OpaqueBackGround-fullscreen OpaqueBefore"></div> */}
      </div>
      </div>

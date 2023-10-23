@@ -131,6 +131,18 @@ const userSchemaX = new mongoose.Schema({
             default: null,
             
         },
+        coordinates : {
+            lat: {
+                
+                type: String ,
+                default: null,
+            },
+            lng: {
+                
+                type:  String,
+                default: null,
+            },
+        },
     },
     reports: {
         count: {

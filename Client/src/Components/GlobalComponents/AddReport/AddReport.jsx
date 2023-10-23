@@ -18,6 +18,10 @@ import { useNavigate } from "react-router-dom";
 import AuthFunctions from "../../../Handlers/Auth";
 import { addUser } from "../../../Store/Slices/UserSlice/UserSlice";
 import { initialState_report } from "../../Data/Schemas";
+import GMaps_ReprtForm from "../../LocalComponents/GoogleMaps_ReportForm/GMaps_ReportForm";
+import Gmap_Autocomp_Form from "../../LocalComponents/Gmap_AutoComp_Form/Gmap_Autocomp_Form";
+
+
 
 
 const AddReport = ({params}) => {
@@ -26,14 +30,22 @@ const AddReport = ({params}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
+  const gMap = useSelector((state)=> state.gMap);
   const [reporterType, setReporterType] = useState("");
   const [Item, setItem] = useState({
     ...initialState_report,
     userId : user._id,
     reportName : user.Name,
   });
+  const [gSuggestions, setGSuggestions] = useState([{publicId : "01218e2e129e1u", description: "No Suggestions Available"}]);
   
-  console.log(Item);
+    
+  
+  
+
+   
+  
+  console.log("gMap debug => ", gMap);
  
   useEffect(()=>{
     async function authVerify(){
@@ -60,6 +72,7 @@ const AddReport = ({params}) => {
     
     
     var files = document.getElementById("ar11-item-location-media-input").files;
+    var itemFiles = document.getElementById("ar11-item-property-media-input").files;
     const formData = new FormData();
     
     formData.append('report', JSON.stringify({
@@ -71,6 +84,10 @@ const AddReport = ({params}) => {
     for (const file of files) {
       console.log("Each Image =>",file,file.name);
       formData.append("image", file, file.name);
+    }
+    for (const file of itemFiles) {
+      console.log("Each Item Image =>",file,file.name);
+      formData.append("ItemImage", file, file.name);
     }
       console.log("Debugging FileUpload->  Type of ->",)
     //  formData.append("image",NewFiles);
@@ -355,6 +372,26 @@ function closeForm(){
               </div>
               </fieldset>
               <fieldset className="ar11-item-label-wrap">
+                    <legend className="ar11-item-legend">Google Maps Search</legend>
+                    <div className="ar11-gmaps-wrap">
+                      {
+                        gMap.isLoaded === true?(
+                          <GMaps_ReprtForm 
+                          type= "Form"
+                          />
+                        ) : "Loading..."
+                      }
+                          {
+                            gMap.isLoaded === true? (
+                              <Gmap_Autocomp_Form setGSuggestions={setGSuggestions} gsuggestions = {gSuggestions}/>
+                            ) : "Loading AutoComplete..."
+                          }
+                    </div>
+                    <div className="ar11-gmaps-gsearch-wrap">
+                      
+                    </div>
+                    </fieldset>
+              <fieldset className="ar11-item-label-wrap">
               <legend className="ar11-item-legend">
                   Item Location
                 </legend>
@@ -550,7 +587,7 @@ function closeForm(){
                 </div>
                 <fieldset className="ar11-item-label-wrap">
                     <legend className="ar11-item-legend">
-                        Media
+                        Location Media
                     </legend>
                 <div className="ar11-item-location-media">
                     <div className="ar11-item-media-wrap">
@@ -611,14 +648,89 @@ function closeForm(){
                     </div>
                 </div>
                 </fieldset>
+
               </div>
               </fieldset>
+              <fieldset className="ar11-item-label-wrap">
+                    <legend className="ar11-item-legend">
+                       Property Media
+                    </legend>
+                <div className="ar11-item-location-media">
+                    <div className="ar11-item-media-wrap">
+                      <label className="ar11-item-media" htmlFor="ar11-item-property-media-input" >
+                        
+                          <input type="file" className="ar11-item-fil-icon"  
+                          id="ar11-item-property-media-input"
+                          accept="image/*"
+                          name='ItemFiles[]'
+                          multiple
+                          onChange={(e)=>{
+                            console.log(e.target.files);
+                            console.log(document.getElementById('ar11-item-property-media-input').files);
+                            var files = document.getElementById("ar11-item-property-media-input");
+                        var media=[];
+                        if(files && files.files && Object.keys(files.files).length>0){
+                          Object.keys(files.files).forEach(index=>{
+                            console.log("Debug MessageMedia->",files.files[index],files.files)
+                            media.push(URL.createObjectURL(files.files[index]));
+                          })
+                        }
+                            setItem({
+                              ...Item,
+                              media : media
+                            })
+                          }}
+                          />
+                          <AttachFileIcon
+                        sx={{
+                          cursor: 'pointer',
+                          position:'relative',
+                        }}
+                        onClick={(e)=>{
+                          document.getElementById('ar11-item-property-media-input');
+                        }}
+                        ></AttachFileIcon>
+                      </label>
+                    </div>
+                    <div className="ar11-media-show-input-wrap">
+                      {
+                        Item.media.map((imag,key)=>{
+
+                          return(
+                            <div className="ar11-item-location-media-show-each-wrap">
+                            <img src={imag} alt="Media Image of Property" 
+                            className="ar11-item-location-media-show-each"
+                            />
+                            </div>
+                          )
+                        })
+                      }
+                    </div>
+                </div>
+                </fieldset>
               <fieldset className="ar11-item-label-wrap">
               <legend className="ar11-item-legend">
                   Submittion Location
                 </legend>
               <div className="ar11-item-submit-wrap">
                 <div className="ar11-item-submittion-location"></div>
+                <TextField 
+                id="add-report-item-submittion-location"
+                label="Submittion Location"
+                variant="outlined"
+                required
+                placeholder="Location where you will be submitting the item"
+                sx={{
+                  minWidth: "230px",
+                }}
+                value={ Item.custodyAt || "" }
+                onChange={(e)=>{
+                  setItem({
+                    ...Item,
+                    custodyAt : e.target.value
+                  })
+                }}
+                />
               </div>
               </fieldset>
             </div>
