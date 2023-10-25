@@ -24,7 +24,7 @@ const UserReportCard = ({report}) => {
     
     const navigation = useNavigate();
     
-    console.log("Rerender in edit report popup", local_report,report);
+   
     
 
     useEffect(()=>{

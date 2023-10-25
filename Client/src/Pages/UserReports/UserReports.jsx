@@ -209,7 +209,7 @@ const UserReports = () => {
                     
                    </div>
                 <div className="ur11-top-wrap">
-                 <GMaps_ReprtForm />
+                 
                 </div>
                 <div className="ur11-bottom-wrap">
                     <div className="ur11-bottom-header-wrap">

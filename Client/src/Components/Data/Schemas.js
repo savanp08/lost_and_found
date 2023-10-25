@@ -9,6 +9,10 @@ reporterName:{
     middleName: null,
     lastName: null,
     },
+    coordinates:{
+        lat: null,
+        lng: null,
+    },
     itemDetails:{
         common_type: null,
         colors:[],
@@ -27,8 +31,22 @@ reporterName:{
                 lat: null,
                 lng: null,
             },
+            displayAddress: null,
+            GMapData:{
+                rawData: null,
+                processedData:{
+                    location : null,
+                    coordinates : {
+                        lat: null,
+                        lng: null,
+                    },
+                },
+                rawData_geometric:null    
+        },
             media:[],
         },
+            
+            
         belongsTo: null,
     },
     claims:{

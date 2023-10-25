@@ -144,6 +144,26 @@ const userSchemaX = new mongoose.Schema({
             },
         },
     },
+    GMapData:{
+        rawData:{
+            type : Object
+        },
+        processedData:{
+            location:{
+                type: Object
+            },
+            coordinates:{
+                lat:{
+                    type: String,
+                    default: null,
+                },
+                lng:{
+                    type: String,
+                    default: null,
+                },
+            }
+        }
+    },
     reports: {
         count: {
             required: false,

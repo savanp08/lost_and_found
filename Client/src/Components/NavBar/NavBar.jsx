@@ -1,7 +1,7 @@
 import React from "react";
 import './common.scss';
 import './NavBar.css';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import AddReportIcon from "../../Styles/SVGs/post_add_white_48dp.svg";
 import {
     logo_test
@@ -9,11 +9,13 @@ import {
 import {
     useNavigate
 } from 'react-router-dom';
+import { openForm } from "../../Store/Slices/FormSlice/FormSlice";
 
 const SideNavBar = () => {
 
     const user = useSelector(state=> state.user);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     return(
         <div className="csn30-SNavBarWrap">
@@ -35,15 +37,11 @@ const SideNavBar = () => {
                          onClick={(e)=>{
                             e.preventDefault();
                             if(user._id){
-                            var x = document.getElementById("ar11-addReport-wrap");
-                            if(x.classList.contains("Hide")){
-                                x.classList.remove("Hide");
-                                x.classList.add("Add-Report-After");
-                            }
-                            else{
-                                x.classList.remove("Add-Report-After");
-                                x.classList.add("Hide");
-                            }
+                            dispatch(openForm({
+                                formName: "addReport",
+                                
+                            }));
+                            
                         }
                         else{
                             alert("Please login to add a report");

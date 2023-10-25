@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     isLoaded :false,
-
+    status: "Not loaded"
 }
 
 const mapSlice = createSlice({
@@ -10,7 +10,12 @@ const mapSlice = createSlice({
     initialState,
     reducers: {
         setIsLoaded: (state, action) => {
-            state.isLoaded = action.payload;
+            return  {
+                ...state,
+                ...action.payload
+            
+            }
+            
         }
     }
 });

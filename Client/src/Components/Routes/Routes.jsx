@@ -8,7 +8,6 @@ import Admin from "../../Pages/Account/Admin/Admin";
 import FOoterStand from "../Footer/Footer.js";
 import AdminReports from "../Children/AdminReports/AdminReports";
 import AdminLogin from "../../Pages/Auth/Login/Admin";
-import AddReport from "../GlobalComponents/AddReport/AddReport";
 import UserReportCard from "../Cards/ReportCard/Report";
 import UserReports from "../../Pages/UserReports/UserReports";
 import UserAccount from "../../Pages/Account/User/User";
@@ -25,7 +24,7 @@ const RoutesComponent = () =>{
                 <Route exaxt path="/Test" element ={ <AdminReports/> } />
                 <Route exaxt path="/AdminLoginX86109110213" element = { <AdminLogin/> } />
                 <Route exaxt path="/Account" element = { <UserAccount /> } />
-                <Route exaxt path="/AddReport" element = { <AddReport/> } />
+               
             </Routes>
             
         </div>

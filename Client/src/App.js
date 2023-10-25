@@ -13,7 +13,7 @@ import { handler_login_popup } from './Handlers/PopUp';
 import { addRoute } from './Store/Slices/RouterSlice/RouterSlice.js'
 import { addTask } from './Store/Slices/TaskSlice/TaskSlice';
 import { open_div } from './Handlers/PopUp';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { addUser, removeUser } from './Store/Slices/UserSlice/UserSlice';
 import AuthFunctions from './Handlers/Auth';
@@ -32,6 +32,7 @@ function App() {
 
   const user = useSelector(state => state.user);
   const dispatch = useDispatch();
+  const [ libraries ] = useState(['places']);
   
   console.log("User SIgned?",user.userId);
   console.log(user);
@@ -49,20 +50,20 @@ function App() {
   },[])
 
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KE,
-    libraries: ["places"],
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY,
+    libraries : libraries,
   });
 
     
   useEffect(()=>{
     if(isLoaded === true){
     console.log("gMaps debug => is Loaded ", isLoaded);
-    dispatch(setIsLoaded(true));
+    dispatch(setIsLoaded({
+      isLoaded: true,
+      status: "Loaded"
+    }));
   }
 },[isLoaded])
-
-  
-
 
   return (
     <div className="App-Wrap">

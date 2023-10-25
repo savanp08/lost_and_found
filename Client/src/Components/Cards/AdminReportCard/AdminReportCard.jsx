@@ -17,7 +17,7 @@ const AdminReportCard = ({report}) => {
     const dispatch = useDispatch();
     const user = useSelector(state => state.user); 
     
-    console.log("Rerender in edit report popup", local_report,report);
+   // console.log("Rerender in edit report popup", local_report,report);
     
 
     useEffect(()=>{

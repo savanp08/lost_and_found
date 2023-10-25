@@ -30,6 +30,16 @@ const FoundReportSchemaX = new mongoose.Schema({
             required: false,
         }
         },
+        coordinates:{
+            lat:{
+                type: String,
+                default: null,
+            },
+            lng:{
+                type: String,
+                default: null,
+            },
+        },
         itemDetails:{
             common_type:{
                 type:String,
@@ -83,6 +93,32 @@ const FoundReportSchemaX = new mongoose.Schema({
                     lng: {
                         type: String,
                         default: null,
+                    },
+                },
+                displayAddress: {
+                    type:Object,
+                },
+                GMapData:{
+                    rawData:{
+                        type : Object
+                    },
+                    processedData:{
+                        location:{
+                            type: Object
+                        },
+                        coordinates:{
+                            lat:{
+                                type: String,
+                                default: null,
+                            },
+                            lng:{
+                                type: String,
+                                default: null,
+                            },
+                        }
+                    },
+                    rawData_geometric:{
+                        type: Object,
                     },
                 },
                 media:[],

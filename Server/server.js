@@ -12,6 +12,7 @@ import reportRouter from "./APIs/Item/Reports.js"
 import claimRouter from "./APIs/Claim/Claim.js";
 import { sendSignUpConfirmationMail } from "./Controllers/Mailer/Mailer.js";
 import userRouter from "./APIs/User/User.js";
+import gMapRouter from "./APIs/GMap/GMap.js";
 
 
 dotenv.config();
@@ -30,6 +31,7 @@ server.use('/Auth',authRouter);
 server.use('/Report', reportRouter);
 server.use('/Claim', claimRouter);
 server.use('/User', userRouter);
+server.use('/GMap', gMapRouter);
 
 const httpServer = server.listen(port, ()=>[
     console.log("listening on port", port)

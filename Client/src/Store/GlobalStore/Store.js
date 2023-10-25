@@ -7,6 +7,7 @@ import TaskReducer from "../Slices/TaskSlice/TaskSlice.js";
 import RawData from "../RawData/RawData.js";
 import AdminSlice from "../Slices/UserSlice/AdminSlice.js";
 import GMapSlice from "../Slices/GMapSlice/GMapSlice.js";
+import FormSlice from "../Slices/FormSlice/FormSlice.js";
 const store = configureStore({
     reducer: {
         user : userReducer,
@@ -16,6 +17,7 @@ const store = configureStore({
         task : TaskReducer,
         rawData : RawData,
         gMap : GMapSlice,
+        form : FormSlice,
     }
 });
 
