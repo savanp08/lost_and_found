@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import './Report.scss';
-import EditReport from "../../GlobalComponents/EditReport/EditReport";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { addReport } from "../../../Store/Slices/ReportSlice/ReportSlice";

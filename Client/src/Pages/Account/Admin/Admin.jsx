@@ -8,7 +8,6 @@ import './Admin.scss';
 import { addAdmin } from "../../../Store/Slices/UserSlice/AdminSlice";
 import AuthFunctions from "../../../Handlers/Auth";
 import { useNavigate } from "react-router-dom";
-import EditReport from "../../../Components/GlobalComponents/EditReport/EditReport";
 
 const Admin = () => {
   const dispatch = useDispatch();
@@ -102,7 +101,7 @@ const Admin = () => {
      </div>
 
      </div>
-     <EditReport />
+     
     </div>
   )
 

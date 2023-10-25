@@ -4,7 +4,6 @@ import { Chart } from 'react-google-charts';
 import AdminReportCard from "../../Cards/AdminReportCard/AdminReportCard";
 import AdminEditableClaimCard from "../../Cards/AdminEditableClaimCard/AdminEditableClaimCard";
 import axios from "axios";
-import EditReport from "../../GlobalComponents/EditReport/EditReport";
 
 const AdminClaims =  () =>{
 

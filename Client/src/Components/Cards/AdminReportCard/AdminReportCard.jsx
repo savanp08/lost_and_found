@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import './This.scss';
-import EditReport from "../../GlobalComponents/EditReport/EditReport";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { addReport } from "../../../Store/Slices/ReportSlice/ReportSlice";
 import { initialState_report } from "../../Data/Schemas";
+import { openForm } from "../../../Store/Slices/FormSlice/FormSlice";
 
-const AdminReportCard = ({report}) => {
+const AdminReportCard = ({report,userX}) => {
     
     const initialState = initialState_report;
     
@@ -15,7 +15,8 @@ const AdminReportCard = ({report}) => {
     const [imageType, setImageType] = useState(0);
     const [flip,setFlip] = useState(false);
     const dispatch = useDispatch();
-    const user = useSelector(state => state.user); 
+    const user = userX;
+    
     
    // console.log("Rerender in edit report popup", local_report,report);
     
@@ -30,13 +31,18 @@ const AdminReportCard = ({report}) => {
     function OpenEditReport(e,id){
         e.preventDefault();
        dispatch(addReport(local_report));
-       
-        var x = document.getElementById(id);
-        console.log("edit report debug =>",x);
-        if(x && x.classList.contains("Hide")){
-            x.classList.remove("Hide");
-            x.classList.add("Add-EditReport-After");
-        }
+       if(id==="admin"){
+        dispatch(openForm({
+            formName : "editReport",
+            data : null,
+        }));
+    }
+    else{
+        dispatch(openForm({
+            formName : "editUserReport",
+            data : local_report,
+        }));
+    }
     }
 
     async function deleteReport(e){
@@ -54,7 +60,7 @@ const AdminReportCard = ({report}) => {
 
 
     
-
+    
     return(
         <div className="carc-card-wrap"
         id={`carc-card-wrap-${local_report._id}`}
@@ -101,11 +107,11 @@ const AdminReportCard = ({report}) => {
                             <div className="carc-left-edit-wrap"
                             onClick={(e)=>{
                                 if(user._id) {
-                                    OpenEditReport(e,"lcuer16-EditReport-wrap");
+                                    OpenEditReport(e,"user");
                                  }
                                  else{
                                     console.log("debug => opening admin edit report")
-                                    OpenEditReport(e,"gcaer26-EditReport-wrap")
+                                    OpenEditReport(e,"admin")
                                  }
                            }}
                             >

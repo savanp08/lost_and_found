@@ -31,7 +31,20 @@ reporterName:{
                 lat: null,
                 lng: null,
             },
-            displayAddress: null,
+            displayAddress: {
+                streetAddress1: "",
+                  streetAddress2: "",
+                  buildingDetails: "",
+                  county: "",
+                  city: "",
+                  state: "",
+                  zipCode: "",
+                  searchAddress:"",
+                  coordinates:{
+                    lat: null,
+                    lng: null,
+                  },
+                },
             GMapData:{
                 rawData: null,
                 processedData:{
@@ -41,7 +54,8 @@ reporterName:{
                         lng: null,
                     },
                 },
-                rawData_geometric:null    
+                rawData_geometric:null ,
+                markerMoved: false,
         },
             media:[],
         },

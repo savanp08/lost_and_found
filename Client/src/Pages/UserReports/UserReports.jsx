@@ -1,5 +1,5 @@
 import axios from "axios";
-import React ,{useState, useEffect}from "react";
+import React ,{useState, useEffect, useRef}from "react";
 import UserReportCard from "../../Components/Cards/ReportCard/Report";
 import './UserReports.scss';
 import TextField from '@mui/material/TextField';
@@ -33,7 +33,9 @@ const UserReports = () => {
     date : "",
     common_type: "",
    });
-    
+   const mapRef = useRef(null);
+   const gMap = useSelector((state)=> state.gMap);
+   const [markers , setMarkers] = useState([]);
 
 
    useEffect(()=>{
@@ -52,7 +54,22 @@ const UserReports = () => {
     
    },[])
 
-    
+    useEffect(()=>{
+        if(reports && reports.length > 0){
+            var arr = []
+          reports.forEach(report=>{
+            try{
+                  var x = report.itemDetails.location.displayAddress.coordinates;
+                  if(x.lat)
+                  arr.push(x);
+            }
+            catch(err){
+                console.log("Error pushing coordinate to arr",err);
+            }
+          })
+          setMarkers(arr);
+        }
+    },[reports])
 
    
    async function fetchreports(){
@@ -191,6 +208,15 @@ const UserReports = () => {
      fetchreports();
    },[])
 
+   const onLoad = ((map,) => {
+    if(map)
+    mapRef.current = map
+   
+    console.log("map debug onLoad callback adddrag => ",gMap,mapRef.current);
+    
+    
+  });
+
     return(
         <div className="ur11-main-wrap">
             <div className="ur11-inner-wrap">
@@ -209,7 +235,11 @@ const UserReports = () => {
                     
                    </div>
                 <div className="ur11-top-wrap">
-                 
+                 <GMaps_ReprtForm 
+                 type={"UserReports"}
+                 onLoad={onLoad}
+                 markers = {markers}
+                 />
                 </div>
                 <div className="ur11-bottom-wrap">
                     <div className="ur11-bottom-header-wrap">

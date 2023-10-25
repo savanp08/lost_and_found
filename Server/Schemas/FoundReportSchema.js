@@ -120,6 +120,10 @@ const FoundReportSchemaX = new mongoose.Schema({
                     rawData_geometric:{
                         type: Object,
                     },
+                    markerMoved:{
+                        type: Boolean,
+                        default: false,
+                    },
                 },
                 media:[],
             },

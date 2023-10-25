@@ -163,7 +163,7 @@ const UserAccount = () => {
                                     return(
                                         <div className="cac24-claims-each-wrap" key={key}>
                                         <EditableClaimCard claim={claim} user={user} report={reportsMap.get(claim.reportId)}/>
-                                        <AdminReportCard report={reportsMap.get(claim.reportId)}/>
+                                        <AdminReportCard report={reportsMap.get(claim.reportId)} userX={user}/>
                                         </div>
                                     )
                                 })

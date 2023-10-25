@@ -1,34 +1,108 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import "./EditReport.scss";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import AddIcon from '@mui/icons-material/Add';
 import { Chip, InputAdornment, Stack } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import CustomColors from "../../Data/Options";
 import Close from '@mui/icons-material/Close';
 import axios from 'axios';
-import { ItemTypes } from "../../Data/Options";
+import { ItemTypes } from "../../Data/Options"
 import AttachFileIcon from '@mui/icons-material/AttachFile';
+import { useNavigate } from "react-router-dom";
+import AuthFunctions from "../../../Handlers/Auth";
+import { addUser } from "../../../Store/Slices/UserSlice/UserSlice";
 import { initialState_report } from "../../Data/Schemas";
+import GMaps_ReprtForm from "../../LocalComponents/GoogleMaps_ReportForm/GMaps_ReportForm";
+import Gmap_Autocomp_Form, { processPlaceDetails } from "../../LocalComponents/Gmap_AutoComp_Form/Gmap_Autocomp_Form";
+import { Marker } from "@react-google-maps/api";
+import {
+  getGeocode,
+  getLatLng,
+} from 'use-places-autocomplete';
+import { closeForm } from "../../../Store/Slices/FormSlice/FormSlice";
 
-const EditReport = () => {
-  const report = useSelector(state=> state.report);
-  console.log(report);
+
+
+const EditReport = ({params}) => {
+  console.log("Rerender in Edit report");
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user = useSelector((state) => state.user);
+  const gMapX = useSelector((state)=> state.gMap);
+  const [gMap,setGMap] = useState(gMapX);
+  const report = useSelector((state)=> state.report);
+  const form = useSelector((state)=> state.form);
   const [reporterType, setReporterType] = useState("");
-  const [Item, setItem] = useState(initialState_report);
-
+  const [Item, setItem] = useState(
+    report ||
+    {
+    ...initialState_report,
+    userId : user._id,
+    reportName : user.Name,
+  });
+  const [gSuggestions, setGSuggestions] = useState();
+  const mapRef = useRef(null);
+  const [displayAddress, setDisplayAddress] = useState(
+  report? report.itemDetails.location.displayAddress : 
+    {
+    streetAddress1: "",
+      streetAddress2: "",
+      buildingDetails: "",
+      county: "",
+      city: "",
+      state: "",
+      zipCode: "",
+      searchAddress:"",
+      coordinates:{
+        lat: null,
+        lng: null,
+      }
+  });
+  const [addressType , setAddressType] = useState("None");
   useEffect(()=>{
-    setItem(report);
-  },[report])
-  
-  console.log(Item);
+     setGMap(gMapX);
+     console.log("Setting map state as => ", gMapX, gMap)
+  },[gMapX])
 
+ 
+  
+  const onLoad = ((map,) => {
+    if(map)
+    mapRef.current = map
+   
+    console.log("map debug onLoad callback adddrag => ",gMap,mapRef.current);
+    
+    if(gMap.isLoaded && mapRef.current){
+    addDragEvent();
+    }
+    
+  });
+
+  
+  
+console.log("Item debug =>",Item) 
+  useEffect(()=>{
+    async function authVerify(){
+      const flag = await AuthFunctions();
+      if(flag.message){
+       console.log("Auth Debug in add  report => user is signed in ",flag);
+       dispatch(addUser(flag.user));
+      }
+      else{
+       console.log("Auth Debug in add report=> user is not signed in ",flag);
+        navigate("/Login");
+      }
+  }
+  
+   //authVerify();
+  },[])
 
   async function ValidateForm(e){
     e.preventDefault();
@@ -37,15 +111,31 @@ const EditReport = () => {
   
   async function SubmitForm(){
     
-  
-    var files = document.getElementById("gcaer26-item-location-media-input").files;
+    
+    var files = document.getElementById("ar11-item-location-media-input").files;
+    var itemFiles = document.getElementById("ar11-item-property-media-input").files;
     const formData = new FormData();
-    formData.append('report', JSON.stringify(Item));
+    
+    formData.append('report', JSON.stringify({
+      ...Item,
+      userId : user._id,
+      itemDetails:{
+        ...Item.itemDetails,
+        location:{
+          ...Item.itemDetails.location,
+          displayAddress: displayAddress,
+        }
+      }
+    }));
     console.log("files =>",files)
 
     for (const file of files) {
       console.log("Each Image =>",file,file.name);
       formData.append("image", file, file.name);
+    }
+    for (const file of itemFiles) {
+      console.log("Each Item Image =>",file,file.name);
+      formData.append("ItemImage", file, file.name);
     }
       console.log("Debugging FileUpload->  Type of ->",)
     //  formData.append("image",NewFiles);
@@ -66,538 +156,861 @@ const EditReport = () => {
     })
   }
 
-function closeForm(){
-  var x = document.getElementById("gcaer26-EditReport-wrap");
-   if(x.classList.contains("Add-EditReport-After"))
-   {
-    x.classList.remove("Add-EditReport-After");
-    x.classList.add("Hide");
-   }
-  
+function handler_closeForm(){
+  dispatch(closeForm({
+    formName: "editReport",
+    isOpen: false,
+  }))
+}
+async function addDragEvent(){
+  console.log("Debug Message map Event Listener outer fired=> ",mapRef.current,gMap.isLoaded);
+  if(gMap.isLoaded === true && mapRef.current){
+    console.log("Debug Message map Event Listener fired=> ",mapRef.current);
+  mapRef.current.addListener('dragend', (e)=>{
+    console.log("Debug Message map Event Listener event=> ",e);
+    console.log("Debug Message map Event Listener coordinates=> ",mapRef.current.getCenter().lat(),mapRef.current.getCenter().lng());
+    setItem({
+      ...Item,
+      coordinates:{
+        lat : mapRef.current.getCenter().lat(),
+        lng : mapRef.current.getCenter().lng()
+      }
+    })
+})
+// mapRef.current.addListener('click', (e)=>{
+
+// })
+  }
 }
 
+useEffect(()=>{
+  console.log("map debug onLoad adddrag => ",gMap, mapRef.current);
+  if(gMap.isLoaded === true && mapRef.current){
+    addDragEvent();
+    }
+},[gMap,mapRef.current, onLoad])
+
+     
+    async function populateAddressWithLatLng(address) {
+      setAddressType("LatLng");
+      console.log("Debug Message user chosen gmap option: reverse geocode=> ",Item,displayAddress);
+      var result =displayAddress,
+      lati=Item.coordinates.lat
+      ,lon= Item.coordinates.lng; ;
+      var flag=true;
+      
+      var x=Item.itemDetails.location.GMapData.rawData_geometric;
+      if(Array.isArray(x) && x.length > 0) {
+       var a1 = await getLatLng(x[0]);
+      const { lat1 , lat2 } = a1;
+      if(lat1 === lati && lat2 === lon) {
+        flag = false;
+      }
+    }
+    else flag = false;
+      console.log("Debug mode 4 ", result);
+      if(flag===false) {
+        console.log("Caution : Requesting new geolocation for address => ", lati, lon)
+       result = await getGeocode({ location:{
+        lat: Item.coordinates.lat/1,
+        lng: Item.coordinates.lng/1
+      } });
+    setItem({
+      ...Item,
+      itemDetails:{
+        ...Item.itemDetails,
+        location:{
+          ...Item.itemDetails.location,
+          GMapData:{
+            ...Item.itemDetails.location.GMapData,
+            rawData_geometric: result
+          }
+        }
+      }
+    })
+      console.log("Debug mode 2 ", result);
+      
+      
+       x=processPlaceDetails(result[0].address_components);
+}
+else x = processPlaceDetails(x[0].address_components);
+      setDisplayAddress({
+        ...x,
+        coordinates : {
+          lat : lati,
+          lng : lon,
+        }
+      });
+      console.log("Debug pan To => ",lati,lon);
+      try{
+        var coordinates = {
+          lat : lati/1,
+          lng : lon/1,
+        }
+      mapRef.current.panTo( coordinates );
+      }
+      catch(err){
+        console.log(
+          "Error in panTo => ",
+          err
+        )
+      }
+
+    }
+
+  
+  function populateAddressWithSearch(){
+    console.log("Debug Message user chosen gmap option: Search Fill=> ",Item);
+    setAddressType("Search");
+    mapRef.current.panTo({ 
+      lat: Item.itemDetails.location.GMapData.processedData.coordinates.lat/1,
+      lng: Item.itemDetails.location.GMapData.processedData.coordinates.lng/1,
+    });
+    mapRef.current.setZoom(15);
+    setDisplayAddress({
+      ...Item.itemDetails.location.GMapData.processedData.location,
+      coordinates : Item.itemDetails.location.GMapData.processedData.coordinates,
+    })
+      }
+
+      function fillAddress(location){
+         const loc = {
+          allPlacesPossible: [location.searchAddress],
+    buildingDetails: location.buildingDetails,
+    university: null,
+    street: location.streetAddress1 + location.streetAddress2,
+    apartment: null,
+    city: location.city,
+    state: location.state,
+    pinCode: location.zipCode,
+    coordinates: location.coordinates,
+         }
+         setItem({
+            
+         })
+      }
+
+
+
+
+
+  if(form.editReport.isOpen===false) return null;
   return (
-    <div className="gcaer26-EditReport-wrap Hide"
-        id="gcaer26-EditReport-wrap"
-    >
-      <div className="gcaer26-inner-wrap">
-        <div className="gcaer26-close-wrap"
-        id="gcaer26-close-wrap"
-        onClick={(e)=>{
-          e.preventDefault();
-          closeForm();
-        }}
+    <div className="gcaer26-EditReport-wrap" id="ar11-addReport-wrap">
+      <div className="ar11-inner-wrap">
+        <div
+          className="ar11-close-wrap"
+          id="ar11-close-wrap"
+          onClick={(e) => {
+            e.preventDefault();
+            handler_closeForm();
+          }}
         >
           X
         </div>
-        <div className="gcaer26-h-wrap">
-          <div className="gcaer26-h-title-wrap">
-            <span className="gcaer26-h-title-text">Edit Report</span>
+        <div className="ar11-h-wrap">
+          <div className="ar11-h-title-wrap">
+            <span className="ar11-h-title-text">Add Report</span>
           </div>
         </div>
-        <div className="gcaer26-content-wrap">
-          <div className="gcaer26-content-inner-wrap">
-            <div className="gcaer26-item-wrap">
-            <fieldset className="gcaer26-item-label-wrap">
-        <legend className="gcaer26-item-legend">
-                  Ownership
-                </legend>
-        <div className="gcaer26-ownership-wrap">
-          <div className="gcaer26-ownership-selct-wrap">
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">
-                Is the Item Yours
-              </InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="report-reporterType"
-                value={Item.reporterType || ""}
-                label="Is It Yours"
-                onChange={(e) => {
-                  
-                 console.log(Item);
-                    setItem({
-                      ...Item,
-                      reporterName : {...user.Name},
-                      reporterId : Item.reporterId,
-                      reporterType : e.target.value,
-                    })
-                  
-                }}
-                sx={{
-                  width: "100%",
-                  minWidth: "230px",
-                }}
-
-              >
-                <MenuItem value={"User"}>Yes</MenuItem>
-                <MenuItem value={"Other"}>No</MenuItem>
-              </Select>
-            </FormControl>
-          </div>
-          <span className="gcaer26-item-ownership-text">
-            Select Yes only if u have permission from the actual owner to represent this property
-          </span>
-        </div>
-        </fieldset>
-                <fieldset className="gcaer26-item-label-wrap">
-                    <legend className="gcaer26-item-legend">Type</legend>
-              <div className="gcaer26-item-type-wrap gcaer26-common-textField-wrap">
-              <Autocomplete
-       
-        id="tags-standard"
-        options={ItemTypes}
-        getOptionLabel={(option) => option.label || ""}
-        value={Item.itemDetails.common_type || ""} 
-        limitTags={3}
-        onChange={(e,value)=>{
-            console.log("ssssss =>",e.target.value)
-          setItem({
-            ...Item,
-            itemDetails:{
-              ...Item.itemDetails,
-              common_type: value.label
-              
-            }
-          })
-        }}
-        renderInput={ params => {
-          const { InputProps, ...restParams } = params;
-          const { startAdornment, ...restInputProps } = InputProps;
-          return (
-            <TextField
-              label="Item Type"
-              { ...restParams }
-              InputProps={ {
-                ...restInputProps,
-                startAdornment: (
-                  <div style={{
-                    maxHeight: '70px',
-                    overflowY: 'auto',
-                    minWidth:'230px',
-                  }}
-                  sx={{
-                    minWidth: '230px',
-                  }}
-                  
-                  >
-                    {startAdornment}
+        <div className="ar11-content-wrap">
+          <div className="ar11-content-inner-wrap">
+            <div className="ar11-item-wrap">
+              <fieldset className="ar11-item-label-wrap">
+                <legend className="ar11-item-legend">Ownership</legend>
+                <div className="ar11-ownership-wrap">
+                  <div className="ar11-ownership-selct-wrap">
+                    <FormControl fullWidth>
+                      <InputLabel id="demo-simple-select-label">
+                        Is the Item Yours
+                      </InputLabel>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="report-reporterType"
+                        value={Item.reporterType || ""}
+                        label="Is It Yours"
+                        onChange={(e) => {
+                          const x =
+                            e.target.value === "User" ? user.userId : null;
+                          setItem({
+                            ...Item,
+                            reporterName: { ...user.Name },
+                            reporterId: user.reporterId,
+                            reporterType: e.target.value,
+                            claims: {
+                              ...Item.claims,
+                              userIds:
+                                e.target.value === "User" ? [user.userId] : [],
+                            },
+                          });
+                        }}
+                        sx={{
+                          width: "100%",
+                          minWidth: "230px",
+                        }}
+                      >
+                        <MenuItem value={"User"}>Yes</MenuItem>
+                        <MenuItem value={"Other"}>No</MenuItem>
+                      </Select>
+                    </FormControl>
                   </div>
-                ),
-              } }
-            />
-          );
-        } }
-      />
-              </div>
+                  <span className="ar11-item-ownership-text">
+                    Select Yes only if u have permission from the actual owner
+                    to represent this property
+                  </span>
+                </div>
               </fieldset>
-              <fieldset className="gcaer26-item-label-wrap">
-                <legend className="gcaer26-item-legend"> 
-                Item Name
-                </legend>
-              <div className="gcaer26-item-name-wrap">
-                <div className="gcaer26-item-name-firstName-wrap">
-                  <TextField
-                    id="report-item-name-Name"
-                    label="Item Name"
-                    placeholder="Item Name"
-                    variant="outlined"
-                    value={Item.itemDetails.customItemName || ""}
-                    required
-                    sx={{
-                      minWidth: "230px",
+              <fieldset className="ar11-item-label-wrap">
+                <legend className="ar11-item-legend">Type</legend>
+                <div className="ar11-item-type-wrap ar11-common-textField-wrap">
+                  <Autocomplete
+                    id="tags-standard"
+                    options={ItemTypes}
+                    getOptionLabel={(option) => option.label || ""}
+                    value={{
+                      label: Item.itemDetails.common_type || "",
                     }}
-                    onChange={(e)=>{
+                    limitTags={3}
+                    onChange={(e, value) => {
+                      console.log("ssssss =>", e.target.value);
                       setItem({
                         ...Item,
-                        itemDetails :{
+                        itemDetails: {
                           ...Item.itemDetails,
-                          customItemName:e.target.value,
-                          
-                        }
-                    })
+                          common_type: value.label,
+                        },
+                      });
+                    }}
+                    renderInput={(params) => {
+                      const { InputProps, ...restParams } = params;
+                      const { startAdornment, ...restInputProps } = InputProps;
+                      return (
+                        <TextField
+                          label="Item Type"
+                          {...restParams}
+                          InputProps={{
+                            ...restInputProps,
+                            startAdornment: (
+                              <div
+                                style={{
+                                  maxHeight: "70px",
+                                  overflowY: "auto",
+                                  minWidth: "230px",
+                                }}
+                                sx={{
+                                  minWidth: "230px",
+                                }}
+                              >
+                                {startAdornment}
+                              </div>
+                            ),
+                          }}
+                        />
+                      );
                     }}
                   />
                 </div>
-              </div>
               </fieldset>
-              <fieldset className="gcaer26-item-label-wrap">
-                <legend className="gcaer26-item-legend">
-                  Item Color
-                </legend>
-
-              <div className="gcaer26-item-color-wrap">
-              
-      <Autocomplete
-        multiple
-        id="tags-standard"
-        options={CustomColors}
-        disableCloseOnSelect
-        value={Item.itemDetails.colors}
-        limitTags={3}
-        onChange={(e,values)=>{
-          setItem({
-            ...Item,
-            itemDetails:{
-              ...Item.itemDetails,
-              colors: values
-              
-            }
-          })
-        }}
-        renderInput={ params => {
-          const { InputProps, ...restParams } = params;
-          const { startAdornment, ...restInputProps } = InputProps;
-          return (
-            <TextField
-              label="Colors"
-              { ...restParams }
-              InputProps={ {
-                ...restInputProps,
-                startAdornment: (
-                  <div style={{
-                    maxHeight: '70px',
-                    overflowY: 'auto',
-                    minWidth:'230px',
-                  }}
-                  sx={{
-                    minWidth: '230px',
-                  }}
-                  >
-                    {startAdornment}
+              <fieldset className="ar11-item-label-wrap">
+                <legend className="ar11-item-legend">Item Name</legend>
+                <div className="ar11-item-name-wrap">
+                  <div className="ar11-item-name-firstName-wrap">
+                    <TextField
+                      id="report-item-name-Name"
+                      label="Name The Item"
+                      variant="outlined"
+                      value={Item.itemDetails.customItemName || ""}
+                      required
+                      sx={{
+                        minWidth: "230px",
+                      }}
+                      onChange={(e) => {
+                        setItem({
+                          ...Item,
+                          itemDetails: {
+                            ...Item.itemDetails,
+                            customItemName: e.target.value,
+                          },
+                        });
+                      }}
+                    />
                   </div>
-                ),
-              } }
-            />
-          );
-        } }
-      />
-                <div className="gcaer26-item-color-depictor-wrap">
-                  {/* {
+                </div>
+              </fieldset>
+              <fieldset className="ar11-item-label-wrap">
+                <legend className="ar11-item-legend">Item Color</legend>
+
+                <div className="ar11-item-color-wrap">
+                  <Autocomplete
+                    multiple
+                    id="tags-standard"
+                    options={CustomColors}
+                    disableCloseOnSelect
+                    value={Item.itemDetails.colors}
+                    limitTags={3}
+                    onChange={(e, values) => {
+                      setItem({
+                        ...Item,
+                        itemDetails: {
+                          ...Item.itemDetails,
+                          colors: values,
+                        },
+                      });
+                    }}
+                    renderInput={(params) => {
+                      const { InputProps, ...restParams } = params;
+                      const { startAdornment, ...restInputProps } = InputProps;
+                      return (
+                        <TextField
+                          label="Colors"
+                          {...restParams}
+                          InputProps={{
+                            ...restInputProps,
+                            startAdornment: (
+                              <div
+                                style={{
+                                  maxHeight: "70px",
+                                  overflowY: "auto",
+                                  minWidth: "230px",
+                                }}
+                                sx={{
+                                  minWidth: "230px",
+                                }}
+                              >
+                                {startAdornment}
+                              </div>
+                            ),
+                          }}
+                        />
+                      );
+                    }}
+                  />
+
+                  <div className="ar11-item-color-depictor-wrap">
+                    {/* {
                   Item.colors.map((key,color)=>{
                     return(
-                      <div className="gcaer26-item-color-depictor-singleColor"
+                      <div className="ar11-item-color-depictor-singleColor"
                       style={{
                         
                       }}
                       >
+
                       </div>
                     )
                   })
                 } */}
+                  </div>
                 </div>
-              </div>
               </fieldset>
-              <fieldset className="gcaer26-item-label-wrap label-description-wrap">
-              <legend className="gcaer26-item-legend">
-                  Item Description
-                </legend>
-              <div className="gcaer26-item-description-wrap">
-                <div className="gcaer26-item-description">
-                  <TextField
-                    id="report-item-description"
-                    label="Describe in Detail"
-                    value={Item.itemDetails.description || ""}
-                    variant="outlined"
-                    required
-                    onChange={(e)=>{
-                      setItem({
-                        ...Item,
-                        itemDetails :{
-                          ...Item.itemDetails,
-                          description :e.target.value,
-                        }
-                    })
-                  }}
-                    multiline
-                    maxRows={10}
-                    minRows={3}
-                    sx={{
-                      width:'100%',
-                      minWidth: "230px",
-                      minHeight:'100px',
-                    }}
-                   
-                  />
+              <fieldset className="ar11-item-label-wrap label-description-wrap">
+                <legend className="ar11-item-legend">Item Description</legend>
+                <div className="ar11-item-description-wrap">
+                  <div className="ar11-item-description">
+                    <TextField
+                      id="report-item-description"
+                      label="Describe in Detail"
+                      variant="outlined"
+                      required
+                      value={Item.itemDetails.description || ""}
+                      onChange={(e) => {
+                        setItem({
+                          ...Item,
+                          itemDetails: {
+                            ...Item.itemDetails,
+                            description: e.target.value,
+                          },
+                        });
+                      }}
+                      multiline
+                      maxRows={10}
+                      sx={{
+                        width: "100%",
+                        minWidth: "230px",
+                        minHeight: "100px",
+                      }}
+                      minRows={3}
+                    />
+                  </div>
                 </div>
-              </div>
               </fieldset>
-              <fieldset className="gcaer26-item-label-wrap">
-              <legend className="gcaer26-item-legend">
-                  Item Location
-                </legend>
-              <div className="gcaer26-item-location-wrap">
-                <div className="gcaer26-item-location-box all-possible-places">
-                <TextField
-                    id="report-item-location-all-possible-places"
-                    label="All possible Places"
-                    variant="outlined"
+              <fieldset className="ar11-item-label-wrap">
+                <legend className="ar11-item-legend">Google Maps Search</legend>
+                <div className="ar11-gmaps-wrap">
+                  {console.log("Debug Item Message => ", gMap)}
+                  {gMap.isLoaded ? (
+                    <GMaps_ReprtForm
+                      type="Form"
+                      onLoad={onLoad}
+                      coordinates={{
+                        lat: Item.coordinates.lat || 32.7325,
+                        lng: Item.coordinates.lng || -97.11383,
+                      }}
+                      Item={Item}
+                      setItem={setItem}
+                    />
+                  ) : (
+                    "Loading..."
+                  )}
+                  {gMap.isLoaded ? (
+                    <Gmap_Autocomp_Form
+                    handle_selctSearchOption={(data, lat, lng, value) => {
+                        console.log(
+                          "set data debug => Setting Data as => ",
+                          data,
+                          lat,
+                          lng,
+                          "Item",
+                          Item
+                        );
+                        setItem({
+                          ...Item,
+                          itemDetails: {
+                            ...Item.itemDetails,
+                            location: {
+                              ...Item.itemDetails.location,
+                              GMapData: {
+                                rawData: data,
+                                processedData: {
+                                  location: processPlaceDetails(
+                                    data? data[0]? 
+                                    [...data[0].address_components  , {searchAddress : value}] : [] : []
 
-                    value={Item.itemDetails.location.allPlacesPossible || []}
-                    sx={{
-                      minWidth: "230px",
-                    }}
-                  />
+                                  ),
+                                  coordinates: {
+                                    lat: lat,
+                                    lng: lng,
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        });
+                        mapRef.current.panTo({
+                          lat:
+                            lat ||
+                            Item.itemDetails.location.GMapData.processedData
+                              .coordinates.lat/1 ||
+                            32.7325,
+                          lng:
+                            lng ||
+                            Item.itemDetails.location.GMapData.processedData
+                              .coordinates.lng/1 ||
+                            -97.11383,
+                        });
+                        mapRef.current.setZoom(15);
+                      }}
+                      setGSuggestions={setGSuggestions}
+                    ></Gmap_Autocomp_Form>
+                  ) : (
+                    "Loading AutoComplete..."
+                  )}
+                  {}
                 </div>
-                <div className="gcaer26-item-location-box building-details">
-                <TextField
-                    id="report-item-location-bullding-details"
-                    label="building Details"
-                    variant="outlined"
-                    value={Item.itemDetails.location.buildingDetails || ""}
-                    sx={{
-                      minWidth: "230px",
-                    }}
-                    onChange={(e)=>{
-                      setItem({
-                        ...Item,
-                        itemDetails :{
-                          ...Item.itemDetails,
-                          location:{
-                            ...Item.itemDetails.location,
-                            buildingDetails: e.target.value
-                          }
-                          
-                        }
-                    })
-                  }}
-                  />
-                </div>
-                <div className="gcaer26-item-location-box univeristy">
-                <TextField
-                    id="report-item-location-all-possible-places"
-                    label="university"
-                    variant="outlined"
-                    value={Item.itemDetails.location.university || ""}
-                    required
-                    
-                    sx={{
-                      minWidth: "230px",
-                    }}
-                    onChange={(e)=>{
-                      setItem({
-                        ...Item,
-                        itemDetails :{
-                          ...Item.itemDetails,
-                          location:{
-                            ...Item.itemDetails.location,
-                            university: e.target.value
-                          }
-                          
-                        }
-                    })
-                  }}
-                  />
-                </div>
-                <div className="gcaer26-item-location-box street">
-                <TextField
-                    id="report-item-location-street"
-                    label="Street"
-                    variant="outlined"
-                    value={Item.itemDetails.location.street || ""}
-                    required
-                    sx={{
-                      minWidth: "230px",
-                    }}
-                    onChange={(e)=>{
-                      setItem({
-                        ...Item,
-                        itemDetails :{
-                          ...Item.itemDetails,
-                          location:{
-                            ...Item.itemDetails.location,
-                            street: e.target.value
-                          }
-                          
-                        }
-                    })
-                  }}
-                  />
-                </div>
-                <div className="gcaer26-item-location-box apartment">
-                <TextField
-                    id="report-item-location-apartment"
-                    label="Apartment"
-                    variant="outlined"
-                    value={Item.itemDetails.location.apartment || ""}
-                    sx={{
-                      minWidth: "230px",
-                    }}
-                    onChange={(e)=>{
-                      setItem({
-                        ...Item,
-                        itemDetails :{
-                          ...Item.itemDetails,
-                          location:{
-                            ...Item.itemDetails.location,
-                            apartment: e.target.value
-                          }
-                        }
-                    })
-                  }}
-                  />
-                </div>
-                <div className="gcaer26-item-location-box city">
-                <TextField
-                    id="report-item-location-city"
-                    label="City"
-                    variant="outlined"
-                    required
-                    value={Item.itemDetails.location.city || ""}
-                    sx={{
-                      minWidth: "230px",
-                    }}
-                    onChange={(e)=>{
-                      setItem({
-                        ...Item,
-                        itemDetails :{
-                          ...Item.itemDetails,
-                          location:{
-                            ...Item.itemDetails.location,
-                            city: e.target.value
+                <div className="ar11-gmaps-gsearch-wrap"></div>
+              </fieldset>
+              <fieldset className="ar11-item-label-wrap">
+                <legend className="ar11-item-legend">Item Location</legend>
 
-                          }
-                          
-                        }
-                    })
-                  }}
-                  />
-                </div>
-                <div className="gcaer26-item-location-box state">
-                <TextField
-                    id="report-item-location-State"
-                    label="State"
-                    variant="outlined"
-                    required
-                    value={Item.itemDetails.location.state || ""}
-                    sx={{
-                      minWidth: "230px",
+                {Item.itemDetails.location.GMapData.processedData.coordinates
+                  .lat === Item.coordinates.lat &&
+                Item.itemDetails.location.GMapData.processedData.coordinates
+                  .lng === Item.coordinates.lng ? null : (
+                  <div className="ar11-Gmap-location-check-wrap">
+                    <button
+                      className="ar11-Gmap-location-check-btn"
+                      onClick={(e) => {
+                        populateAddressWithLatLng()
+                      }}
+                    >
+                      Use Marker Corrdinates
+                    </button>
+                    <button className="ar11-Gmap-location-check-btn"
+                    onClick={(e)=>{
+                      populateAddressWithSearch();
                     }}
-                    onChange={(e)=>{
-                      setItem({
-                        ...Item,
-                        itemDetails :{
-                          ...Item.itemDetails,
-                          location:{
-                            ...Item.itemDetails.location,
-                            state: e.target.value
+                    >
+                      Use Search Corrdinates
+                    </button>
+                  </div>
+                )}
 
-                          }
-                          
-                        }
-                    })
-                  }}
-                  />
-                </div>
-                <div className="gcaer26-item-location-box pincode">
-                <TextField
-                    id="report-item-location-pinCode"
-                    label="Pin Code"
-                    variant="outlined"
-                    required
-                    value={Item.itemDetails.location.pinCode || ""}
-                    sx={{
-                      minWidth: "230px",
-                    }}
-                    onChange={(e)=>{
-                      
-                      setItem({
-                        ...Item,
-                        itemDetails :{
-                          ...Item.itemDetails,
-                          location:{
-                            ...Item.itemDetails.location,
-                            pinCode: e.target.value
-                          }
-                          
-                        }
-                    })
-                  }}
-                  />
-                </div>
-                <fieldset className="gcaer26-item-label-wrap">
-                    <legend className="gcaer26-item-legend">
-                        Media
-                    </legend>
-                <div className="gcaer26-item-location-media">
-                    <div className="gcaer26-item-media-wrap">
-                      <label className="gcaer26-item-media" htmlFor="gcaer26-item-location-media-input" >
+                <div className="ar11-item-location-wrap">
+                  <div className="ar11-item-location-box ar11-locationall-possible-places">
+                    <TextField
+                      id="report-item-location-all-possible-places"
+                      label="All possible Places"
+                      variant="outlined"
+                      value={displayAddress.searchAddress || ""}
+                      sx={{
+                        minWidth: "230px",
+                      }}
+                    />
+                  </div>
+                  <div className="ar11-item-location-box ar11-location-building-details">
+                    <TextField
+                      id="report-item-location-bullding-details"
+                      label="building Details"
+                      variant="outlined"
+                      value={displayAddress.buildingDetails || ""}
+                      sx={{
+                        minWidth: "230px",
+                      }}
+                      onChange={(e) => {
+                        setDisplayAddress({
+                          ...displayAddress,
+                          buildingDetails: e.target.value,
+                        });
+                      }}
+                    />
+                  </div>
+                  <div className="ar11-item-location-box ar11-univeristy">
+                    <TextField
+                      id="report-item-location-university"
+                      label="university"
+                      variant="outlined"
+                      required
+                      value={displayAddress.university || ""}
+                      sx={{
+                        minWidth: "230px",
+                      }}
+                      onChange={(e) => {
+                        setDisplayAddress({
+                          ...displayAddress,
+                          university: e.target.value,
+                        });
+                      }}
+                    />
+                  </div>
+                  <div className="ar11-item-location-box ar11-street">
+                    <TextField
+                      id="report-item-location-street"
+                      label="Street"
+                      variant="outlined"
+                      value={displayAddress.street || ""}
+                      required
+                      sx={{
+                        minWidth: "230px",
+                      }}
+                      onChange={(e) => {
+                        setDisplayAddress({
+                          ...displayAddress,
+                          street: e.target.value,
+                        })
+                      }}
+                    />
+                  </div>
+                  <div className="ar11-item-location-box ar11-apartment">
+                    <TextField
+                      id="report-item-location-apartment"
+                      label="Apartment"
+                      variant="outlined"
+                      value={displayAddress.apartment || ""}
+                      sx={{
+                        minWidth: "230px",
+                      }}
+                      onChange={(e) => {
+                        setDisplayAddress({
+                          ...displayAddress,
+                          apartment: e.target.value,
+                        })
+                      }}
+                    />
+                  </div>
+                  <div className="ar11-item-location-box ar11-city">
+                    <TextField
+                      id="report-item-location-city"
+                      label="City"
+                      variant="outlined"
+                      required
+                      value={displayAddress.city || ""}
+                      sx={{
+                        minWidth: "230px",
+                      }}
+                      onChange={(e) => {
+                        setDisplayAddress({
+                          ...displayAddress,
+                          city: e.target.value,
+                        })
+                      }}
+                    />
+                  </div>
+                  <div className="ar11-item-location-box ar11-state">
+                    <TextField
+                      id="report-item-location-State"
+                      label="State"
+                      variant="outlined"
+                      required
+                      value={displayAddress.state || ""}
+                      sx={{
+                        minWidth: "230px",
+                      }}
+                      onChange={(e) => {
+                        setDisplayAddress({
+                          ...displayAddress,
+                          state: e.target.value,
+                        })
+                      }}
+                    />
+                  </div>
+                  <div className="ar11-item-location-box ar11-pincode">
+                    <TextField
+                      id="report-item-location-pinCode"
+                      label="Pin Code"
+                      variant="outlined"
+                      required
+                      value={displayAddress.zipCode || ""}
+                      sx={{
+                        minWidth: "230px",
+                      }}
+                      onChange={(e) => {
+                        setDisplayAddress({
+                          ...displayAddress,
+                          zipCode: e.target.value,
+                        })
+                      }}
+                    />
+                  </div>
+                  <div className="ar11-item-location-box ar11-pincode">
+                    <TextField
+                      id="report-item-location-pinCode"
+                      label="Latitude"
+                      variant="outlined"
+                      required
+                      value={displayAddress.coordinates.lat || ""}
+                      sx={{
+                        minWidth: "230px",
+                      }}
+                      onChange={(e) => {
+                        setDisplayAddress({
+                          ...displayAddress,
+                          coordinates: {
+                            ...displayAddress.coordinates,
+                            lat: e.target.value,
+                          },
                         
-                          <input type="file" className="gcaer26-item-fil-icon"  
-                          id="gcaer26-item-location-media-input"
-                          accept="image/*"
-                          name='files[]'
-                          multiple
-                          onChange={(e)=>{
-                            console.log(e.target.files);
-                            console.log(document.getElementById('gcaer26-item-location-media-input').files);
-                            var files = document.getElementById("gcaer26-item-location-media-input");
-                        var media=[];
-                        if(files && files.files && Object.keys(files.files).length>0){
-                          Object.keys(files.files).forEach(index=>{
-                            console.log("Debug MessageMedia->",files.files[index],files.files)
-                            media.push(URL.createObjectURL(files.files[index]));
-                          })
-                        }
-                            setItem({
-                              ...Item,
-                              itemDetails:{
-                                ...Item.itemDetails,
-                                location:{
-                                  ...Item.itemDetails.location,
-                                  media: media
-                                }
+                        })
+                      }}
+                    />
+                  </div>
+                  <div className="ar11-item-location-box ar11-pincode">
+                    <TextField
+                      id="report-item-location-pinCode"
+                      label="Longitude"
+                      variant="outlined"
+                      required
+                      value={displayAddress.coordinates.lng || ""}
+                      sx={{
+                        minWidth: "230px",
+                      }}
+                      onChange={(e) => {
+                        setDisplayAddress({
+                          ...displayAddress,
+                          coordinates: {
+                            ...displayAddress.coordinates,
+                            lat: e.target.value,
+                          },
+                        
+                        })
+                      }}
+                    />
+                  </div>
+                  <fieldset className="ar11-item-label-wrap">
+                    <legend className="ar11-item-legend">Location Media</legend>
+                    <div className="ar11-item-location-media">
+                      <div className="ar11-item-media-wrap">
+                        <label
+                          className="ar11-item-media"
+                          htmlFor="ar11-item-location-media-input"
+                        >
+                          <input
+                            type="file"
+                            className="ar11-item-fil-icon"
+                            id="ar11-item-location-media-input"
+                            accept="image/*"
+                            name="files[]"
+                            multiple
+                            onChange={(e) => {
+                              console.log(e.target.files);
+                              console.log(
+                                document.getElementById(
+                                  "ar11-item-location-media-input"
+                                ).files
+                              );
+                              var files = document.getElementById(
+                                "ar11-item-location-media-input"
+                              );
+                              var media = [];
+                              if (
+                                files &&
+                                files.files &&
+                                Object.keys(files.files).length > 0
+                              ) {
+                                Object.keys(files.files).forEach((index) => {
+                                  console.log(
+                                    "Debug MessageMedia->",
+                                    files.files[index],
+                                    files.files
+                                  );
+                                  media.push(
+                                    URL.createObjectURL(files.files[index])
+                                  );
+                                });
                               }
-                            })
-                          }}
+                              setItem({
+                                ...Item,
+                                itemDetails: {
+                                  ...Item.itemDetails,
+                                  location: {
+                                    ...Item.itemDetails.location,
+                                    media: media,
+                                  },
+                                },
+                              });
+                            }}
                           />
                           <AttachFileIcon
-                        sx={{
-                          cursor: 'pointer',
-                          position:'relative',
-                        }}
-                        onClick={(e)=>{
-                          document.getElementById('gcaer26-item-location-media-input');
-                        }}
-                        ></AttachFileIcon>
-                      </label>
-                    </div>
-                    <div className="gcaer26-media-show-input-wrap">
-                      {
-                        Item.itemDetails.location.media.map((imag,key)=>{
-
-                          return(
-                            <div className="gcaer26-item-location-media-show-each-wrap">
-                            <img src={imag} alt="Media Image of location" 
-                            className="gcaer26-item-location-media-show-each"
-                            />
+                            sx={{
+                              cursor: "pointer",
+                              position: "relative",
+                            }}
+                            onClick={(e) => {
+                              document.getElementById(
+                                "ar11-item-location-media-input"
+                              );
+                            }}
+                          ></AttachFileIcon>
+                        </label>
+                      </div>
+                      <div className="ar11-media-show-input-wrap">
+                        {Item.itemDetails.location.media.map((imag, key) => {
+                          return (
+                            <div className="ar11-item-location-media-show-each-wrap">
+                              <img
+                                src={imag}
+                                alt="Media Image of location"
+                                className="ar11-item-location-media-show-each"
+                              />
                             </div>
-                          )
-                        })
-                      }
+                          );
+                        })}
+                      </div>
                     </div>
+                  </fieldset>
                 </div>
-                </fieldset>
-              </div>
               </fieldset>
-              <fieldset className="gcaer26-item-label-wrap">
-              <legend className="gcaer26-item-legend">
+              <fieldset className="ar11-item-label-wrap">
+                <legend className="ar11-item-legend">Property Media</legend>
+                <div className="ar11-item-location-media">
+                  <div className="ar11-item-media-wrap">
+                    <label
+                      className="ar11-item-media"
+                      htmlFor="ar11-item-property-media-input"
+                    >
+                      <input
+                        type="file"
+                        className="ar11-item-fil-icon"
+                        id="ar11-item-property-media-input"
+                        accept="image/*"
+                        name="ItemFiles[]"
+                        multiple
+                        onChange={(e) => {
+                          console.log(e.target.files);
+                          console.log(
+                            document.getElementById(
+                              "ar11-item-property-media-input"
+                            ).files
+                          );
+                          var files = document.getElementById(
+                            "ar11-item-property-media-input"
+                          );
+                          var media = [];
+                          if (
+                            files &&
+                            files.files &&
+                            Object.keys(files.files).length > 0
+                          ) {
+                            Object.keys(files.files).forEach((index) => {
+                              console.log(
+                                "Debug MessageMedia->",
+                                files.files[index],
+                                files.files
+                              );
+                              media.push(
+                                URL.createObjectURL(files.files[index])
+                              );
+                            });
+                          }
+                          setItem({
+                            ...Item,
+                            media: media,
+                          });
+                        }}
+                      />
+                      <AttachFileIcon
+                        sx={{
+                          cursor: "pointer",
+                          position: "relative",
+                        }}
+                        onClick={(e) => {
+                          document.getElementById(
+                            "ar11-item-property-media-input"
+                          );
+                        }}
+                      ></AttachFileIcon>
+                    </label>
+                  </div>
+                  <div className="ar11-media-show-input-wrap">
+                    {Item.media.map((imag, key) => {
+                      return (
+                        <div className="ar11-item-location-media-show-each-wrap">
+                          <img
+                            src={imag}
+                            alt="Media Image of Property"
+                            className="ar11-item-location-media-show-each"
+                          />
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </fieldset>
+              <fieldset className="ar11-item-label-wrap">
+                <legend className="ar11-item-legend">
                   Submittion Location
                 </legend>
-              <div className="gcaer26-item-submit-wrap">
-                <div className="gcaer26-item-submittion-location"></div>
-              </div>
+                <div className="ar11-item-submit-wrap">
+                  <div className="ar11-item-submittion-location"></div>
+                  <TextField
+                    id="add-report-item-submittion-location"
+                    label="Submittion Location"
+                    variant="outlined"
+                    required
+                    placeholder="Location where you will be submitting the item"
+                    sx={{
+                      minWidth: "230px",
+                    }}
+                    value={Item.custodyAt || ""}
+                    onChange={(e) => {
+                      setItem({
+                        ...Item,
+                        custodyAt: e.target.value,
+                      });
+                    }}
+                  />
+                </div>
               </fieldset>
             </div>
           </div>
         </div>
-        
-        <div className="gcaer26-item-submitBbutton-wrap">
-          <div className="gcaer26-item-submitButton"
-          onClick={(e)=>[
-            ValidateForm(e)
-          ]}
-          >Report</div>
+
+        <div className="ar11-item-submitBbutton-wrap">
+          <div
+            className="ar11-item-submitButton"
+            onClick={(e) => [ValidateForm(e)]}
+          >
+            Edit
+          </div>
         </div>
       </div>
     </div>

@@ -27,6 +27,8 @@ import {
 
 } from "@react-google-maps/api";
 import { setIsLoaded } from './Store/Slices/GMapSlice/GMapSlice';
+import EditReport from './Components/GlobalComponents/EditReport/EditReport';
+import UserEditReport from './Components/LocalComponents/UserEditReport/EditReport';
 
 function App() {
 
@@ -127,6 +129,12 @@ function App() {
      </div> */}
      <AddReport 
       user={user}
+     />
+     <EditReport 
+     user = {user}
+     />
+     <UserEditReport 
+     user = {user}
      />
      
      {/* <div className="OpaqueBackGround-fullscreen OpaqueBefore"></div> */}

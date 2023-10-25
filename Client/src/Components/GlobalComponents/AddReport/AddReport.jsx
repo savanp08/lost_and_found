@@ -219,15 +219,14 @@ useEffect(()=>{
           GMapData:{
             ...Item.itemDetails.location.GMapData,
             rawData_geometric: result
-          }
+          },
+          
         }
       }
     })
       console.log("Debug mode 2 ", result);
-      const { lat, lng } = await getLatLng(result[0]);
-      lati = lat;
-      lon = lng;
-      console.log("Debug Message => ",lat,lng);
+      
+     
        x=processPlaceDetails(result[0].address_components);
 }
 else x = processPlaceDetails(x[0].address_components);

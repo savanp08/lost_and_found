@@ -17,6 +17,10 @@ const initialState = {
     editClaim:{
         isOpen: false,
         data:null,
+    },
+    editUserReport:{
+        isOpen: false,
+        data:null,
     }
 };
 
