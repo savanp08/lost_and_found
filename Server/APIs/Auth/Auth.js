@@ -110,6 +110,55 @@ authRouter.get("/TokenValidate", async (req, response) => {
       });
     }
   });
+  authRouter.get("/TokenValidate/Admin", async (req, response) => {
+    try{
+      console.log("Admin TokenValidate Called->");
+    console.log(req.headers);
+      const HeaderToken = req.headers["authorization"];
+      const Token = HeaderToken && HeaderToken.split(" ")[1];
+      console.log("This is Acquired Token->");
+      console.log(Token);
+      var x = null;
+      try{
+        x =  jwt.verify(Token, process.env.RefreshToken);
+      }
+      catch(err){
+  
+      }
+       
+       if(x){
+          console.log("Token Validated",x);
+          var xy = x.UserName || x.email;
+          xy = xy.toLowerCase();
+          console.log("xy",xy);
+          const y = await adminSchema.findOne({email :  xy});
+          if(y) {
+            console.log("userExists reponse=>>> ",y);
+          return response.status(200).send(
+            {
+              message : "Token Validated",
+               user : y
+          }
+            );
+        }
+        else{
+          console.log("Admin not found Token Not Validated",y);
+          return response.status(403).send("Token Not Validated");
+        }
+       }
+       else{
+        console.log("Token Not Validated",x);
+        return response.status(403).send("Token Not Validated");
+       }
+      }
+      catch(err){
+        console.log("Error in Try while validating Token",err);
+        return response.status(403).send({
+          message: null,
+          user:null
+        });
+      }
+    });
 
   
 function fetchToken(email) {

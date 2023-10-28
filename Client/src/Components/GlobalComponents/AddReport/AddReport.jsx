@@ -169,7 +169,17 @@ async function addDragEvent(){
       coordinates:{
         lat : mapRef.current.getCenter().lat(),
         lng : mapRef.current.getCenter().lng()
-      }
+      },
+      itemDetails:{
+        ...Item.itemDetails,
+        location:{
+          ...Item.itemDetails.location,
+            GMapData:{
+              ...Item.itemDetails.location.GMapData,
+              markerMoved : true,
+            }
+          }
+        }
     })
 })
 // mapRef.current.addListener('click', (e)=>{
@@ -185,45 +195,56 @@ useEffect(()=>{
     }
 },[gMap,mapRef.current, onLoad])
 
+
+function getLat(lat){
+  if(typeof lat === "function") return lat();
+  return lat/1;
+}
+function getLng(lng){
+  if(typeof lng === "function") return lng();
+  return lng/1;
+}
      
     async function populateAddressWithLatLng(address) {
       setAddressType("LatLng");
       console.log("Debug Message user chosen gmap option: reverse geocode=> ",Item,displayAddress);
-      var result =displayAddress,
-      lati=Item.coordinates.lat
-      ,lon= Item.coordinates.lng; ;
-      var flag=true;
-      
-      var x=Item.itemDetails.location.GMapData.rawData_geometric;
-      if(Array.isArray(x) && x.length > 0) {
-       var a1 = await getLatLng(x[0]);
-      const { lat1 , lat2 } = a1;
-      if(lat1 === lati && lat2 === lon) {
-        flag = false;
-      }
-    }
+      var x = Item.itemDetails.location.GMapData.rawData_geometric;
+      var y = x;
+      var flag = true;
+      var lat=Item.coordinates.lat,lng=Item.coordinates.lng;
+      if(Item.itemDetails.location.GMapData.markerMoved)  flag=false
     else flag = false;
-      console.log("Debug mode 4 ", result);
+   
+      console.log("Debug mode 4 ", flag);
       if(flag===false) {
-        console.log("Caution : Requesting new geolocation for address => ", lati, lon)
-       result = await getGeocode({ location:{
+        console.log("Caution : Requesting new geolocation for address => ", lat, lng)
+       var result = await getGeocode({ location:{
         lat: Item.coordinates.lat,
         lng: Item.coordinates.lng
       } });
-    setItem({
-      ...Item,
-      itemDetails:{
-        ...Item.itemDetails,
-        location:{
-          ...Item.itemDetails.location,
-          GMapData:{
-            ...Item.itemDetails.location.GMapData,
-            rawData_geometric: result
-          },
-          
-        }
+      const xxy = await getPlaceDetails(Item.coordinates.lat, Item.coordinates.lng, result[0].formatted_address);
+      console.log("AJSJJSJSJSJSJSJS buildingName function response=> ", xxy);
+      if(result.length > 0) {
+       var result1 = await getGeocode({ placeId : result[0].place_id})
+       // result = [result];
+        console.log("XUUUUUUUUUUU double geocode => ",result1)
       }
-    })
+      setItem({
+        ...Item,
+        itemDetails:{
+        ...Item.itemDetails,
+          location:{
+          ...Item.itemDetails.location,
+            GMapData: {
+              ...Item.itemDetails.location.GMapData,
+              rawData_geometric: x,
+              markerMoved : false,
+            },
+          
+          }
+        }
+        
+      })
       console.log("Debug mode 2 ", result);
       
      
@@ -233,15 +254,15 @@ else x = processPlaceDetails(x[0].address_components);
       setDisplayAddress({
         ...x,
         coordinates : {
-          lat : lati,
-          lng : lon,
+          lat : lat,
+          lng : lng,
         }
       });
-      console.log("Debug pan To => ",lati,lon);
+      console.log("Debug pan To => ",lat,lng);
       try{
         var coordinates = {
-          lat : lati,
-          lng : lon,
+          lat : lat,
+          lng : lng,
         }
       mapRef.current.panTo( coordinates );
       }
@@ -286,7 +307,20 @@ else x = processPlaceDetails(x[0].address_components);
          })
       }
 
-
+      async function getPlaceDetails(latitude, longitude, placeName) {
+        const url = `https://maps.googleapis.com/maps/api/place/details/json?${placeName ? `query=${placeName}` : `location=${latitude},${longitude}`}&key=${process.env.REACT_APP_GOOGLE_API_KEY}`;
+        const response = await fetch(url,{
+          mode: 'no-cors',
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          
+        });
+        const responseJson = response
+        console.log(" IUAIAIUAISIS Debug Message getPlaceDetails => ",responseJson);
+        return responseJson.result;
+      }
 
 
 
@@ -594,7 +628,7 @@ else x = processPlaceDetails(x[0].address_components);
                               .coordinates.lng ||
                             -97.11383,
                         });
-                        mapRef.current.setZoom(15);
+                        mapRef.current.setZoom(18);
                       }}
                       setGSuggestions={setGSuggestions}
                     ></Gmap_Autocomp_Form>
@@ -683,7 +717,7 @@ else x = processPlaceDetails(x[0].address_components);
                       id="report-item-location-street"
                       label="Street"
                       variant="outlined"
-                      value={displayAddress.street || ""}
+                      value={displayAddress.streetAddress1 + " " +  displayAddress.streetAddress2 || ""}
                       required
                       sx={{
                         minWidth: "230px",

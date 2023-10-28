@@ -13,10 +13,10 @@
     "heroku-prebuild": "",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm run serverInstall && npm run clientInstall && npm run clientBuild",
     "heroku-cleanup": "",
-    "Dev-BuildNRun" :"npm run clientBuild && npm run server"
+    "Dev-BuildNRun": "npm run clientBuild && npm run server"
   },
   "dependencies": {
-    
-    "react-scripts": "^5.0.1"
+    "react-scripts": "^5.0.1",
+    "socket.io": "^4.7.2"
   }
 }

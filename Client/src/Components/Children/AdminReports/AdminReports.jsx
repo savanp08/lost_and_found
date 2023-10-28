@@ -5,7 +5,7 @@ import AdminReportCard from "../../Cards/AdminReportCard/AdminReportCard";
 import axios from "axios";
 import EditReport from "../../GlobalComponents/EditReport/EditReport";
 
-const AdminReports =  () =>{
+const AdminReports =  ({admin}) =>{
 
     const [reports,SetReports] = useState([]);
 
@@ -109,7 +109,7 @@ const AdminReports =  () =>{
                 {
                     reports.map((report,key)=>{
                         return(
-                            <AdminReportCard report={report} key={key}/>
+                            <AdminReportCard report={report} key={key}  userX={admin}  />
                         )
                     })
                 }

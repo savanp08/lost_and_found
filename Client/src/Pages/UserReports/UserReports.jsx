@@ -16,7 +16,10 @@ import { addRawData } from "../../Store/RawData/RawData";
 import AuthFunctions from "../../Handlers/Auth";
 import { addUser } from "../../Store/Slices/UserSlice/UserSlice";
 import GMaps_ReprtForm from "../../Components/LocalComponents/GoogleMaps_ReportForm/GMaps_ReportForm";
+import { io } from 'socket.io-client';
 
+// "undefined" means the URL will be computed from the `window.location` object
+const socketURL = process.env.NODE_ENV === 'production' ? undefined : 'http://localhost:5000';
 
 const UserReports = () => {
    console.log("Rerender in userreports");
@@ -32,11 +35,16 @@ const UserReports = () => {
     colors : [],
     date : "",
     common_type: "",
+    coordiantes:{
+        lat:null,
+        lng:null,
+    },
+    _id : null,
    });
    const mapRef = useRef(null);
    const gMap = useSelector((state)=> state.gMap);
    const [markers , setMarkers] = useState([]);
-
+   const [reportsMap , setReportsMap] = useState(new Map());
 
    useEffect(()=>{
     async function authVerify(){
@@ -61,7 +69,10 @@ const UserReports = () => {
             try{
                   var x = report.itemDetails.location.displayAddress.coordinates;
                   if(x.lat)
-                  arr.push(x);
+                  arr.push({
+                coordinates : x,
+                _id : report._id,
+                 });
             }
             catch(err){
                 console.log("Error pushing coordinate to arr",err);
@@ -77,11 +88,18 @@ const UserReports = () => {
         console.log("response from fetch all reports=> ",res.data);
              setReports(res.data);
              setDisplayReports(res.data);
+             res.data.map((report,key)=>{
+                reportsMap.set(report._id,report);
+                return 0;
+             });
+             setReportsMap(new Map(reportsMap));
        }).catch(err=>{
         console.log("error from fetch all reports=> ",err);
        })
 
    }
+
+  
   
    useEffect(()=>{
     var reports = displayReports;
@@ -217,6 +235,56 @@ const UserReports = () => {
     
   });
 
+  useEffect(()=>{
+    if(filter._id){
+        console.log("filter._id => ",filter._id);
+        var report = reportsMap.get(filter._id);
+        console.log("report => ",report);
+        if(report){
+            console.log("report => ",report);
+            
+        }
+    }
+  },[filter])
+
+  const [socket,setSocket] = useState(null);
+  useEffect(()=>{
+        if(socket === null){
+            console.log("socket is null, conneting to socket",socketURL);
+            setSocket(io(socketURL))
+        }
+        if(socket){
+            socket.on("connect",()=>{
+                console.log("socket connected");
+            })
+            socket.on("disconnect",()=>{
+                console.log("socket disconnected");
+            })
+            return () => {
+                socket.removeAllListeners();  
+                socket.off("connect");
+            }
+        }
+  },[])
+
+  useEffect(()=>{
+    if(socket){
+        socket.on("newReport",(data)=>{
+            if(!data) return;
+            console.log("MMMMMMMMMMMMMMMMMMMMMMMMMM new report in socket => ",data);
+            console.log("MMMMMMMMMMMMMMMMMMMMMMMMMM socket Id => ",socket.id);
+            reportsMap.set(data._id,data);
+            setReportsMap(new Map(reportsMap));
+            var x = reportsMap.values();
+            setReports([...x]);
+        })
+        return () => {
+            socket.removeAllListeners();  
+            socket.off("newReport");
+        }
+    }
+},[]);
+
     return(
         <div className="ur11-main-wrap">
             <div className="ur11-inner-wrap">
@@ -239,6 +307,19 @@ const UserReports = () => {
                  type={"UserReports"}
                  onLoad={onLoad}
                  markers = {markers}
+                 reportsMap = {reportsMap} 
+                 setFilter = {(item)=>{
+                    var id_arr = [];
+                    item.map((item,i)=>{
+                        id_arr.push(item);
+                        return item;
+                    })
+                    console.log("set Filter Ids : " + id_arr);
+                    setFilter({
+                        ...filter,
+                        coordinates : item.coordinates,
+                        _ids : id_arr
+                 })}}
                  />
                 </div>
                 <div className="ur11-bottom-wrap">

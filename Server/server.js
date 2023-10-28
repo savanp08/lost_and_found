@@ -13,7 +13,9 @@ import claimRouter from "./APIs/Claim/Claim.js";
 import { sendSignUpConfirmationMail } from "./Controllers/Mailer/Mailer.js";
 import userRouter from "./APIs/User/User.js";
 import gMapRouter from "./APIs/GMap/GMap.js";
-
+import { Server } from "socket.io";
+import changeStreams from "./EndWares/Socket.js";
+ 
 
 dotenv.config();
 const server = express();
@@ -56,4 +58,8 @@ const domainUrl = "http://localhost:3000";
 
 export{
     domainUrl,
+    httpServer,
 }
+
+
+changeStreams();

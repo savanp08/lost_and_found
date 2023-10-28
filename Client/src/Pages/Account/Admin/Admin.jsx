@@ -6,7 +6,7 @@ import AdminFoundReports from "../../../Components/Children/AdminFoundReports/Ad
 import AdminReports from "../../../Components/Children/AdminReports/AdminReports";
 import './Admin.scss';
 import { addAdmin } from "../../../Store/Slices/UserSlice/AdminSlice";
-import AuthFunctions from "../../../Handlers/Auth";
+import {AdminAuthFunctions} from "../../../Handlers/Auth";
 import { useNavigate } from "react-router-dom";
 
 const Admin = () => {
@@ -16,13 +16,19 @@ const Admin = () => {
   const navigate = useNavigate();
 
   useEffect(()=>{
-    if(admin._id){
-      console.log("Admin already logged in",admin);
-    }
-    else{
-      // navigate("/AdminLoginX86109110213");
+    async function verifyAdmin(){
+      const x = await AdminAuthFunctions();
+      console.log("Admin debug Auth Response=> ",x);
+      if(x.message){
+        dispatch(addAdmin(x.user));
+      }
+      else{
+        console.log("Admin debug Auth Response=> ",x);
+        navigate("/AdminLoginX86109110213");
+      }
     }
     
+    verifyAdmin()
    },[])
 
   return(
@@ -86,14 +92,14 @@ const Admin = () => {
         <div className="_01-04-01-W"
         
         >
-          <AdminReports  /> 
+          <AdminReports  admin={admin}/> 
         </div>
         
         <div className="_01-04-03-W">
           <AdminFoundReports  /> 
         </div>
         <div className="_01-04-02-W">
-          <AdminClaims />
+          <AdminClaims  admin={admin}/>
         </div>
         <div className="_01-04-03-W">
           <AdminChats  />

@@ -1,7 +1,6 @@
 // create a card that can be edited by the user and then submitted to the database using axios post request. use the state as claim with attributes claimId, userId, reportId, ownership, description.
 import React, { useState } from 'react';
 import axios from 'axios';
-import { TextField } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -10,6 +9,13 @@ import ClaimEditComponent from '../../LocalComponents/ClaimEditComponent/ClaimEd
 import './This.scss';
 import AdminClaimEditComponent from '../../LocalComponents/AdminEditClaimComponent/AdminEditClaimComponent';
 import { initialState_claim, initialState_user } from '../../Data/Schemas';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import TextField from '@mui/material/TextField';
+import dayjs from 'dayjs';
+
 
 const AdminEditableClaimCard = (props) => {
     const [claim, setClaim] = useState(props.claim || initialState_claim);
@@ -213,6 +219,7 @@ const AdminEdiatableClaimCard_BackCard = ({ claimX }) => {
 
     async function submitPickUp(status){
         await axios.post("/Claim/editClaim/PickUp",{
+            claim : {
             ...claim,
             schedule:{
                 ...claim.schedule,
@@ -221,13 +228,19 @@ const AdminEdiatableClaimCard_BackCard = ({ claimX }) => {
                     status:status
                 }
             }
+        },
+        update :{
+            property: "schedule.pickUp.status",
+            value: status,
+            prev: claim.schedule.pickUp.status
+        }
         })
     }
 
 
     if(!claim) return <></>
     return(
-        <div className='caecc22-claim-display-back-main-wrap'>
+        <div className={'caecc22-claim-display-back-main-wrap' + (editBack? " caecc22-extend-wrap" : "") }>
             {
                 !editBack? ( 
             <div className='caecc22-claim-display-back-display-wrap'>
@@ -301,6 +314,8 @@ const AdminEdiatableClaimCard_BackCard = ({ claimX }) => {
                                     
                                     "Scheduled On :"
                                 }</span>
+                               
+
                                 <span className='caecc22-claim-each22-answer-text caecc22-preventOverflow'>{
                                     
                                     claim.schedule.inPersonAssessment.date
@@ -396,15 +411,7 @@ const AdminEdiatableClaimCard_BackCard = ({ claimX }) => {
                                     <span className='caecc22-claim-display-virtualAssessment-each-text'>{
                                         //claim.assessment.virtualAssessment.status
                                     }</span>
-                                    <div className='caecc22-claim-display-virtualAssessment-each-wrap'>
-                                    <span className='caecc22-claim-display-virtualAssessment-each-text'>{
-                                        "Location : "
-                                    }</span>
-                                    <div className='caecc22-claim-display-virtualAssessment-each-text'>{
-                                        
-                                    }</div>
-
-                                </div>
+                                    
 
                                 </div>
                                 <div className='caecc22-claim-display-virtualAssessment-buttons-wrap'>
@@ -480,6 +487,28 @@ const AdminEdiatableClaimCard_BackCard = ({ claimX }) => {
                                     <span className='caecc22-claim-display-inPersonAssessment-each-text'>{
                                         "Schedule On : "
                                     }</span>
+                                     <div className='caecc22-claim-back-inPersonAssessment-date-wrap'>
+                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                 <DemoContainer components={['DatePicker']}>
+                                   <DatePicker label="Basic date picker" 
+                                   value={dayjs(claim.schedule.inPersonAssessment.date || "")}
+                                   onChange={(e)=>{
+                                        setClaim({
+                                             ...claim,
+                                             schedule:{
+                                                  ...claim.schedule,
+                                                  inPersonAssessment:{
+                                                    ...claim.schedule.inPersonAssessment,
+                                                    date: e
+                                                  }
+                                             }
+                                        })
+                                   }}
+                                   />
+                                 </DemoContainer>
+                               </LocalizationProvider>
+
+                                </div>
                                     {
                                         
                                     }
@@ -487,6 +516,33 @@ const AdminEdiatableClaimCard_BackCard = ({ claimX }) => {
                                         //claim.assessment.inPersonAssessment.status
                                     }</span>
                                     </div>
+                                    <div className='caecc22-claim-display-virtualAssessment-each-wrap'>
+                                    <span className='caecc22-claim-display-virtualAssessment-each-text'>{
+                                        "Location : "
+                                    }</span>
+                                    <div className='caecc22-claim-display-virtualAssessment-each-text'>{
+                                         <TextField 
+                                         id="caecc22-claim-display-virtualAssessment-each-textfield"
+                                            label="Location"
+                                            variant="outlined"
+                                            placeholder="Location"
+                                            value={claim.assessment.inPersonAssessment.location || ""}
+                                            onChange={(e) => {
+                                                setClaim({
+                                                    ...claim,
+                                                    assessment: {
+                                                        ...claim.assessment,
+                                                        inPersonAssessment: {
+                                                            ...claim.assessment.inPersonAssessment,
+                                                            location: e.target.value
+                                                        }
+                                                    }
+                                                })
+                                            }}
+                                            />
+                                    }</div>
+
+                                </div>
                                 
                                     {
 
@@ -568,6 +624,14 @@ const AdminEdiatableClaimCard_BackCard = ({ claimX }) => {
                                         )
                                         }
                             </fieldset>
+                            <button className='caecc22-claim-display-back-edit-submit-button'
+                            onClick={(e)=>{
+                                e.preventDefault();
+                                setEditBack(false);
+                            }}
+                            >
+                                Done
+                            </button>
                             </div>
                 )
 }

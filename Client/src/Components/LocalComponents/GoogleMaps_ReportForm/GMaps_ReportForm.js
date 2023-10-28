@@ -27,8 +27,28 @@ const GMaps_ReprtForm = (props) => {
         onLoad,
         setItem,
         SelectedCoordinates,
-        markers
+        markers,
+        reportsMap,
+        setFilter,
     } = props;
+
+    const [markersMap, setMarkersMap] = useState(new Map());
+  console.log(" sasasasasasas props in gmap",markers);
+    useEffect(()=>{
+      if(!markers || markers.length === 0) return;
+      var x = new Map();
+      markers.forEach(marker => {
+     
+      var s = marker.coordinates.lat + " " + marker.coordinates.lng;
+      var temp =[];
+      if(markersMap.has(s)) temp.push(...markersMap.get(s));
+      temp.push(marker._id); 
+      markersMap.set(s, temp);
+       
+     });
+     setMarkersMap(new Map(markersMap));
+    },[markers])
+  
     const dispatch = useDispatch();
     const center = useMemo(() => ({ lat: 32.7292, lng: -97.1152 }), []);
     const mapContainerStyle = useMemo(() => ({ height: "100%", width: "100%" }), []);
@@ -156,6 +176,26 @@ const GMaps_ReprtForm = (props) => {
          {
           markers.length > 0? 
           <MarkerClusterer 
+          onClick={(e)=>{
+            console.log("gmap debug => markers in cluster => ", e.getMarkers());
+           var x=[];
+           var unique_coords = new Map();
+           e.getMarkers().forEach(marker => {
+              var s = marker.getPosition().lat() + " " + marker.getPosition().lng();
+              if(unique_coords.has(s)) return;
+              unique_coords.set(s, true);
+           });
+           console.log("gmap debug => unique coords in cluster => ", unique_coords, [...unique_coords.keys()]);
+           [...unique_coords.keys()].forEach(markerX => {
+              
+             var z = markersMap.get(markerX);
+              console.log("gmap debug => markers in cluster => ",markerX, z);
+              x.push(...z);
+            })
+            console.log("gmap debug => markers in cluster => ", x);
+             setFilter(x);
+          }}
+          
           options={{
             gridSize: 60,
             minimumClusterSize: 2,
@@ -163,8 +203,13 @@ const GMaps_ReprtForm = (props) => {
           >
             {(clusterer) => (
           markers.map((item, index) => (
-            <MarkerF key={index} position={item} 
-            clusterer={clusterer}
+            <MarkerF key={index} position={item.coordinates} 
+            clusterer={clusterer} 
+            getLabel={()=>{return item._id}}
+            id={item._id}
+            getKey={()=>{
+              console.log("gmap debug => markers in cluster => ", item._id);
+            }}
             />
           )) 
             )

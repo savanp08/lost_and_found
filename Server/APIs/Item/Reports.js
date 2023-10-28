@@ -27,14 +27,14 @@ const reportRouter  = express.Router();
           },
           function(error, result) {
             if(error){
-                console.log("Error while uploading each image to cloudinary",error);
+                // console.log("Error while uploading each image to cloudinary",error);
                 reject(error);
             }
             else{
-                console.log("Uploaded Each Image to cloudinary",result.secure_url);
+                // console.log("Uploaded Each Image to cloudinary",result.secure_url);
                 resolve(result);
             }
-              console.log(error, result);
+              // console.log(error, result);
           })
           .end(file.buffer);
            
@@ -46,7 +46,7 @@ const reportRouter  = express.Router();
     const secureURLs = URLS.map((result) => result.secure_url);
     return secureURLs;
   } catch (error) {
-    console.log('Error while uploading images to Cloudinary:', error);
+    // console.log('Error while uploading images to Cloudinary:', error);
     return -1;
   }
 }
@@ -67,7 +67,7 @@ reportRouter.post('/addReport', multerUpload.fields([{
         var xx=JSON.parse(req.body.report);
         delete xx._id;
        
-        console.log("Found report addition fired",xx);
+        // console.log("Found report addition fired",xx);
        
         var newReport  = new FoundReportSchema({
             ...xx, 
@@ -135,8 +135,8 @@ reportRouter.post('/addReport', multerUpload.fields([{
        
         var yy=req.files["image"];
         var zz=req.files["ItemImage"] || [];
-        // console.log("zz => ",zz);
-        // console.log("yy => ",yy);
+        // // console.log("zz => ",zz);
+        // // console.log("yy => ",yy);
         const addMediaResponse = await addMediaToCloudinary(yy);
         var ItemMedia = [];
         if(zz.length > 0){
@@ -145,35 +145,35 @@ reportRouter.post('/addReport', multerUpload.fields([{
         if(ItemMedia.length > 0){
             newReport.media = ItemMedia;
         }
-        console.log("addMediaResponse => ",addMediaResponse);
+        // console.log("addMediaResponse => ",addMediaResponse);
         newReport.itemDetails.location.media = addMediaResponse;
 
         const { value, error } = joiSchema.validate(newReport);
-        //console.log("Validation result =>", value, "  error =>",error);
+        //// console.log("Validation result =>", value, "  error =>",error);
         var reportSave = null;
               try{
           reportSave = await newReport.save();
     }
     catch(err){
-        console.log("erorr4 in Found rport addition ", err);
+        // console.log("erorr4 in Found rport addition ", err);
         return response.status(400).send(err.message);
     }
           if(reportSave){
-            console.log("New Found Report Saved",reportSave);
+            // console.log("New Found Report Saved",reportSave);
             const addClaim = await addDefaultClaim(reportSave);
 
             if(addClaim.message){
-             console.log("Successfully added default claim to the report",addClaim.claim);
+             // console.log("Successfully added default claim to the report",addClaim.claim);
              var addtouser = null;
              try{
                  addtouser = await addToUser(addClaim.claim);
              }
              catch(err){
-                 console.log("Error in catch1 while adding claim to user",err);
+                 // console.log("Error in catch1 while adding claim to user",err);
                  return response.status(400).send(err);
              }
              if(addtouser.err){
-                 console.log("Error while adding claim to user",addtouser.err);
+                 // console.log("Error while adding claim to user",addtouser.err);
                  return response.status(400).send(addtouser.err);
              }
              var addtoreport = null;
@@ -182,30 +182,30 @@ reportRouter.post('/addReport', multerUpload.fields([{
      
              }
              catch(err){
-                 console.log("Error in catch2 while adding claim to report",err);
+                 // console.log("Error in catch2 while adding claim to report",err);
                  return response.status(400).send(err);
              }
              if(addtoreport.error){
-                 console.log("Error while adding claim to report",addtoreport.err);
+                 // console.log("Error while adding claim to report",addtoreport.err);
                  return response.status(400).send(addtoreport.error);
              }
              else{
-                    console.log("Successfully added claim to report",addtoreport);
+                    // console.log("Successfully added claim to report",addtoreport);
                     return response.status(200).send(reportSave);
              }
             }
             else {
-                console.log("Error10 while adding default claim to the report",addClaim.message);
+                // console.log("Error10 while adding default claim to the report",addClaim.message);
                 return response.status(400).send(addClaim.message); }
      
         }
         else{
-            console.log("Error 6 found while saving Found Report",err.message);
+            // console.log("Error 6 found while saving Found Report",err.message);
             return response.status(400).send(err.message);
         }
     }
     catch(err){
-        console.log("erorr in Found rport addition ", err);
+        // console.log("erorr in Found rport addition ", err);
     }
 })
 
@@ -223,10 +223,10 @@ reportRouter.post('/addReport', multerUpload.fields([{
         
         var xx=JSON.parse(req.body.report);
         var yy=req.files;
-        console.log("Files =>>>>>>",yy);
+        // console.log("Files =>>>>>>",yy);
       //  const addMediaResponse = await addMediaToCloudinary(yy);
-       // console.log("addMediaResponse => ",addMediaResponse);
-        console.log("Found report edit fired",xx);
+       // // console.log("addMediaResponse => ",addMediaResponse);
+        // console.log("Found report edit fired",xx);
        
         var newReport  = new FoundReportSchema({
             ...xx,
@@ -290,20 +290,20 @@ reportRouter.post('/addReport', multerUpload.fields([{
         });
 
         const { value, error } = joiSchema.validate(newReport);
-        console.log("Validation result =>", value, "  error =>",error);
+        // console.log("Validation result =>", value, "  error =>",error);
 
         FoundReportSchema.updateOne({_id : newReport._id},{
             $set : newReport
         }).then(res=>{
-            console.log("New Found Report Saved",res);
+            // console.log("New Found Report Saved",res);
             response.status(200).send(res);
         }).catch(err=>{
-            console.log("Error found while saving Found Report",err.message);
+            // console.log("Error found while saving Found Report",err.message);
             response.status(400).send(err.message);
         })
     }
     catch(err){
-        console.log("erorr in Found rport addition ", err);
+        // console.log("erorr in Found rport addition ", err);
     }
 } )
 
@@ -312,13 +312,13 @@ reportRouter.post('/addReport', multerUpload.fields([{
 
   reportRouter.get("/getAllReports", async (req,response)=>{
     try{
-        console.log("Get all reports fired");
+        // console.log("Get all reports fired");
         const allReports = await FoundReportSchema.find();
-        console.log("All reports => ",allReports);
+        // console.log("All reports => ",allReports);
         response.status(200).send(allReports);
     }
     catch(err){
-        console.log("Error in getting all reports",err);
+        // console.log("Error in getting all reports",err);
         response.status(400).send(err);
     } 
   })
@@ -327,14 +327,14 @@ reportRouter.post('/addReport', multerUpload.fields([{
     
   reportRouter.get("/getManyReports/:userId", async (req,response)=>{
     try{
-        console.log("Get many reports fired for user",req.params.userId);
+        // console.log("Get many reports fired for user",req.params.userId);
         const manyReports = await FoundReportSchema.find({userId : req.params.userId});
-        console.log("Many reports => ",manyReports);
+        // console.log("Many reports => ",manyReports);
         
         return response.status(200).send(manyReports);
     }
     catch(err){
-        console.log("Error in getting many reports",err);
+        // console.log("Error in getting many reports",err);
         return response.status(400).send(err);
     }
    })
@@ -343,29 +343,29 @@ reportRouter.post('/addReport', multerUpload.fields([{
 
   reportRouter.get("/getOneReport/:id", async (req,response)=>{
     try{
-        console.log("Get one report fired");
+        // console.log("Get one report fired");
         const oneReport = await FoundReportSchema.find({_id : req.params.id});
         response.status(200).send(oneReport);
     }
     catch(err){
-        console.log("Error in getting one report",err);
+        // console.log("Error in getting one report",err);
         response.status(400).send(err);
     } 
   });
 
    reportRouter.post("/getManyReports/In/:userId", async (req,response)=>{
     try{
-        console.log("Get many reports fired for user",req.body);
+        // console.log("Get many reports fired for user",req.body);
         const manyReports = await FoundReportSchema.find({_id :{
              $in : req.body.reportIds 
             }
         });
-        console.log("Many reports => ",manyReports);
+        // console.log("Many reports => ",manyReports);
         
         return response.status(200).send(manyReports);
     }
     catch(err){
-        console.log("Error in getting many reports",err);
+        // console.log("Error in getting many reports",err);
         return response.status(400).send(err);
     }
    })
@@ -375,23 +375,23 @@ reportRouter.post('/addReport', multerUpload.fields([{
 
   reportRouter.post("/deleteOneReport", async (req,response)=>{
     try{
-        console.log("Delete one report fired",req.body);
+        // console.log("Delete one report fired",req.body);
         await FoundReportSchema.updateOne({_id : req.body._id},{
             $set : {
                 "delete.status" : "deleted"
             }
         }).then(res=>{
             response.status(200).send(res);
-            console.log("Deleted one report successfully",res);
+            // console.log("Deleted one report successfully",res);
         }).catch(err=>{
-            console.log("Error in deleting one report",err);
+            // console.log("Error in deleting one report",err);
             response.status(400).send(err);
         })
 
      
     }
     catch(err){
-        console.log("Error in deleting one report",err);
+        // console.log("Error in deleting one report",err);
         response.status(400).send(err);
     } 
   })
@@ -414,21 +414,21 @@ reportRouter.post('/addReport', multerUpload.fields([{
 
 // reportRouter.post('./Lost/addReport', async (req,response)=>{
 //     try{
-//         console.log("Lost report addition fired",req.body);
+//         // console.log("Lost report addition fired",req.body);
 //         const newReport  = new LostReportSchema({
 //             ...req.body.report
 //         })
 
 //         newReport.save().then(res=>{
-//             console.log("New Lost Report Saved",res);
+//             // console.log("New Lost Report Saved",res);
 //             response.status(200).send(res);
 //         }).catch(err=>{
-//             console.log("Error found while saving Lost Report",err.message);
+//             // console.log("Error found while saving Lost Report",err.message);
 //             response.status(400).send(err.message);
 //         })
 //     }
 //     catch(err){
-//         console.log("erorr in Lost rport addition ", err);
+//         // console.log("erorr in Lost rport addition ", err);
 //     }
 // })
 

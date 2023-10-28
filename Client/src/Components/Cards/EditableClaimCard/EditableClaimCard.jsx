@@ -26,7 +26,7 @@ const AdminEditableClaimCard = (props) => {
         setUpdatedClaim({ ...updatedClaim, [name]: value });
     };
 
-    console.log("Claim Card debug => ",claim, claim_user);
+    //console.log("Claim Card debug => ",claim, claim_user);
     
     const handleSubmit = async (event) => {
         event.preventDefault();

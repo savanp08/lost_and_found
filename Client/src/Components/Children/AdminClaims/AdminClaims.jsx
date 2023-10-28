@@ -5,7 +5,7 @@ import AdminReportCard from "../../Cards/AdminReportCard/AdminReportCard";
 import AdminEditableClaimCard from "../../Cards/AdminEditableClaimCard/AdminEditableClaimCard";
 import axios from "axios";
 
-const AdminClaims =  () =>{
+const AdminClaims =  ({admin}) =>{
 
     const [claims,setClaims] = useState([]);
     const [reports,setReports] = useState(new Map());
@@ -80,6 +80,22 @@ const AdminClaims =  () =>{
     id="cac24-admin-claims-wrap"
     
     >
+        <div className="cac24-ARC-HClose-wrap"
+                onClick={(e)=>{
+                    e.preventDefault();
+                    var x=document.getElementById("cac24-admin-claims-wrap");
+                    if(x.classList.contains("AA-After")){
+                        x.classList.remove("AA-After");
+                        x.classList.add("AA-Before");
+                    }
+                    else if(x.classList.contains("AA-Before")){
+                        x.classList.remove("AA-Before");
+                        x.classList.add("AA-After");
+                    }
+                }}
+                >
+                    X
+                </div>
         <div className="cac24-ARC-inner-wrap">
             <div className="cac24-ARC-header-wrap">
                 <div className="cac24-ARC-Hc-wrap">
@@ -126,22 +142,7 @@ const AdminClaims =  () =>{
 
                     </div>
                 </div>
-                <div className="cac24-ARC-HClose-wrap"
-                onClick={(e)=>{
-                    e.preventDefault();
-                    var x=document.getElementById("cac24-admin-claims-wrap");
-                    if(x.classList.contains("AA-After")){
-                        x.classList.remove("AA-After");
-                        x.classList.add("AA-Before");
-                    }
-                    else if(x.classList.contains("AA-Before")){
-                        x.classList.remove("AA-Before");
-                        x.classList.add("AA-After");
-                    }
-                }}
-                >
-                    X
-                </div>
+                
             </div>
             <div className="cac24-ARC-claims-wrap">
                 { claims.length > 0 && reports.size>0?(
@@ -149,7 +150,7 @@ const AdminClaims =  () =>{
                         return(
                             <div className="cac24-claims-each-wrap" key={key}>
                             <AdminEditableClaimCard claim={claim} user={users.get(claim.userId)} report={reports.get(claim.reportId)}/>
-                            <AdminReportCard report={reports.get(claim.reportId)}/>
+                            <AdminReportCard report={reports.get(claim.reportId)}  userX={admin}  />
                             </div>
                         )
                     })

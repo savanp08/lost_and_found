@@ -43,7 +43,7 @@ const AdminLogin = () => {
       console.log("Loged in",res);
       const AccessToken  = res.data.AccessToken;
       if(AccessToken && (typeof AccessToken === "string" || AccessToken instanceof String)){
-        localStorage .setItem(`admin ${email}`, AccessToken);
+        localStorage .setItem(`admin`, AccessToken);
         dispatch(addAdmin(res.data.admin));
         navigate("/Admin/Account");
       }

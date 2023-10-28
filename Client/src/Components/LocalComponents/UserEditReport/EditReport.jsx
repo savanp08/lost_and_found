@@ -87,7 +87,7 @@ const UserEditReport = ({params}) => {
     console.log("map debug onLoad callback adddrag => ",gMap,mapRef.current);
     
     if(gMap.isLoaded && mapRef.current){
-      
+      mapRef.current.panTo(displayAddress.coordinates)
     addDragEvent();
     }
     
@@ -141,6 +141,7 @@ console.log("Item debug =>",Item,displayAddress)
         }
       }
     }));
+    console.log("submitting display address => " ,displayAddress);
     console.log("files =>",files)
 
     for (const file of files) {
@@ -630,7 +631,7 @@ useEffect(()=>{
                               .coordinates.lng ||
                             -97.11383,
                         });
-                        mapRef.current.setZoom(15);
+                        mapRef.current.setZoom(18);
                       }}
                       setGSuggestions={setGSuggestions}
                     ></Gmap_Autocomp_Form>
