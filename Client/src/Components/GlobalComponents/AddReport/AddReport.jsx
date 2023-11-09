@@ -43,6 +43,10 @@ const AddReport = ({params}) => {
     ...initialState_report,
     userId : user._id,
     reportName : user.Name,
+    delete : {
+      ...initialState_report.delete,
+      status : "active",
+    }
   });
   const [gSuggestions, setGSuggestions] = useState();
   const mapRef = useRef(null);

@@ -8,6 +8,7 @@ import RawData from "../RawData/RawData.js";
 import AdminSlice from "../Slices/UserSlice/AdminSlice.js";
 import GMapSlice from "../Slices/GMapSlice/GMapSlice.js";
 import FormSlice from "../Slices/FormSlice/FormSlice.js";
+import SocketSlice from "../Slices/SokcetSlice/SocketSlice.js";
 const store = configureStore({
     reducer: {
         user : userReducer,
@@ -18,6 +19,7 @@ const store = configureStore({
         rawData : RawData,
         gMap : GMapSlice,
         form : FormSlice,
+        socket : SocketSlice,
     }
 });
 

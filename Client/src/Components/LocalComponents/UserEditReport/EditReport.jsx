@@ -41,12 +41,13 @@ const UserEditReport = ({params}) => {
   const form = useSelector((state)=> state.form);
   const [reporterType, setReporterType] = useState("");
   const [Item, setItem] = useState(
-    report ||
+    
     {
     ...initialState_report,
     userId : user._id,
     reportName : user.Name,
   });
+  
   const [gSuggestions, setGSuggestions] = useState();
   const mapRef = useRef(null);
   const [displayAddress, setDisplayAddress] = useState(
@@ -68,11 +69,10 @@ const UserEditReport = ({params}) => {
   });
   const [addressType , setAddressType] = useState("None");
   const [centreCoordinates, setCentreCoordinates] = 
-             useState({ lat : Item.itemDetails.location.displayAddress.coordinates.lat,
-                        lng : Item.itemDetails.location.displayAddress.coordinates.lng
+             useState({ lat : 32.7310,
+                        lng : -97.1150,
                       });
  
-
   useEffect(()=>{
      setGMap(gMapX);
      console.log("Setting map state as => ", gMapX, gMap)
@@ -94,11 +94,16 @@ const UserEditReport = ({params}) => {
   });
 
   useEffect(() => {
+    try{
     if (report) {
+      console.log("Setting centre coordinates => ",report);
       setItem(report);
       setCentreCoordinates(report.itemDetails.location.displayAddress.coordinates);
       setDisplayAddress(report.itemDetails.location.displayAddress)
     }
+  }catch(e){
+    console.log("Error while setting report in edit report => ",e,report);
+  }
   }, [report]);
   
 console.log("Item debug =>",Item,displayAddress) 
@@ -578,7 +583,12 @@ useEffect(()=>{
                         lat: Item.coordinates.lat || 32.7325,
                         lng: Item.coordinates.lng || -97.11383,
                       }}
-                      SelectedCoordinates={Item.itemDetails.location.displayAddress.coordinates}
+                      SelectedCoordinates={Item.itemDetails.location.displayAddress? Item.itemDetails.location.displayAddress.coordinates : {
+                        
+                          lat: 32.7310,
+                          lng: -97.1150,
+                        
+                      }}
                       Item={Item}
                       setItem={setItem}
                     />

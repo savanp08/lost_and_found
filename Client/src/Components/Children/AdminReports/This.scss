@@ -139,7 +139,13 @@ inset 0px -0px 0px 1px rgb(255, 255, 255);
     padding: 10px;
 }
 
-
+.c01-ARC-bottom-wrap32{
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    width: 100%;
+    
+}
 
 @media screen and (max-width:860px){
     .c01-ARC-Reports-wrap{

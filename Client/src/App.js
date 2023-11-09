@@ -13,7 +13,7 @@ import { handler_login_popup } from './Handlers/PopUp';
 import { addRoute } from './Store/Slices/RouterSlice/RouterSlice.js'
 import { addTask } from './Store/Slices/TaskSlice/TaskSlice';
 import { open_div } from './Handlers/PopUp';
-import { useEffect, useState } from 'react';
+import { useEffect, useState , createContext } from 'react';
 import axios from 'axios';
 import { addUser, removeUser } from './Store/Slices/UserSlice/UserSlice';
 import AuthFunctions from './Handlers/Auth';
@@ -29,17 +29,49 @@ import {
 import { setIsLoaded } from './Store/Slices/GMapSlice/GMapSlice';
 import EditReport from './Components/GlobalComponents/EditReport/EditReport';
 import UserEditReport from './Components/LocalComponents/UserEditReport/EditReport';
+import { io } from 'socket.io-client';
+import { addSocket } from './Store/Slices/SokcetSlice/SocketSlice.js';
+import { openForm } from './Store/Slices/FormSlice/FormSlice.js';
+
+
+// "undefined" means the URL will be computed from the `window.location` object
+const socketURL = process.env.NODE_ENV === 'production' ? undefined : 'http://localhost:5000';
 
 function App() {
 
   const user = useSelector(state => state.user);
   const dispatch = useDispatch();
   const [ libraries ] = useState(['places']);
+  const [socket,setSocket] = useState(null);
   
   console.log("User SIgned?",user.userId);
   console.log(user);
 
-
+  useEffect(()=>{
+    if(socket === null){
+        console.log("socket is null, conneting to socket",socketURL);
+        setSocket(io(socketURL))
+    }
+    if(socket){
+      
+      console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",socket);
+  //     dispatch(addSocket({
+  //       socket : socket,
+  //       status : "connected"
+  //  }));
+        socket.on("connect",()=>{
+           
+            console.log("socket connected",socket);
+        })
+        socket.on("disconnect",()=>{
+            console.log("socket disconnected");
+        })
+        return () => {
+            socket.removeAllListeners();  
+            socket.off("connect");
+        }
+    }
+},[socket])
 
   useEffect(()=>{
     async function fetchUser(){

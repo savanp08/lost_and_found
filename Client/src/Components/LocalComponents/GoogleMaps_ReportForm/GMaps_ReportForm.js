@@ -207,8 +207,10 @@ const GMaps_ReprtForm = (props) => {
             clusterer={clusterer} 
             getLabel={()=>{return item._id}}
             id={item._id}
-            getKey={()=>{
-              console.log("gmap debug => markers in cluster => ", item._id);
+            onClick={(e)=>{
+              console.log("gmap debug => marker click => ", e);
+              console.log("gmap debug => marker click => ", item);
+              setFilter([item._id]);
             }}
             />
           )) 

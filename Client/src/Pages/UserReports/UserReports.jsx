@@ -16,10 +16,9 @@ import { addRawData } from "../../Store/RawData/RawData";
 import AuthFunctions from "../../Handlers/Auth";
 import { addUser } from "../../Store/Slices/UserSlice/UserSlice";
 import GMaps_ReprtForm from "../../Components/LocalComponents/GoogleMaps_ReportForm/GMaps_ReportForm";
-import { io } from 'socket.io-client';
 
-// "undefined" means the URL will be computed from the `window.location` object
-const socketURL = process.env.NODE_ENV === 'production' ? undefined : 'http://localhost:5000';
+
+
 
 const UserReports = () => {
    console.log("Rerender in userreports");
@@ -28,6 +27,7 @@ const UserReports = () => {
    const dispatch = useDispatch();
    const user = useSelector(state => state.user);
    const task = useSelector(state => state.task);
+   const socket = useSelector(state => state.socket.socket);
    const [reports, setReports] = useState([]);
    const [displayReports, setDisplayReports] = useState([]);
    const [filter, setFilter] = useState({
@@ -39,7 +39,7 @@ const UserReports = () => {
         lat:null,
         lng:null,
     },
-    _id : null,
+    _ids : [],
    });
    const mapRef = useRef(null);
    const gMap = useSelector((state)=> state.gMap);
@@ -63,9 +63,13 @@ const UserReports = () => {
    },[])
 
     useEffect(()=>{
-        if(reports && reports.length > 0){
+       // console.log("reportsMap => ",reportsMap , "reportsMap.values() => ",Array.from(reportsMap.values()));
+        if(reportsMap && reportsMap.size > 0){
+           // console.log("reportsMap X=> ",reportsMap);
             var arr = []
-          reports.forEach(report=>{
+            var x=Array.from(reportsMap.values());
+          x.forEach(report=>{
+           // console.log("report => ",report);
             try{
                   var x = report.itemDetails.location.displayAddress.coordinates;
                   if(x.lat)
@@ -80,7 +84,7 @@ const UserReports = () => {
           })
           setMarkers(arr);
         }
-    },[reports])
+    },[reportsMap])
 
    
    async function fetchreports(){
@@ -88,7 +92,8 @@ const UserReports = () => {
         console.log("response from fetch all reports=> ",res.data);
              setReports(res.data);
              setDisplayReports(res.data);
-             res.data.map((report,key)=>{
+             var X = res.data.filter(report=> report.delete.status !== "deleted");
+             X.map((report,key)=>{
                 reportsMap.set(report._id,report);
                 return 0;
              });
@@ -102,59 +107,7 @@ const UserReports = () => {
   
   
    useEffect(()=>{
-    var reports = displayReports;
-    var x = document.getElementById("ur11-bottom-body-inner-wrap");
-    var filteredReports = [];
-    reports.map((report,key) => { 
-        var z = "";
-        report.itemDetails.colors.map((color,key)=>{z+= color.label + " "; return 0;});
-       var y= report.reporterName.firstName + " " + report.reporterName.lastName + " " + report.reporterName.middleName
-        + report.itemDetails.common_type + " " +z
-       + " " + report.itemDetails.description + " " + report.itemDetails.location.allPlacesPossible + " " + report.itemDetails.location.buildingDetails
-       +" " + report.itemDetails.location.university + " " + report.itemDetails.location.street + " " + report.itemDetails.location.apartment
-       + " " + report.itemDetails.location.city + " " + report.itemDetails.location.state + " " + report.itemDetails.location.pinCode 
-       + " " + report.belongsTo;
-       y=y.toLowerCase();
-       var map = new Map();
-       var words = y.split(" ");
-       var filtererwords = filter.textSearch.toLowerCase().split(" ");
-       var counter=0;
-       console.log("search text=>", words,  "filtererwords=>", filtererwords);
-       for(var i=0;i<words.length;i++){
-        if(filtererwords.includes(words[i])){
-            counter++;
-            map.set(words[i],words[i]);
-        }
-        else {
-            for(var j=0;j<filtererwords.length;j++){
-                var xx="";
-                for(var l=0;l<filtererwords[j].length;l++){ xx+=filtererwords[j][l];
-                for(var k=0;k<words.length;k++){
-                if(words[k].includes(xx)) {
-                    counter++;
-                    map.set(words[i],words[i]);
-                    break;
-                }
-                }
-                }
-            }
-            }
-    }
-        
-       if(counter === 0) return 0;
-       filteredReports.push({
-        count : counter,
-        report : report,
-       });
     
-    })
-
-     filteredReports = filteredReports.sort((a, b) => b.count - a.count);
-     filteredReports = filteredReports.map((item) => item.report);
-     console.log("filtered reports=> ",filteredReports);
-     setReports(filteredReports);
-
-    console.log(x);
    },[filter]);
        
 
@@ -235,40 +188,148 @@ const UserReports = () => {
     
   });
 
-  useEffect(()=>{
-    if(filter._id){
-        console.log("filter._id => ",filter._id);
-        var report = reportsMap.get(filter._id);
-        console.log("report => ",report);
-        if(report){
+useEffect(()=>{
+    var tempReports = []
+    if(filter._ids){
+            console.log("filter._ids => ",filter._ids);
+            var report = [];
+            filter._ids.map((id,key)=>{
+                    report.push(reportsMap.get(id));
+                    return 0;
+            });
             console.log("report => ",report);
-            
-        }
-    }
-  },[filter])
-
-  const [socket,setSocket] = useState(null);
-  useEffect(()=>{
-        if(socket === null){
-            console.log("socket is null, conneting to socket",socketURL);
-            setSocket(io(socketURL))
-        }
-        if(socket){
-            socket.on("connect",()=>{
-                console.log("socket connected");
-            })
-            socket.on("disconnect",()=>{
-                console.log("socket disconnected");
-            })
-            return () => {
-                socket.removeAllListeners();  
-                socket.off("connect");
+            if(report){
+                    console.log("report => ",report);
             }
+            tempReports = report;
+    }
+    if(filter.textSearch){
+        if(filter._ids.length ===0 ) tempReports = Array.from(reportsMap.values());
+            console.log("filter.textSearch => ",filter.textSearch);
+            var temp_reports = [];
+            tempReports.map((item,key)=>{
+                       var nameText="",descriptionText="",locationText="",dateText="", colorText="";
+                       var reports = displayReports;
+    var x = document.getElementById("ur11-bottom-body-inner-wrap");
+    var filteredReports = [];
+       var report = item;
+        var z = "";
+        report.itemDetails.colors.map((color,key)=>{colorText+= color.label + " "; return 0;});
+       var reporterNameText = report.reporterName.firstName + " " + report.reporterName.lastName + " " + report.reporterName.middleName || "";
+        nameText =  report.itemDetails.customItemName + report.itemDetails.common_type || "";
+       descriptionText = report.itemDetails.description || ""; 
+       locationText =  report.itemDetails.location.buildingDetails 
+       +" " + report.itemDetails.location.university + " " + report.itemDetails.location.street + " " + report.itemDetails.location.apartment
+       + " " + report.itemDetails.location.city + " " + report.itemDetails.location.state + " " + report.itemDetails.location.pinCode || "";
+       if(!colorText) colorText = "";
+         dateText = report.createdAt || "";
+         nameText = nameText.toLowerCase();
+            descriptionText = descriptionText.toLowerCase();
+            locationText = locationText.toLowerCase();
+            dateText = dateText.toLowerCase();
+            colorText = colorText.toLowerCase();
+            reporterNameText = reporterNameText.toLowerCase();
+
+          var nameTextMatched = nameText.includes(filter.textSearch.toLowerCase());
+            var descriptionTextMatched = descriptionText.includes(filter.textSearch.toLowerCase());
+            var locationTextMatched = locationText.includes(filter.textSearch.toLowerCase());
+            var dateTextMatched = dateText.includes(filter.textSearch.toLowerCase());
+            var colorTextMatched = colorText.includes(filter.textSearch.toLowerCase());
+            var reporterNameTextMatched = reporterNameText.includes(filter.textSearch.toLowerCase());
+            if(nameTextMatched){
+                temp_reports.push({
+                    report : report,
+                    priority : 1,
+
+                });
+            }  
+             if(descriptionTextMatched){
+                temp_reports.push({
+                    report : report,
+                    priority : 4,
+                });
+            }
+             if(locationTextMatched){
+                temp_reports.push({
+                    report : report,
+                    priority : 3,
+                });
+            }
+             if(dateTextMatched){
+                temp_reports.push({
+                    report : report,
+                    priority : 2,
+                });
+            }
+             if(colorTextMatched){
+                temp_reports.push({
+                    report : report,
+                    priority : 5,
+                });
+            }
+             if(reporterNameTextMatched){
+                temp_reports.push({
+                    report : report,
+                    priority : 6,
+                });
+            }
+    })
+    console.log("temp_reports => ",temp_reports);
+    temp_reports.sort((a,b)=>{
+        if(a.priority > b.priority) return -1;
+        else if(a.priority === b.priority) return ;
+        
+    })
+    var uniqueTempReports = [];
+    var tempMap = new Map();
+    temp_reports.map((item,key)=>{
+        if(!tempMap.has(item.report._id)){
+            tempMap.set(item.report._id,item.report);
+            uniqueTempReports.push(item.report);
         }
-  },[])
+        return 0;
+        });
+        console.log("uniqueTempReports => ",uniqueTempReports);
+    tempReports =[...uniqueTempReports];
+    tempMap.clear();
+    uniqueTempReports = [];
+    tempReports.map((item,key)=>{
+        if(!tempMap.has(item._id)){
+            tempMap.set(item._id,item);
+            uniqueTempReports.push(item);
+        }
+        return 0;
+        
+    });
+    
+    
+    tempReports = [...uniqueTempReports];
+    console.log("uniqueTempReports final=> ",tempReports);
+}
+
+if(tempReports.length === 0) tempReports = Array.from(reportsMap.values());
+tempReports.sort((a, b) =>{
+    const dateA = new Date(a.date);
+    const dateB = new Date(b.date);
+    
+    if (dateA > dateB) {
+      return -1; // Return a negative value to place 'a' before 'b'
+    } else if (dateA < dateB) {
+      return 1; // Return a positive value to place 'b' before 'a'
+    } else {
+      return 0; // Dates are equal
+    }
+  });
+setDisplayReports(tempReports);
+
+},[filter,reportsMap])
+
+  
+  
 
   useEffect(()=>{
     if(socket){
+        console.log("MMMMMMMMMMMMMMMMMMMMMMMMMM socket => ",socket);
         socket.on("newReport",(data)=>{
             if(!data) return;
             console.log("MMMMMMMMMMMMMMMMMMMMMMMMMM new report in socket => ",data);
@@ -382,7 +443,7 @@ const UserReports = () => {
                         id="ur11-bottom-body-inner-wrap"
                         >
                             {
-                                reports.map((report,key)=>{
+                               displayReports.map((report,key)=>{
                                     return(
                                         <UserReportCard key={key} report={report}/>
                                     )

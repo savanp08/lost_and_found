@@ -10,9 +10,9 @@ reporterName:{
     lastName: null,
     },
     coordinates:{
-        lat: null,
-        lng: null,
-    },
+        lat: 32.7310,
+        lng: -97.1150,
+      },
     itemDetails:{
         common_type: null,
         colors:[],
@@ -27,10 +27,10 @@ reporterName:{
             city: null,
             state: null,
             pinCode : null,
-            coordinates : {
-                lat: null,
-                lng: null,
-            },
+            coordinates:{
+                lat: 32.7310,
+                lng: -97.1150,
+              },
             displayAddress: {
                 streetAddress1: "",
                   streetAddress2: "",
@@ -41,8 +41,8 @@ reporterName:{
                   zipCode: "",
                   searchAddress:"",
                   coordinates:{
-                    lat: null,
-                    lng: null,
+                    lat: 32.7310,
+                    lng: -97.1150,
                   },
                 },
             GMapData:{

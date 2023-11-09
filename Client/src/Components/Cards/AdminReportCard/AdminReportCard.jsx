@@ -50,10 +50,11 @@ const AdminReportCard = ({report,userX}) => {
         await axios.post('/Report/deleteOneReport',{_id:local_report._id})
         .then(res=>{
             console.log("Deleted report",res);
-            if(res.status === 200) {
-                document.getElementById(`carc-card-wrap-${local_report._id}`).style.display = "none !important";
-            }
+            
  
+        }).catch(err=>{
+            console.log("Error in deleting report",err);
+        
         })
     }
    
