@@ -60,7 +60,13 @@ const AdminEditableClaimCard = (props) => {
                 console.log("Error in deleting claim", err);
             })
     }
-
+   if(report.reporterType === "Other" && report.userId === claim_user._id) return (
+    <div className = "cuecc34-main-alt--wrap">
+        <span className = "cuecc34-main-alt--inner-wrap">
+            This Property was reported by You on {report.date}
+        </span>
+    </div>
+   )
     return (
         <div className="cuecc34-main-wrap">
             <div className="cuecc34-edit-wrap">
@@ -345,7 +351,7 @@ const AdminEdiatableClaimCard_BackCard = ({ claimX }) => {
                 ) :(
             <div className='cuecc34-claim-display-back-edit-wrap'>
             
-                            </div>
+            </div>
                 )
 }
         </div>

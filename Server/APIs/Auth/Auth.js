@@ -11,7 +11,7 @@ authRouter.post('/SignUp', async (req,response)=>{
     console.log("SignUp Called -> ",req.body);
 
     //validate using joi
-
+ 
     try{ 
      const existsResponse = await userExists(req.body.user);
      const exists = existsResponse.message;

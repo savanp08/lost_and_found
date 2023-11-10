@@ -21,7 +21,11 @@ const initialState = {
     editUserReport:{
         isOpen: false,
         data:null,
-    }
+    },
+    editUserDetails:{
+        isOpen: false,
+        data:null,
+    },
 };
 
 const formSlice = createSlice({

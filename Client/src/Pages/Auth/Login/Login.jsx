@@ -85,7 +85,7 @@ const Login = () => {
             <Box sx={{ display: "flex", alignItems: "flex-end" }}>
               {/* <AccountCircle sx={{ color: "action.active", mr: 1, my: 0.5 ,width:'38px' , height:'38px' , marginLeft:'-48px' }} /> */}
               <TextField
-                id="login_email"
+                id="user-login-email"
                 label="Email"
                 variant="standard"
                 sx={{
@@ -117,7 +117,7 @@ const Login = () => {
           >
           <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
           <Input
-            id="standard-adornment-password"
+            id="user-login-password"
             type={showPassword ? 'text' : 'password'}
             sx={{
                 style: {
@@ -157,6 +157,7 @@ const Login = () => {
           </div>
           <Button 
           variant="contained"
+          id="user-login-button"
           sx={{
             width:'250px',
             height:'40px',
@@ -181,7 +182,9 @@ const Login = () => {
         <div className="login-signUpWrap">
           <span className="login-signUpText">
             {"Don't Have an Account? Sign in "}
-            <NavLink to="/SignUp" className="login-signUpButton">
+            <NavLink to="/SignUp" className="login-signUpButton"
+            id="user-login-signup-button"
+            >
                {"Here"}
             </NavLink>
           </span>

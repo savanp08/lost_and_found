@@ -41,12 +41,13 @@ const EditReport = ({params}) => {
   const form = useSelector((state)=> state.form);
   const [reporterType, setReporterType] = useState("");
   const [Item, setItem] = useState(
-    report ||
+    
     {
     ...initialState_report,
     userId : user._id,
     reportName : user.Name,
   });
+  
   const [gSuggestions, setGSuggestions] = useState();
   const mapRef = useRef(null);
   const [displayAddress, setDisplayAddress] = useState(
@@ -63,15 +64,21 @@ const EditReport = ({params}) => {
       coordinates:{
         lat: null,
         lng: null,
-      }
+      },
+      place_id:null
   });
   const [addressType , setAddressType] = useState("None");
+  const [centreCoordinates, setCentreCoordinates] = 
+             useState({ lat : 32.7310,
+                        lng : -97.1150,
+                      });
+ 
   useEffect(()=>{
      setGMap(gMapX);
      console.log("Setting map state as => ", gMapX, gMap)
   },[gMapX])
 
- 
+ console.log("Item Debug =>",Item, "Report =>",report);
   
   const onLoad = ((map,) => {
     if(map)
@@ -80,14 +87,26 @@ const EditReport = ({params}) => {
     console.log("map debug onLoad callback adddrag => ",gMap,mapRef.current);
     
     if(gMap.isLoaded && mapRef.current){
+      mapRef.current.panTo(displayAddress.coordinates)
     addDragEvent();
     }
     
   });
 
+  useEffect(() => {
+    try{
+    if (report) {
+      console.log("Setting centre coordinates => ",report);
+      setItem(report);
+      setCentreCoordinates(report.itemDetails.location.displayAddress.coordinates);
+      setDisplayAddress(report.itemDetails.location.displayAddress)
+    }
+  }catch(e){
+    console.log("Error while setting report in edit report => ",e,report);
+  }
+  }, [report]);
   
-  
-console.log("Item debug =>",Item) 
+console.log("Item debug =>",Item,displayAddress) 
   useEffect(()=>{
     async function authVerify(){
       const flag = await AuthFunctions();
@@ -127,6 +146,7 @@ console.log("Item debug =>",Item)
         }
       }
     }));
+    console.log("submitting display address => " ,displayAddress);
     console.log("files =>",files)
 
     for (const file of files) {
@@ -158,7 +178,7 @@ console.log("Item debug =>",Item)
 
 function handler_closeForm(){
   dispatch(closeForm({
-    formName: "editReport",
+    formName: "editUserReport",
     isOpen: false,
   }))
 }
@@ -174,7 +194,17 @@ async function addDragEvent(){
       coordinates:{
         lat : mapRef.current.getCenter().lat(),
         lng : mapRef.current.getCenter().lng()
-      }
+      },
+      itemDetails:{
+        ...Item.itemDetails,
+        location:{
+          ...Item.itemDetails.location,
+            GMapData:{
+              ...Item.itemDetails.location.GMapData,
+              markerMoved : true,
+            }
+          }
+        }
     })
 })
 // mapRef.current.addListener('click', (e)=>{
@@ -183,10 +213,29 @@ async function addDragEvent(){
   }
 }
 
+function getLat(lat){
+  if(typeof lat === "function") return lat();
+  return lat/1;
+}
+function getLng(lng){
+  if(typeof lng === "function") return lng();
+  return lng/1;
+}
+
 useEffect(()=>{
   console.log("map debug onLoad adddrag => ",gMap, mapRef.current);
   if(gMap.isLoaded === true && mapRef.current){
     addDragEvent();
+    console.log("Panning to ",centreCoordinates)
+      try{
+      mapRef.current.panTo({
+        lat : centreCoordinates/1,
+        lng : centreCoordinates/1
+      });
+      }
+      catch(err){
+        console.log("Error while centering map to initial coordinates in onload callback",err);
+      }
     }
 },[gMap,mapRef.current, onLoad])
 
@@ -194,82 +243,69 @@ useEffect(()=>{
     async function populateAddressWithLatLng(address) {
       setAddressType("LatLng");
       console.log("Debug Message user chosen gmap option: reverse geocode=> ",Item,displayAddress);
-      var result =displayAddress,
-      lati=Item.coordinates.lat
-      ,lon= Item.coordinates.lng; ;
-      var flag=true;
-      
-      var x=Item.itemDetails.location.GMapData.rawData_geometric;
-      if(Array.isArray(x) && x.length > 0) {
-       var a1 = await getLatLng(x[0]);
-      const { lat1 , lat2 } = a1;
-      if(lat1 === lati && lat2 === lon) {
-        flag = false;
-      }
-    }
-    else flag = false;
-      console.log("Debug mode 4 ", result);
-      if(flag===false) {
-        console.log("Caution : Requesting new geolocation for address => ", lati, lon)
-       result = await getGeocode({ location:{
-        lat: Item.coordinates.lat/1,
-        lng: Item.coordinates.lng/1
-      } });
-    setItem({
-      ...Item,
-      itemDetails:{
-        ...Item.itemDetails,
-        location:{
-          ...Item.itemDetails.location,
-          GMapData:{
-            ...Item.itemDetails.location.GMapData,
-            rawData_geometric: result
+      var x = Item.itemDetails.location.GMapData.rawData_geometric;
+      var y = x;
+      var flag = true;
+      var lat=Item.coordinates.lat,lng=Item.coordinates.lng;
+      if(Item.itemDetails.location.GMapData.markerMoved)  flag=false
+     
+    if(flag===false){
+       console.log("caution : fetching geocoded data for", lat, lng);
+       x = await getGeocode({location : { 
+        lat: Item.coordinates.lat,
+        lng: Item.coordinates.lng
+        }})
+        console.log("Data from geocode api => ",x);
+        setItem({
+          ...Item,
+          itemDetails:{
+          ...Item.itemDetails,
+            location:{
+            ...Item.itemDetails.location,
+              GMapData: {
+                ...Item.itemDetails.location.GMapData,
+                rawData_geometric: x,
+                markerMoved : false,
+              },
+            
+            }
           }
-        }
-      }
-    })
-      console.log("Debug mode 2 ", result);
-      
-      
-       x=processPlaceDetails(result[0].address_components);
-}
-else x = processPlaceDetails(x[0].address_components);
-      setDisplayAddress({
-        ...x,
-        coordinates : {
-          lat : lati,
-          lng : lon,
-        }
-      });
-      console.log("Debug pan To => ",lati,lon);
-      try{
-        var coordinates = {
-          lat : lati/1,
-          lng : lon/1,
-        }
-      mapRef.current.panTo( coordinates );
-      }
-      catch(err){
-        console.log(
-          "Error in panTo => ",
-          err
-        )
-      }
-
+          
+        })
+       
     }
+    var a = processPlaceDetails(
+      x[0].address_components,
+      
+    )
+    console.log("Data setting for displauAddress => ",{...a, coordinates:{lat,lng}});
+     setDisplayAddress({
+      ...a,
+      coordinates:{
+        lat: lat,
+        lng: lng
+      },
+      place_id:x[0].place_id
+     })
+     panToCoordinates({lat,lng});
+  }
 
+  function panToCoordinates(coordinates){
+     mapRef.current.panTo(coordinates)
+  }
   
   function populateAddressWithSearch(){
     console.log("Debug Message user chosen gmap option: Search Fill=> ",Item);
     setAddressType("Search");
     mapRef.current.panTo({ 
-      lat: Item.itemDetails.location.GMapData.processedData.coordinates.lat/1,
-      lng: Item.itemDetails.location.GMapData.processedData.coordinates.lng/1,
+      lat: Item.itemDetails.location.GMapData.processedData.coordinates.lat,
+      lng: Item.itemDetails.location.GMapData.processedData.coordinates.lng,
     });
     mapRef.current.setZoom(15);
     setDisplayAddress({
       ...Item.itemDetails.location.GMapData.processedData.location,
       coordinates : Item.itemDetails.location.GMapData.processedData.coordinates,
+      place_id : Item.itemDetails.location.GMapData.rawData[0].place_id
     })
       }
 
@@ -294,7 +330,7 @@ else x = processPlaceDetails(x[0].address_components);
 
 
 
-  if(form.editReport.isOpen===false) return null;
+  if(form.editUserReport.isOpen===false) return null;
   return (
     <div className="gcaer26-EditReport-wrap" id="ar11-addReport-wrap">
       <div className="ar11-inner-wrap">
@@ -306,16 +342,17 @@ else x = processPlaceDetails(x[0].address_components);
             handler_closeForm();
           }}
         >
-          X
+          X 
         </div>
         <div className="ar11-h-wrap">
           <div className="ar11-h-title-wrap">
-            <span className="ar11-h-title-text">Add Report</span>
+            <span className="ar11-h-title-text">Edit Report</span>
           </div>
         </div>
         <div className="ar11-content-wrap">
           <div className="ar11-content-inner-wrap">
             <div className="ar11-item-wrap">
+
               <fieldset className="ar11-item-label-wrap">
                 <legend className="ar11-item-legend">Ownership</legend>
                 <div className="ar11-ownership-wrap">
@@ -540,11 +577,17 @@ else x = processPlaceDetails(x[0].address_components);
                   {console.log("Debug Item Message => ", gMap)}
                   {gMap.isLoaded ? (
                     <GMaps_ReprtForm
-                      type="Form"
+                      type="EditReport"
                       onLoad={onLoad}
                       coordinates={{
                         lat: Item.coordinates.lat || 32.7325,
                         lng: Item.coordinates.lng || -97.11383,
+                      }}
+                      SelectedCoordinates={Item.itemDetails.location.displayAddress? Item.itemDetails.location.displayAddress.coordinates : {
+                        
+                          lat: 32.7310,
+                          lng: -97.1150,
+                        
                       }}
                       Item={Item}
                       setItem={setItem}
@@ -590,15 +633,15 @@ else x = processPlaceDetails(x[0].address_components);
                           lat:
                             lat ||
                             Item.itemDetails.location.GMapData.processedData
-                              .coordinates.lat/1 ||
+                              .coordinates.lat ||
                             32.7325,
                           lng:
                             lng ||
                             Item.itemDetails.location.GMapData.processedData
-                              .coordinates.lng/1 ||
+                              .coordinates.lng ||
                             -97.11383,
                         });
-                        mapRef.current.setZoom(15);
+                        mapRef.current.setZoom(18);
                       }}
                       setGSuggestions={setGSuggestions}
                     ></Gmap_Autocomp_Form>

@@ -32,6 +32,7 @@ import UserEditReport from './Components/LocalComponents/UserEditReport/EditRepo
 import { io } from 'socket.io-client';
 import { addSocket } from './Store/Slices/SokcetSlice/SocketSlice.js';
 import { openForm } from './Store/Slices/FormSlice/FormSlice.js';
+import EditUserDetails from './Components/LocalComponents/EditUserDetails/EditUserDetails.js';
 
 
 // "undefined" means the URL will be computed from the `window.location` object
@@ -168,6 +169,7 @@ function App() {
      <UserEditReport 
      user = {user}
      />
+     <EditUserDetails />
      
      {/* <div className="OpaqueBackGround-fullscreen OpaqueBefore"></div> */}
      </div>

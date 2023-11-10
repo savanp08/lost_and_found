@@ -1,7 +1,5 @@
-import React from "react";
-import { useState } from "react";
-import './Auth.css'
-// import './Common.scss';
+import React, {useEffect, useState} from "react";
+import './This.scss';
 import SVG_1 from '../.././../Media/SVGs/Searching_Person.svg';
 import TextField from '@mui/material/TextField';
 import InputLabel from '@mui/material/InputLabel';
@@ -14,157 +12,68 @@ import {useDispatch, useSelector} from 'react-redux';
 import { addUser } from "../../../Store/Slices/UserSlice/UserSlice";
 import mongoose from "mongoose";
 import { initialState_user } from "../../../Components/Data/Schemas";
+import { closeForm } from "../../../Store/Slices/FormSlice/FormSlice";
 
-const SignUp = () =>{
-   const dispatch = useDispatch();
+
+const EditUserDetails = () => {
+    const dispatch = useDispatch();
    const navigate = useNavigate();
-   const newId = new mongoose.Types.ObjectId().toString();
+   
    const [password,setPassword] = useState(null);
-   const [validate, setValidate] = useState(new Map());
    const ExistingUser = useSelector(state => state.user);
    console.log("Existing User =>", ExistingUser);
    const [user,setUser] =useState(initialState_user);
+   const isFormOpen = useSelector(state => state.form.editUserDetails.isOpen);
      console.log(user.Name); 
+useEffect(()=>{
+  if(ExistingUser.userId){
+    setUser(ExistingUser);
+  }
+},[ExistingUser]);
 
-
-    function createAccount(e){
-        e.preventDefault();
-       var keys = Object.keys(user);
-       
-       keys = [...keys];
-       keys.splice(keys.indexOf("Name"),1);
-       keys.splice(keys.indexOf("location"),1);
-       keys.splice(keys.indexOf("gender"),1);
-       keys.splice(keys.indexOf("ethnicity"),1);
-       keys.splice(keys.indexOf("reports"),1);
-       keys.splice(keys.indexOf("searches"),1);
-       keys.splice(keys.indexOf("cliams"),1);
-       keys.splice(keys.indexOf("userId"),1);
-       keys.splice(keys.indexOf("userType"),1);
-       keys.splice(keys.indexOf("nanoid"),1);
-       keys.splice(keys.indexOf("userName"),1);
-       keys.splice(keys.indexOf("trusted"),1);
-       keys.splice(keys.indexOf("password"),1);
-         keys.splice(keys.indexOf("_id"),1);
-       for(var i=0; i<keys.length;i++){
-        var key = keys[i];
-        if(user[key]===null) { console.log("Returning False",key,user[key])
-        return false; }
-        if((typeof user[key] === 'string' || user[key] instanceof String) && user[key].length<1) { console.log("Returning False",key,user[key])
-            return false; }
-        console.log(user[key]);
-       }
-       console.log("Keys of user",keys);
-       keys = Object.keys(user.Name);
-       keys.splice(keys.indexOf("middleName"),1);
-       for(var i=0; i<keys.length;i++){
-        var key = keys[i];
-        if(user.Name[key]===null) { console.log("Returning False",key,user.Name[key])
-        return false; }
-        if((typeof user.Name[key] === 'string' || user.Name[key] instanceof String) && user.Name[key].length<1) { console.log("Returning False",key,user.Name[key])
-            return false; }
-        console.log(user.Name[key]);
-       }
-       keys = Object.keys(user.location);
-       for(var i=0; i<keys.length;i++){
-        var key = keys[i];
-        if(user.location[key]===null) { console.log("Returning False",key,user[key])
-        return false; }
-        if((typeof user.location[key] === 'string' || user.location[key] instanceof String) && user.location[key].length<1) { console.log("Returning False",key,user.location[key])
-            return false; }
-        console.log(user.location[key]);
-       }
-       submitAccount();
-      
-    }
-    
-    async function submitAccount(){
-        const Id = new mongoose.Types.ObjectId().toString();
-        dispatch(addUser({...user, 
-            trusted : user.occupation==="Staff",
-            userType : "user",
-            password : password,
-            nanoid : Id,
-            userId : Id
+async function EditAccount(e){
+    console.log("Editing account with new details", user);
+    const { _id, email, ...updatedUser } = user;
+    axios.post('/User/UpdateOne', {
+        _id: user._id,
+        user: updatedUser,
+    }).then(res=>{
+        console.log("User Updated",res);
+        if(res.status === 200){
+        dispatch(addUser({
+            ...user,
+            
         }));
-        console.log("Sending API request to Create Account",{...user, trusted : user.occupation==="Staff" , userType : "user"});
-      await axios.post('/Auth/SignUp', {
-        user: {...user, 
-            trusted : user.occupation==="Staff",
-            userType : "user",
-            password : password,
-            nanoid : Id,
-            userId : Id
-        },
-        password : password
-      }).then(response=>{
-        console.log(response.data);
-        if(response.data && (typeof response.data.token === 'string' || response.data.token instanceof String) && response.data.message === "Account Created Successfully"){
-            localStorage.setItem(`token` , response.data.token);
-            dispatch(addUser(response.data.user));
-            navigate(-2);
-        }
-      }).catch(error=>{
-        console.log("Error while submitting", error);
-        var x = document.getElementById("signUp-helperText")
-        x.innerHTML = "Account already exists";
-    })
-      
+        dispatch(closeForm({
+            formName : "editUserDetails",
+            data : null,
+        }));
     }
-function validateEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-
+    })
 }
 
-console.log("validate signup debug => ", validate, validate.length);
+ if(!isFormOpen) return null;
+    return(
+        <div className="editSignUp-main-Wrap">
+        <div className="signUp-BottomWrap">
+            <div className="editUserDetails76-closeForm"
 
-    return (
-        <div className="signUp-wrap">
-            <div className="signUp-topWrap">
-           <div className="bckImg-wrap">
-            <div className="signUp-topImgTextWrap">
-                <span className="signUp-topImgText">
-                    Lost & Found
-                </span>
-            </div>
-            <div className="signUp-TopImgWrap">
-            <img className="bckImg" src={SVG_1} />
-            </div>
-            <div className="signUp-ImgBtmTextWrap">
-                <span className="signUp-ImgBtmText">
-                    Don't Look elsewhere We got you covered
-                </span>
-            </div>
-            </div>
-            <div className="signUp-topRightWrap">
-            <div className="signUp-topTextWrap">
-            <div className="signUp-TopTextBox1">
-                <span className="signUp-TopText1">
-                Welcome to Lost & Found, a platform dedicated to help you find your lost things
-                </span>
+            >
+                <div className="signUp-closeFormButton"
+                onClick={(e)=>{
+                    dispatch(closeForm({
+                        formName : "editUserDetails",
+                        data : null,
+                    }));
+                }}
+                >
+                    X
+                </div>
                 
             </div>
-            <div className="signUp-TopRight-signUpButton">
-                <button type="button" className="signUp-TopRight-signUpBut">
-                    Sign Up
-                </button>
-                <span className="signUp-TopRight-signUpButText">
-                    Create your account and get started
-                </span>
-            </div>
-            <div className="signUp-topRight-TextBox2">
-            <span className="signUp-TopText2">
-                Welcome to Lost & Found, a platform dedicated to help you find your lost things
-                </span>
-            </div>
-            </div>
-            </div>
-            </div>
-            <div className="signUp-BottomWrap">
             <div className="signUp-TitleTextWrap">
                 <span className="signUp-TopText">
-                    Create Account
+                    Edit Account
                 </span>
             </div>
             <div className="signUp-box">
@@ -177,7 +86,7 @@ console.log("validate signup debug => ", validate, validate.length);
                    <div className="signUp-nameWrap">
                     
                     <div className="signUp-formButton">
-                    <TextField id="user-signUp-firstName" 
+                    <TextField id="SignUp-Name" 
                     label="First Name" 
                     variant="outlined" 
                     required
@@ -186,9 +95,6 @@ console.log("validate signup debug => ", validate, validate.length);
                     }}
                     value={user.Name.firstName}
                     onChange={(e)=>{
-                        
-                        if(e.target.value.length>0) setValidate(new Map(validate.set("firstName",true)));
-                        else setValidate(new Map(validate.delete("firstName")));
                          setUser({...user, Name : {...user.Name, firstName : e.target.value}})
                         
                     }}
@@ -225,32 +131,7 @@ console.log("validate signup debug => ", validate, validate.length);
                     </div>
                    </div>
                    </fieldset>
-                   <fieldset className="signUp-boxLabel">
-                    <legend className="signUp-nameLabel">
-                        Email
-                    </legend>
-                <div className="signUp-emailWrap signUp-wrapsB"> 
-                <div className="signUp-formButton">
-                <TextField id="signUp-email" 
-                    label="Email" 
-                    variant="outlined" 
-                    required
-                    sx={{
-                        
-                    }}
-                    error={user.email && !validateEmail(user.email)}
-                    aria-errormessage="Enter a valid email"
-                    helperText={user.email && !validateEmail(user.email) ? "Enter a valid email" : ""}
-                    value={user.email}
-                    onChange={(e)=>{
-                        setUser({...user, email : e.target.value});
-                        if(validateEmail(e.target.value)) setValidate(new Map(validate.set("email",true)));
-                        else setValidate(new Map(validate.delete("email")));
-                    }}
-                    /> 
-                    </div>
-                </div>
-                </fieldset>
+                  
                 <fieldset className="signUp-boxLabel">
                     <legend className="signUp-nameLabel">
                         Password
@@ -264,15 +145,9 @@ console.log("validate signup debug => ", validate, validate.length);
                     sx={{
                         width:'218px'
                     }}
-                    error={password && password.length<6}
-                    aria-errormessage="Password must be atleast 6 characters long"
-                    helperText={password && password.length<6 ? "Password must be atleast 6 characters long" : ""}
                     value={password}
                     onChange={(e)=>{
                         setPassword(e.target.value);
-                        
-                       if(e.target.value.length>5) setValidate(new Map(validate.set("password",true)));
-                       else setValidate(new Map(validate.delete("password")));
                     }}
                     /> 
                 </div>
@@ -289,42 +164,12 @@ console.log("validate signup debug => ", validate, validate.length);
                     label="Unique Id" 
                     variant="outlined" 
                     required
-                    placeholder="University Id, Passport, DL, ...."
                     sx={{
                         
                     }}
                     value={user.UniqueId}
                     onChange={(e)=>{
                         setUser({...user,UniqueId: e.target.value});
-                        
-                        if(e.target.value.length>0) setValidate(new Map(validate.set("UniqueId",true)));
-                        else setValidate(new Map(validate.delete("UniqueId")));
-                    }}
-                    /> 
-                </div>
-                    
-                </div>
-                </fieldset>
-                <fieldset className="signUp-boxLabel">
-                    <legend className="signUp-nameLabel">
-                        Mobile Number
-                    </legend>
-                <div className="signUp-uniqueId signUp-wrapsB">
-                <div className="signUp-formButton">
-                <TextField id="signUp-mobileNo"  
-                    label="mobile" 
-                    variant="outlined" 
-                    required={true}
-                    placeholder="Mobile Number"
-                    sx={{
-                        
-                    }}
-                    value={user.phone}
-                    onChange={(e)=>{
-                        setUser({...user,phone: e.target.value});
-                        
-                        if(e.target.value.length>0) setValidate(new Map(validate.set("phone",true)));
-                        else setValidate(new Map(validate.delete("phone")));
                     }}
                     /> 
                 </div>
@@ -347,7 +192,6 @@ console.log("validate signup debug => ", validate, validate.length);
                     value={user.location.university}
                     onChange={(e)=>{
                         setUser({...user,location:{...user.location,university:e.target.value}});
-                        
                     }}
                     /> 
                 </div>
@@ -355,16 +199,13 @@ console.log("validate signup debug => ", validate, validate.length);
                 <TextField id="signUp-street" 
                     label="Street" 
                     variant="outlined" 
-                    required={true}
+                    required
                     sx={{
                         
                     }}
                     value={user.location.street}
                     onChange={(e)=>{
                         setUser({...user,location:{...user.location,street:e.target.value}});
-                        
-                       if(e.target.value.length>0) setValidate(new Map(validate.set("street",true)));
-                       else setValidate(new Map(validate.delete("street")));
                     }}
                     /> 
                 </div>
@@ -372,14 +213,13 @@ console.log("validate signup debug => ", validate, validate.length);
                 <TextField id="signUp-Aparatment" 
                     label="Apartment/ House No" 
                     variant="outlined" 
-                    required={true}
+                    required
                     sx={{
                         
                     }}
                     value={user.location.apartment}
                     onChange={(e)=>{
                         setUser({...user,location:{...user.location,apartment:e.target.value}});
-
                     }}
                     /> 
                 </div>
@@ -387,16 +227,13 @@ console.log("validate signup debug => ", validate, validate.length);
                 <TextField id="signUp-city" 
                     label="City" 
                     variant="outlined" 
-                    required={true}
+                    required
                     sx={{
                         
                     }}
                     value={user.location.city}
                     onChange={(e)=>{
                         setUser({...user,location:{...user.location,city:e.target.value}});
-                        
-                        if(e.target.value.length>0) setValidate(new Map(validate.set("city",true)));
-                        else setValidate(new Map(validate.delete("city")));
                     }}
                     /> 
                 </div>
@@ -411,9 +248,6 @@ console.log("validate signup debug => ", validate, validate.length);
                     value={user.location.state}
                     onChange={(e)=>{
                         setUser({...user,location:{...user.location,state:e.target.value}});
-                        
-                        if(e.target.value.length>0) setValidate(new Map(validate.set("state",true)));
-                        else setValidate(new Map(validate.delete("state")));
                     }}
                     /> 
                 </div>
@@ -428,9 +262,6 @@ console.log("validate signup debug => ", validate, validate.length);
                     value={user.location.pinCode}
                     onChange={(e)=>{
                         setUser({...user,location:{...user.location,pinCode:e.target.value}});
-                        
-                        if(e.target.value.length>0) setValidate(new Map(validate.set("pinCode",true)));
-                        else setValidate(new Map(validate.delete("pinCode")));
                     }}
                     /> 
                 </div>
@@ -522,28 +353,21 @@ console.log("validate signup debug => ", validate, validate.length);
             </div>
             <div className="signUp-ButtonWrap">
                 <button type="button" className="signUp-Button" 
-                disabled={validate.size<9}
                  onClick={(e)=>{
-                    createAccount(e);
+                    EditAccount(e);
                  }}
-                >Sign Up</button>
+                >Edit</button>
             </div>
             <div className="signUp-HelperWrap">
                 <span className="signUp-HelperText" id="signUp-helperText">
                     {}
                 </span>
-                <div className="signUp-LoginWrap">
-                    <span className="signUp-LoginText">
-                        Already Have an Account? {" Sign in "}
-                        </span>
-                    <NavLink to={"/Login"} className="signUp-LoginText">
-                        Here
-                    </NavLink>
-                </div>
+               
             </div>
             </div>
-        </div>
+            </div>
     )
 }
 
-export default SignUp;
+
+export default EditUserDetails;

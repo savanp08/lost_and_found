@@ -14,8 +14,17 @@ import { openForm } from "../../Store/Slices/FormSlice/FormSlice";
 const SideNavBar = () => {
 
     const user = useSelector(state=> state.user);
+    const admin = useSelector(state=> state.admin);
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    console.log("NavBar debug => ", user._id, admin._id);
+
+    function logout(){
+        localStorage.removeItem("token");
+        localStorage.removeItem("admin");
+        navigate("/Login");
+        
+    }
 
     return(
         <div className="csn30-SNavBarWrap">
@@ -59,7 +68,7 @@ const SideNavBar = () => {
                 className="csn30-icon-svg"
                 xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 0 24 24" width="44px" fill="#FFFFFF"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 5.69l5 4.5V18h-2v-6H9v6H7v-7.81l5-4.5M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z"/></svg>
                 </div>
-                <div className="csn30-icon-wrap-each">
+                <div className={"csn30-icon-wrap-each" + (user._id || admin._id? "" : " Hide")}>
                 <svg 
                 onClick={(e)=>{
                     e.preventDefault();
@@ -75,22 +84,14 @@ const SideNavBar = () => {
                         e.preventDefault();
                         navigate("/Account");
                     }
-                    else{
-                     var x = document.getElementById("csn30-login-icon");
-                     if(x.classList.contains("Hide")){
-                         x.classList.remove("Hide");
-                     }
-                     else {
-                         x.classList.add("Hide");
-                     }
-                    }
+                   
                 }}
                 className="csn30-icon-svg"
                 xmlns="http://www.w3.org/2000/svg" height="44px" viewBox="0 0 24 24" width="44px" fill="#FFFFFF"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 5.9c1.16 0 2.1.94 2.1 2.1s-.94 2.1-2.1 2.1S9.9 9.16 9.9 8s.94-2.1 2.1-2.1m0 9c2.97 0 6.1 1.46 6.1 2.1v1.1H5.9V17c0-.64 3.13-2.1 6.1-2.1M12 4C9.79 4 8 5.79 8 8s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 9c-2.67 0-8 1.34-8 4v3h16v-3c0-2.66-5.33-4-8-4z"/></svg>
                   
                 </div>
 
-                <div className="csn30-icon-wrap-each-login-wrap30 Hide"
+                <div className={"csn30-icon-wrap-each-login-wrap30" + ((user._id || admin._id)? " Hide" : "")}
                   id="csn30-login-icon"
                   >
                 <svg 
@@ -100,10 +101,23 @@ const SideNavBar = () => {
  
                 }}
                 
-                className="csn30-icon-svg"
-                xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 20 20" height="38px" viewBox="0 0 20 20" width="38px" fill="#FFFFFF"><g><rect fill="none" height="20" width="20" x="0"/></g><g><path d="M17.5,8.5h-6.75C10.11,6.48,8.24,5,6,5c-2.76,0-5,2.24-5,5s2.24,5,5,5c2.24,0,4.11-1.48,4.75-3.5h0.75L13,13l1.5-1.5L16,13 l3-3L17.5,8.5z M6,12.5c-1.38,0-2.5-1.12-2.5-2.5S4.62,7.5,6,7.5S8.5,8.62,8.5,10S7.38,12.5,6,12.5z"/></g></svg>
+                className="csn30-icon-svg LogOutIcon-navBar"
+                xmlns="http://www.w3.org/2000/svg" height="40" viewBox="0 -960 960 960" width="40"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h280v80H200Zm440-160-55-58 102-102H360v-80h327L585-622l55-58 200 200-200 200Z"/></svg>
                   </div>
-
+                  <div className={"csn30-icon-wrap-each-login-wrap30" + ((user._id || admin._id)? "" : " Hide")}
+                  id="csn30-login-icon"
+                  >
+                <svg 
+                onClick={(e)=>{
+                    e.preventDefault();
+                    
+                    logout();
+ 
+                }}
+               
+                className="csn30-icon-svg"
+                xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="40px" viewBox="0 0 24 24" width="36px" fill="#FFFFFF"><g><path d="M0,0h24v24H0V0z" fill="none"/></g><g><path d="M17,8l-1.41,1.41L17.17,11H9v2h8.17l-1.58,1.58L17,16l4-4L17,8z M5,5h7V3H5C3.9,3,3,3.9,3,5v14c0,1.1,0.9,2,2,2h7v-2H5V5z"/></g></svg>
+                  </div>
 
 
 

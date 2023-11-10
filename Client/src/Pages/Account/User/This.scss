@@ -18,7 +18,18 @@ position: relative;
 
 .pua15-header-wrap{
 
+width: 98%;
+display: flex;
+flex-flow: column wrap;
+justify-content: space-around;
+align-items: center;
+background-color: white;
+box-shadow: 1px 1px 10px 12px rgba(0,0,0,0.1);
+border-radius: 17px;
+
 }
+
+
 
 .pua15-cards-wrap{
     width: 100%;
@@ -26,14 +37,33 @@ position: relative;
     flex-flow: column wrap;
     justify-content: space-between;
     align-items: center;
+
 }
 
 .pua15-crads-sort-wrap{
     width: 100%;
     display: flex;
-    flex-flow: row wrap;
+    flex-flow: column wrap;
     justify-content: space-between;
     align-items: center;
+    min-height: 200px;
+    box-shadow: -10px 5px 3px 1px rgba(0,0,0,0.1);
+    border-radius: 11px;
+    margin-top: 50px;
+    background-color: white;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+.pua15-orders-title-wrap{
+    display: flex;
+    width: 100%;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
+}
+.pua15-orders-title-text{
+    text-align: center;
+    font-size: 21px;
 }
 
 .pua15-cards-content-wrap{

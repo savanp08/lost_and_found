@@ -23,13 +23,11 @@ userRouter.get('/getAllUsers', async (req,response)=>{
     }
 })
 
-userRouter.post('./UpdateAll', async (req,response)=>{
+userRouter.post('/UpdateOne', async (req,response)=>{
     try{
         // console.log("user update fired",req.body);
-        userSchema.update({ _id : { $in : req.body._ids}},{
-            $set : {
-                ...req.body
-            }
+        userSchema.updateOne({ _id : req.body._id},{ 
+            ...req.body.user
         })
         .then(res=>{
             // console.log("users updated",res);
@@ -38,7 +36,7 @@ userRouter.post('./UpdateAll', async (req,response)=>{
         .catch(err=>{
             consoe.log("error while updating user",err.message);
             response.status(500).send(err.message);
-        });
+        }); 
 
     }
     catch(err){
