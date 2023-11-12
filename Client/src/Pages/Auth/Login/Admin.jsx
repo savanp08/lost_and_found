@@ -77,7 +77,7 @@ const AdminLogin = () => {
             <Box sx={{ display: "flex", alignItems: "flex-end" }}>
               {/* <AccountCircle sx={{ color: "action.active", mr: 1, my: 0.5 ,width:'38px' , height:'38px' , marginLeft:'-48px' }} /> */}
               <TextField
-                id="login_email"
+                id="admin_login_email"
                 label="Email"
                 variant="standard"
                 sx={{
@@ -109,7 +109,7 @@ const AdminLogin = () => {
           >
           <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
           <Input
-            id="standard-adornment-password"
+            id="admin-password"
             type={showPassword ? 'text' : 'password'}
             sx={{
                 style: {
@@ -134,11 +134,7 @@ const AdminLogin = () => {
                 }}
           />
         </FormControl>
-        <div className="login-passTextWrap">
-            <span className="login-passText">
-                    Forgot Password
-            </span>
-        </div>
+       
           </div>
           <div className="login-otherOptionsWrap">
             
@@ -165,6 +161,7 @@ const AdminLogin = () => {
             }
           }}
           onClick={(e)=> LoginFun(e) }
+          id="admin-login-button"
           >
             Sign in
             </Button>

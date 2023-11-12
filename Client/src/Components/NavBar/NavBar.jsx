@@ -10,6 +10,8 @@ import {
     useNavigate
 } from 'react-router-dom';
 import { openForm } from "../../Store/Slices/FormSlice/FormSlice";
+import { addAdmin, removeAdmin } from "../../Store/Slices/UserSlice/AdminSlice.js";
+import { removeUser } from "../../Store/Slices/UserSlice/UserSlice.js";
 
 const SideNavBar = () => {
 
@@ -23,7 +25,8 @@ const SideNavBar = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("admin");
         navigate("/Login");
-        
+        dispatch(removeUser());
+        dispatch(removeAdmin());
     }
 
     return(
@@ -68,7 +71,7 @@ const SideNavBar = () => {
                 className="csn30-icon-svg"
                 xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 0 24 24" width="44px" fill="#FFFFFF"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 5.69l5 4.5V18h-2v-6H9v6H7v-7.81l5-4.5M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z"/></svg>
                 </div>
-                <div className={"csn30-icon-wrap-each" + (user._id || admin._id? "" : " Hide")}>
+                <div className={"csn30-icon-wrap-each"}>
                 <svg 
                 onClick={(e)=>{
                     e.preventDefault();
@@ -77,10 +80,10 @@ const SideNavBar = () => {
                 className="csn30-icon-svg"
                 xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 0 24 24" width="44px" fill="#FFFFFF"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z"/></svg>
                 </div>
-                <div className="csn30-icon-wrap-account-wrap">
+                <div className={"csn30-icon-wrap-account-wrap" + (user._id || admin._id? "" : " Hide")}>
                 <svg 
                 onClick={(e)=>{
-                    if(user._id){
+                    if(user._id || admin._id){
                         e.preventDefault();
                         navigate("/Account");
                     }
@@ -91,7 +94,7 @@ const SideNavBar = () => {
                   
                 </div>
 
-                <div className={"csn30-icon-wrap-each-login-wrap30" + ((user._id || admin._id)? " Hide" : "")}
+                <div className={"csn30-icon-wrap-each-login-wrap30" + (user._id || admin._id? " Hide" : "")}
                   id="csn30-login-icon"
                   >
                 <svg 
@@ -102,10 +105,10 @@ const SideNavBar = () => {
                 }}
                 
                 className="csn30-icon-svg LogOutIcon-navBar"
-                xmlns="http://www.w3.org/2000/svg" height="40" viewBox="0 -960 960 960" width="40"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h280v80H200Zm440-160-55-58 102-102H360v-80h327L585-622l55-58 200 200-200 200Z"/></svg>
+                xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 20 20" height="40px" viewBox="0 0 20 20" width="40px" fill="#FFFFFF"><g><rect fill="none" height="20" width="20" x="0"/></g><g><path d="M17.5,8.5h-6.75C10.11,6.48,8.24,5,6,5c-2.76,0-5,2.24-5,5s2.24,5,5,5c2.24,0,4.11-1.48,4.75-3.5h0.75L13,13l1.5-1.5L16,13 l3-3L17.5,8.5z M6,12.5c-1.38,0-2.5-1.12-2.5-2.5S4.62,7.5,6,7.5S8.5,8.62,8.5,10S7.38,12.5,6,12.5z"/></g></svg>
                   </div>
                   <div className={"csn30-icon-wrap-each-login-wrap30" + ((user._id || admin._id)? "" : " Hide")}
-                  id="csn30-login-icon"
+                  id="csn30-logout-icon"
                   >
                 <svg 
                 onClick={(e)=>{

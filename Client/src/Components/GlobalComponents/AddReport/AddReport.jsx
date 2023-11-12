@@ -149,6 +149,12 @@ console.log("Item debug =>",Item)
           }
     ).then(res=>{
       console.log("Reponse from add report api => ",res);
+      if(res.status === 200){
+        dispatch(closeForm({
+          formName: "addReport",
+          isOpen: false,
+        }))
+      }
 
     }).catch(err=>{
       console.log("Error while adding report => ",err);
@@ -398,7 +404,7 @@ else x = processPlaceDetails(x[0].address_components);
                 <legend className="ar11-item-legend">Type</legend>
                 <div className="ar11-item-type-wrap ar11-common-textField-wrap">
                   <Autocomplete
-                    id="tags-standard"
+                    id="addReport-item-type"
                     options={ItemTypes}
                     getOptionLabel={(option) => option.label || ""}
                     value={{
@@ -477,7 +483,7 @@ else x = processPlaceDetails(x[0].address_components);
                 <div className="ar11-item-color-wrap">
                   <Autocomplete
                     multiple
-                    id="tags-standard"
+                    id="addReport-item-color"
                     options={CustomColors}
                     disableCloseOnSelect
                     value={Item.itemDetails.colors}
@@ -653,6 +659,7 @@ else x = processPlaceDetails(x[0].address_components);
                   <div className="ar11-Gmap-location-check-wrap">
                     <button
                       className="ar11-Gmap-location-check-btn"
+                      id="ar11-Gmap-location-ltglng-check-btn"
                       onClick={(e) => {
                         populateAddressWithLatLng()
                       }}
@@ -1039,12 +1046,13 @@ else x = processPlaceDetails(x[0].address_components);
         </div>
 
         <div className="ar11-item-submitBbutton-wrap">
-          <div
+          <button
             className="ar11-item-submitButton"
             onClick={(e) => [ValidateForm(e)]}
+            id="ar11-item-submitButton"
           >
             Report
-          </div>
+          </button>
         </div>
       </div>
     </div>

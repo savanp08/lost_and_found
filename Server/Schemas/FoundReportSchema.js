@@ -62,7 +62,7 @@ const FoundReportSchemaX = new mongoose.Schema({
                 },
                 university: {
                     type: 'string', 
-                    minlength: 2,
+                    
                     default: null,
                 },
                 street: {

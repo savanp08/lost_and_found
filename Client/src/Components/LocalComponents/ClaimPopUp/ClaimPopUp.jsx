@@ -158,6 +158,7 @@ const ClaimPopUp = () => {
                     onClick={(e)=>{
                         submitClaim(e);
                     }}
+                    id="ccp12-submitclaim-btn"
                     >Claim</button>
                     </div>
                     <div className="ccp12-submit-helper-text-wrap">

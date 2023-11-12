@@ -137,7 +137,7 @@ console.log("Item debug =>",Item,displayAddress)
     
     formData.append('report', JSON.stringify({
       ...Item,
-      userId : user._id,
+      
       itemDetails:{
         ...Item.itemDetails,
         location:{
@@ -170,6 +170,12 @@ console.log("Item debug =>",Item,displayAddress)
           }
     ).then(res=>{
       console.log("Reponse from add report api => ",res);
+      if(res.data.message === "Success"){
+        dispatch(closeForm({
+          formName: "editReport",
+          isOpen: false,
+        }))
+      }
 
     }).catch(err=>{
       console.log("Error while adding report => ",err);
@@ -178,7 +184,7 @@ console.log("Item debug =>",Item,displayAddress)
 
 function handler_closeForm(){
   dispatch(closeForm({
-    formName: "editUserReport",
+    formName: "editReport",
     isOpen: false,
   }))
 }
@@ -330,7 +336,7 @@ useEffect(()=>{
 
 
 
-  if(form.editUserReport.isOpen===false) return null;
+  if(form.editReport.isOpen===false) return null;
   return (
     <div className="gcaer26-EditReport-wrap" id="ar11-addReport-wrap">
       <div className="ar11-inner-wrap">

@@ -8,8 +8,9 @@ async function sendSignUpConfirmationMail(user){
             from : process.env.google_email,
             to : user.email,
             subject : "Welcome to the Lost & Found",
-            text : `Welcome to the Community ${user.name}!, Turn on Notifications to get notified when someone finds your lost item 
-            or to receive insant updates if ur around the location of a lost item.`,
+            text : `Welcome to the Community ${user.name}`,
+            html : `<span> <a href="http://localhost:3000/user/verifyAccount?email=${user.email}" >verify </a> the email to finish signing up to Lost & Found</span>`
+            
         };
         transportX.sendMail(mailOptions, (err, info) => {
             if(err){
@@ -39,7 +40,7 @@ async function sendPasswordResetMail(user){
                 text : `Hi User,
                 Click on the link below to reset your password. 
                 If you did not request a password reset, ignore this email.`,
-                html : `<a href="http://localhost:3000/User/ResetPassword" > Reset Password </a> `
+                html : `<a href="http://localhost:3000/User/ResetPassword?email=${user.email}"> Reset Password </a> `
             };
             transportX.sendMail(mailOptions, (err, info) => {
                 if(err){

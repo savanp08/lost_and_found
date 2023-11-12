@@ -50,9 +50,8 @@ const Login = () => {
       if(AccessToken && (typeof AccessToken === "string" || AccessToken instanceof String)){
         dispatch(addUser(res.data.user));
         localStorage .setItem(`token`, AccessToken);
-        const route = routerState[routerState.length-1] || "/Reports";
-        if(routerState[routerState.length-1]) dispatch(removeRoute(routerState[routerState.length-1]));
-         
+        const route = "/Reports";
+        //if(routerState[routerState.length-1]) dispatch(removeRoute(routerState[routerState.length-1]));
         navigator(route);
       }
      }).catch(err=>{
@@ -61,6 +60,24 @@ const Login = () => {
       x.innerHTML = err.response.data.message || err.response.data || "Incorrect Crendentials";
      })
     }
+    function validateEmail(email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+  
+  }
+
+  function handleForgotPassword(e){
+    e.preventDefault();
+    axios.post('/Auth/ForgotPassword',{
+      email: email
+    }).then(res=>{
+      console.log("Forgot Password",res);
+      
+    }).catch(err=>{
+      console.log("Failed to send reset link",err);
+      
+    })
+  }
 
   return (
     <div className="login-wrap">
@@ -94,6 +111,8 @@ const Login = () => {
                     height:'60px',
                 }}
                 autoFocus
+                error={email && !validateEmail(email)}
+                helperText={email && !validateEmail(email) ? "Enter a valid email" : ""}
                 inputProps={{
                     fontSize:'30px',
                 }}
@@ -143,7 +162,11 @@ const Login = () => {
           />
         </FormControl>
         <div className="login-passTextWrap">
-            <span className="login-passText">
+            <span className="login-passText"
+            onClick={(e)=>{
+              email && validateEmail(email)? handleForgotPassword(e) : document.getElementById("login-helperText").innerHTML = "Enter your email to get password reset link";
+            }}
+            >
                     Forgot Password
             </span>
         </div>

@@ -31,7 +31,7 @@ async function SignUp(req) {
 
 
 async function userExists(req) {
-    console.log("In method userExists => Checking if user exists", req);
+    console.log("In method userExists => Checking if user exists",);
 
     try {
         console.log("Searching for user with email", req.email); 
@@ -40,13 +40,13 @@ async function userExists(req) {
         
 
         if (res) {
-            console.log("Account Already Exists", res); 
+            console.log("Account Already Exists", ); 
             return {
                 message: "true",
                 user: res,
             }
         } else {
-            console.log("Account Does Not Exists",res); 
+            console.log("Account Does Not Exists",); 
             return {
                 message: "false",
                 user: null,

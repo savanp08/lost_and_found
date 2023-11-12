@@ -29,58 +29,15 @@ const SignUp = () =>{
 
     function createAccount(e){
         e.preventDefault();
-       var keys = Object.keys(user);
-       
-       keys = [...keys];
-       keys.splice(keys.indexOf("Name"),1);
-       keys.splice(keys.indexOf("location"),1);
-       keys.splice(keys.indexOf("gender"),1);
-       keys.splice(keys.indexOf("ethnicity"),1);
-       keys.splice(keys.indexOf("reports"),1);
-       keys.splice(keys.indexOf("searches"),1);
-       keys.splice(keys.indexOf("cliams"),1);
-       keys.splice(keys.indexOf("userId"),1);
-       keys.splice(keys.indexOf("userType"),1);
-       keys.splice(keys.indexOf("nanoid"),1);
-       keys.splice(keys.indexOf("userName"),1);
-       keys.splice(keys.indexOf("trusted"),1);
-       keys.splice(keys.indexOf("password"),1);
-         keys.splice(keys.indexOf("_id"),1);
-       for(var i=0; i<keys.length;i++){
-        var key = keys[i];
-        if(user[key]===null) { console.log("Returning False",key,user[key])
-        return false; }
-        if((typeof user[key] === 'string' || user[key] instanceof String) && user[key].length<1) { console.log("Returning False",key,user[key])
-            return false; }
-        console.log(user[key]);
-       }
-       console.log("Keys of user",keys);
-       keys = Object.keys(user.Name);
-       keys.splice(keys.indexOf("middleName"),1);
-       for(var i=0; i<keys.length;i++){
-        var key = keys[i];
-        if(user.Name[key]===null) { console.log("Returning False",key,user.Name[key])
-        return false; }
-        if((typeof user.Name[key] === 'string' || user.Name[key] instanceof String) && user.Name[key].length<1) { console.log("Returning False",key,user.Name[key])
-            return false; }
-        console.log(user.Name[key]);
-       }
-       keys = Object.keys(user.location);
-       for(var i=0; i<keys.length;i++){
-        var key = keys[i];
-        if(user.location[key]===null) { console.log("Returning False",key,user[key])
-        return false; }
-        if((typeof user.location[key] === 'string' || user.location[key] instanceof String) && user.location[key].length<1) { console.log("Returning False",key,user.location[key])
-            return false; }
-        console.log(user.location[key]);
-       }
+      
        submitAccount();
       
     }
     
     async function submitAccount(){
         const Id = new mongoose.Types.ObjectId().toString();
-        dispatch(addUser({...user, 
+        const { _id, ...rest } = user;
+        dispatch(addUser({...rest, 
             trusted : user.occupation==="Staff",
             userType : "user",
             password : password,
@@ -102,7 +59,7 @@ const SignUp = () =>{
         if(response.data && (typeof response.data.token === 'string' || response.data.token instanceof String) && response.data.message === "Account Created Successfully"){
             localStorage.setItem(`token` , response.data.token);
             dispatch(addUser(response.data.user));
-            navigate(-2);
+            navigate('/Reports');
         }
       }).catch(error=>{
         console.log("Error while submitting", error);
@@ -522,6 +479,7 @@ console.log("validate signup debug => ", validate, validate.length);
             </div>
             <div className="signUp-ButtonWrap">
                 <button type="button" className="signUp-Button" 
+                id="signUp-Button"
                 disabled={validate.size<9}
                  onClick={(e)=>{
                     createAccount(e);

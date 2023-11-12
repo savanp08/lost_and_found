@@ -59,14 +59,15 @@ const AdminReportCard = ({report,userX}) => {
     }
    
 const auth=(user && ((user._id === local_report.userId) || user.adminId? true : false));
-console.log("debug auth 1=> ",auth,user,(user && ((user._id && user._id === local_report.userId) || user.adminId)));
+//console.log("debug auth 1=> ",auth,user,(user && ((user._id && user._id === local_report.userId) || user.adminId)));
 try{
- console.log("debug auth 2=> ",user._id,local_report.userId,user.adminId, user._id === local_report.userId, user.adminId? true : false);
+ //console.log("debug auth 2=> ",user._id,local_report.userId,user.adminId, user._id === local_report.userId, user.adminId? true : false);
 }catch(err){
     console.log("debug auth 3=> ",err);
 }
-    
+    if((!user || !local_report)) console.log("XXXX reportCard debug =>", user,local_report,);
 if(!user || !local_report) return null;
+
     return(
         <div className="carc-card-wrap"
         id={`carc-card-wrap-${local_report._id}`}
@@ -87,7 +88,9 @@ if(!user || !local_report) return null;
 
                     </div>
                     </div>
-                    <span className="carc-left-title">
+                    <span className="carc-left-title"
+                    id="carc-left-card-main-title"
+                    >
                         {local_report.itemDetails.customItemName}
                     </span>
                 </div>
@@ -111,6 +114,7 @@ if(!user || !local_report) return null;
                                  R
                             </div>
                             <div className={"carc-left-edit-wrap" + (auth? "" : " Hide")}
+                            id="carc-reportCard-edit-button"
                             onClick={(e)=>{
                                 if(user._id) {
                                     OpenEditReport(e,"user");
@@ -127,6 +131,7 @@ if(!user || !local_report) return null;
                             onClick={(e)=>{
                                 deleteReport(e);
                            }}
+                           id="carc-reportCard-delete-button"
                             >
                                  D
                             </div>

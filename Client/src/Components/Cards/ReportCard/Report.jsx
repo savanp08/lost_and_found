@@ -193,7 +193,7 @@ const UserReportCard = ({report}) => {
             </div>
             <div className="curc-right-claim-button-wrap">
                     <button className="curc-right-claim-button"
-
+                    id="curc-right-claim-button31"
                     onClick={(e)=>{
                         claimReport(e,report);
                     }}

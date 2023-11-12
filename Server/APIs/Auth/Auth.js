@@ -3,7 +3,8 @@ import userSchema from "../../Schemas/UserSchema.js";
 import jwt from "jsonwebtoken"; 
 import adminSchema from '../../Schemas/AdminSchema.js';
 import { SignUp, userExists } from "../../Controllers/Auth/Auth.js";
-import { sendSignUpConfirmationMail } from "../../Controllers/Mailer/Mailer.js";
+import { sendPasswordResetMail, sendSignUpConfirmationMail } from "../../Controllers/Mailer/Mailer.js";
+import userRouter from "../User/User.js";
 
 const authRouter = express.Router();
  
@@ -65,11 +66,11 @@ catch(err){
 authRouter.get("/TokenValidate", async (req, response) => {
   try{
     console.log("TokenValidate Called->");
-  console.log(req.headers);
+ // console.log(req.headers);
     const HeaderToken = req.headers["authorization"];
     const Token = HeaderToken && HeaderToken.split(" ")[1];
     console.log("This is Acquired Token->");
-    console.log(Token);
+    //console.log(Token);
     var x = null;
     try{
       x =  jwt.verify(Token, process.env.RefreshToken);
@@ -85,7 +86,7 @@ authRouter.get("/TokenValidate", async (req, response) => {
         console.log("xy",xy);
         const y = await userExists({email :  xy});
         if(y.user) {
-          console.log("userExists reponse=>>> ",y);
+      //    console.log("userExists reponse=>>> ",y);
         return response.status(200).send(
           {
             message : "Token Validated",
@@ -133,7 +134,7 @@ authRouter.get("/TokenValidate", async (req, response) => {
           console.log("xy",xy);
           const y = await adminSchema.findOne({email :  xy});
           if(y) {
-            console.log("userExists reponse=>>> ",y);
+       //     console.log("userExists reponse=>>> ",y);
           return response.status(200).send(
             {
               message : "Token Validated",
@@ -177,7 +178,7 @@ function fetchToken(email) {
     const type  = req.params.userType;
     if(type === "adminX86109110213") {
         var password ="";
-        var exists =false;
+        var exists =false,verified;
           try{
             console.log("Login tried for admin",req.body);
             await adminSchema.findOne({ email: req.body.email.toLowerCase() },{ password:1  })
@@ -186,12 +187,14 @@ function fetchToken(email) {
                 if(res){
                 exists = true;
                 password = res.password;
+                if(res.verified.status) verified = true;
                 }
             }).catch(err=>{
                 console.log("Error in Admin Login ",err);
 
             });
             console.log("admin found",exists);
+            
             if(exists){
                 if(password === req.body.password){
                     console.log("User Successfully logged in")
@@ -217,6 +220,7 @@ function fetchToken(email) {
     const x = await userExists(req.body);
     
     if(x.message==="true" && x.user){
+      if(x.user.verified.status === false) return response.status(500).send("Account Not Verified");
       const password = x.user.password;
         if(password === req.body.password){
             console.log("User Successfully logged in")
@@ -242,6 +246,89 @@ function fetchToken(email) {
     }
 }
  })
+
+ authRouter.post("/ResetPassword", async (req, response) => {
+    try{
+      console.log("ForgotPassword Called->");
+    console.log(req.body);
+    const user = await userSchema.findOne({ email: req.body.email.toLowerCase() });
+    if(user){
+      console.log("User Found",user);
+      const updatePassword = userSchema.updateOne({email : req.body.email.toLowerCase()},{password : req.body.password});
+      if(updatePassword.error){
+        console.log("Error in updating password",updatePassword.error);
+        return response.status(500).send("Error in updating password");
+      }
+      else{
+        return response.status(200).send("Password Updated Successfully");
+      }
+    }
+    else{
+      console.log("User Not Found");
+      return response.status(403).send("User Not Found");
+    }
+    }
+    catch(err){
+      console.log("Error in Try while validating Token",err);
+      return response.status(403).send({
+        message: null,
+        user:null
+      });
+    }
+  });
+
+  authRouter.post("/ForgotPassword", async (req, response) => {
+    try{
+      console.log("ForgotPassword Called->");
+    console.log(req.body);
+    const user = await userSchema.findOne({ email: req.body.email.toLowerCase() });
+    if(user && user._id){
+      console.log("User Found",user);
+      sendPasswordResetMail({
+        email : user.email,
+       user : "user"
+      });
+      return response.status(200).send("User Found");
+    }
+    else{
+      console.log("User Not Found");
+      return response.status(403).send("email Not Found");
+    }
+    }
+    catch(err){
+      console.log("Error try again later",err);
+      return response.status(403).send({
+        message: null,
+        user:null
+      });
+    }
+  });
+
+
+  authRouter.post("/VerifyAccount", async (req, response) => {
+    try{
+      console.log("VerifyAccount Called->",req.body);
+      await userSchema.updateOne({email : req.body.email.toLowerCase()},{verified : {status : true}}).then(
+        res=>{
+          console.log("Account Verified",res);
+          return response.status(200).send("Account Verified");
+        }
+      ).catch(err=>{
+        console.log("Error in Account Verification",err);
+        return response.status(500).send("Error in Account Verification");
+      })
+    }
+    catch(err){
+      console.log("Error in Try while validating Token",err);
+      return response.status(403).send({
+        message: null,
+        user:null
+      });
+    }
+    })
+    
+
+
 
 
 export default authRouter;

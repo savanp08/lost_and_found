@@ -25,10 +25,10 @@ const adminSlice = createSlice({
             return state;
         },
         removeAdmin : (state,action) => {
-            state = {...initialState};
+            return {...initialState};
         },
         updateAdmin :(state,action) => {
-            state =  {...action.payload};
+            return {...action.payload};
         },
         default : (state, action) => {
             return {...state};

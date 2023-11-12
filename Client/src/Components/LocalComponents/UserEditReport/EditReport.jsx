@@ -170,6 +170,12 @@ console.log("Item debug =>",Item,displayAddress)
           }
     ).then(res=>{
       console.log("Reponse from add report api => ",res);
+      if(res.status===200){
+        dispatch(closeForm({
+          formName: "editUserReport",
+          isOpen: false,
+        }));
+      }
 
     }).catch(err=>{
       console.log("Error while adding report => ",err);
@@ -1025,7 +1031,7 @@ useEffect(()=>{
                 <div className="ar11-item-submit-wrap">
                   <div className="ar11-item-submittion-location"></div>
                   <TextField
-                    id="add-report-item-submittion-location"
+                    id="edit-report-item-submittion-location"
                     label="Submittion Location"
                     variant="outlined"
                     required
@@ -1048,12 +1054,13 @@ useEffect(()=>{
         </div>
 
         <div className="ar11-item-submitBbutton-wrap">
-          <div
+          <button
             className="ar11-item-submitButton"
+            id="ar11-item-editReport-Button"
             onClick={(e) => [ValidateForm(e)]}
           >
             Edit
-          </div>
+          </button>
         </div>
       </div>
     </div>

@@ -9,6 +9,7 @@ dotenv.config();
   async function transport(){
     try{
         const access_token = await oAuth2Client.getAccessToken();
+        
       var transportX;
     return transportX = nodemailer.createTransport({
         service : "gmail",

@@ -348,7 +348,9 @@ setDisplayReports(tempReports);
 },[]);
 
     return(
-        <div className="ur11-main-wrap">
+        <div className="ur11-main-wrap"
+        id="pur11-main-wrap"
+        >
             <div className="ur11-inner-wrap">
             <div className="ur11-claim-popup-main-wrap Hide"
             id="ur11-claim-popup-main-min"

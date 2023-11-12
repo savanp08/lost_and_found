@@ -179,8 +179,20 @@ const AdminEdiatableClaimCard_BackCard = ({ claimX }) => {
                 }
 
             }).then(res => {
-                console.log("Response from virtual assessment claim=> ", res.data)
+                console.log("Response from virtual assessment claim=> ", res.data,res.status)
+               if(res.status === 200){
+                   setClaim({
+                          ...claim,
+                          assessment:{
+                            ...claim.assessment,
+                            virtualAssessment:{
+                                 ...claim.assessment.virtualAssessment,
+                                 status: status
+                            }
+                          }
+                   })
 
+               }
                 
 
             }).catch(err => {
@@ -204,8 +216,19 @@ const AdminEdiatableClaimCard_BackCard = ({ claimX }) => {
                     }
                 }
             }).then(res => {
-                console.log("Response from inPerson assessment claim=> ", res.data)
-
+                console.log("Response from inPerson assessment claim=> ", res.data,res.status)
+                if(res.status === 200){
+                    setClaim({
+                        ...claim,
+                        assessment:{
+                          ...claim.assessment,
+                          inPersonAssessment:{
+                               ...claim.assessment.inPersonAssessment,
+                               status: status
+                          }
+                        }
+                 })
+                }
                 
 
             }).catch(err => {
@@ -234,9 +257,28 @@ const AdminEdiatableClaimCard_BackCard = ({ claimX }) => {
             value: status,
             prev: claim.schedule.pickUp.status
         }
-        })
+        }).then(res=>{
+            console.log("Response from pickUp claim=> ", res.data,res.status)
+            if(res.status === 200){
+                setClaim({
+                    ...claim,
+                    schedule:{
+                      ...claim.schedule,
+                      pickUp:{
+                           ...claim.schedule.pickUp,
+                           status: status
+                      }
+                    }
+             })
+            }
+        }).catch(err=>{
+            console.log("Error from pickUp claim=> ", err);
+        });
     }
-
+    if(claim.schedule.inPersonAssessment.date && typeof claim.schedule.inPersonAssessment.date === "object") {
+        console.log("XXXX =>",claim.schedule.inPersonAssessment, claim);
+     claim.schedule.inPersonAssessment.date = claim.schedule.inPersonAssessment.date.toISOString(); 
+    }
 
     if(!claim) return <></>
     return(
@@ -550,14 +592,16 @@ const AdminEdiatableClaimCard_BackCard = ({ claimX }) => {
                                         (
                                             <div className='caecc22-claim-display-inPersonAssessment-buttons-wrap'>
                                     
-                                    <div className='caecc22-claim-display-inPersonAssessment-each-wrap'
+                                    <button className='caecc22-claim-display-inPersonAssessment-each-wrap'
                                     onClick={(e)=>{
                                         e.preventDefault();
                                         submitInPersonAssessment("Initiated");
                                     }}
+                                    disabled={(claim.assessment.inPersonAssessment.location && claim.schedule.inPersonAssessment.date)? false : true}
+
                                     >
                                         Initiate
-                                    </div>
+                                    </button>
                                     </div>
                                         ):(
                                     <div className='caecc22-claim-display-inPersonAssessment-buttons-wrap'>

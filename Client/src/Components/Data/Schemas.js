@@ -128,6 +128,10 @@ const initialState_user = {
        reportIds: [],
        claimIds: [],
     },
+    verified:{
+        status:false,
+        date:null,
+    },
     
 }
 

@@ -145,7 +145,7 @@ claimRouter.get(`/getManyClaims/:userId`, async (req,response)=>{
 
  claimRouter.post("/editClaim", async (req,response)=>{
     try{
-        // console.log("edit claim fired",req.body);
+        console.log("edit claim fired",req.body);
         const res  = await ClaimSchema.updateOne({ _id : req.body._id},{...req.body});
         if(res.error){
             // console.log("error in edit claim",res.error);
@@ -166,7 +166,7 @@ claimRouter.get(`/getManyClaims/:userId`, async (req,response)=>{
 
   claimRouter.post("/deleteClaim", async (req,response)=>{
     try{       
-        // console.log("delete claim fired",req.body);
+         console.log("delete claim fired",req.body);
         
         const res  = await ClaimSchema.updateOne({ _id : req.body._id},{
             $set : {
@@ -190,7 +190,7 @@ claimRouter.get(`/getManyClaims/:userId`, async (req,response)=>{
 
   claimRouter.post("/editClaim/AssessmentUpdate/Virtual", async (req,response)=>{
     try{
-        // console.log("edit virtual Assessment claim fired",req.body);
+         console.log("edit virtual Assessment claim fired",req.body);
         const res  = await ClaimSchema.updateOne({ _id : req.body._id},{
             $set : {
                 "assessment" : {...req.body.assessment,  "virtualAssessment.date" : Date.now() }
@@ -224,7 +224,7 @@ claimRouter.get(`/getManyClaims/:userId`, async (req,response)=>{
             req.body.assessment.inPersonAssessment.location+"  on "
             +req.body.assessment.inPersonAssessment.date;
         }
-        // console.log("edit In Person Assessment claim fired",req.body);
+         console.log("edit In Person Assessment claim fired",req.body);
         const res  = await ClaimSchema.updateOne({ _id : req.body._id},{
             $set : {
                 "assessment" : {...req.body.assessment,  "inPersonAssessment.date" : Date.now() }
@@ -240,21 +240,9 @@ claimRouter.get(`/getManyClaims/:userId`, async (req,response)=>{
         }
         else{
             // console.log("edited claim",res);
-            if(req.body.assessment.inPersonAssessment.status === "Accepted"){
-                try{
-                    var x = req.body;
-                    delete x._id;
-                    var reportUpdated = await FoundReportSchema.updateOne({_id : req.body.reportId},{
-                        $set : {
-                            ...x,
-                        }
-                    });
-                }
-                catch(err){
-                    // console.log("Error in updating report about new final claim",err.message);
-                    return response.status(500).send(err.message);
-                }
-            }
+            
+               return response.status(200).send(res);
+            
         }
     }
     catch(err){

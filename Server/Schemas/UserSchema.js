@@ -2,31 +2,31 @@ import mongoose from "mongoose";
 
 const userSchemaX = new mongoose.Schema({
     userId: {
-        required: true,
+       
         type: 'string',
-        minlength: 3,
+        
         default: null,
         unique: true,
     },
     email:{
-        required: true,
+       
         type: 'string',
-        minlength: 3,
+        
         default: null,
         unique: true,
     },
     password:{
-        required: true,
+       
         type: 'string',
-        minlength: 3,
+        
         default: null,
         unique: false,
     },
     Name:{
         firstName:{
-            required: true,
+           
             type: 'string',
-            minlength: 2,
+            
             default: null,
         },
         middleName:{
@@ -36,44 +36,44 @@ const userSchemaX = new mongoose.Schema({
             default: null,
         },
         lastName:{
-            required: true,
+           
             type: 'string',
-            minlength: 2,
+            
             default: null,
         },
     },
     userType: {
-        required: true,
+       
         type: 'string',
         minlength: 1,
         default: null,
     },
     UniqueId: {
-        required: true,
+       
         type: 'string',
-        minlength: 3,
+        
         default: null,
         unique: true,
     },
     phone:{
         
         type: 'string',
-        minlength: 3,
+        
         default: null,
         unique: true,
     
     },
     nanoid: {
-        required: true,
+       
         type: 'string',
-        minlength: 3,
+        
         default: null,
         unique: true,
     },
     occupation: {
-        required: true,
+       
         type: 'string',
-        minlength: 3,
+        
         default: null,
     },
     gender: {
@@ -89,43 +89,43 @@ const userSchemaX = new mongoose.Schema({
         default: null,
     },
     trusted:{
-        required: true,
+       
         type: Boolean,
         default: false,
     },
     location: {
         university: {
-            required: true,
+            
             type: 'string',
-            minlength: 2,
+            
             default: null,
         },
         street: {
-            required: true,
+           
             type: 'string',
             minlength: 1,
             default: null,
         },
         apartment: {
-            required: true,
+           
             type: 'string',
             minlength: 1,
             default: null,
         },
         city: {
-            required: true,
+           
             type: 'string',
             minlength: 1,
             default: null,
         },
         state: {
-            required: true,
+           
             type: 'string',
             minlength: 1,
             default: null,
         },
         pinCode : {
-            required: true,
+           
             type: 'string',
             minlength: 1,
             default: null,
@@ -196,7 +196,17 @@ const userSchemaX = new mongoose.Schema({
         reportIds:[{
             type:mongoose.Types.ObjectId,
         }]
-    }
+    },
+    verified:{
+        status:{
+            type:Boolean,
+            default:false
+        },
+        date:{
+            type:Date,
+            default:null
+        },
+        },
 },{timestamps: true});
 
 const userSchema = mongoose.model('userSchema',userSchemaX);

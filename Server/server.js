@@ -39,7 +39,7 @@ const httpServer = server.listen(port, ()=>[
     console.log("listening on port", port)
 ]);
 
-const DbUri = process.env.DBURI;
+const DbUri = process.env.DBURI; 
 //console.log("DB URI IS: FROM process.env.DBURI ->",process.env.DBURI, "And process.env.DbUri",process.env.DbUri)
 mongoose.connect(DbUri || process.env.DbUri,
     {
@@ -63,3 +63,6 @@ export{
 
 
 changeStreams();
+
+
+  

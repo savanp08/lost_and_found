@@ -15,10 +15,10 @@ const userSlice = createSlice({
             return state;
         },
         removeUser : (state,action) => {
-            state = {...initialState};
+            return {...initialState};
         },
         updateUser :(state,action) => {
-            state =  {...action.payload};
+            return  {...action.payload};
         },
         default : (state, action) => {
             return {...state};

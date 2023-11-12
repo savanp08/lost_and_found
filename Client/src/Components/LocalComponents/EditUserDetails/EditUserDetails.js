@@ -86,7 +86,7 @@ async function EditAccount(e){
                    <div className="signUp-nameWrap">
                     
                     <div className="signUp-formButton">
-                    <TextField id="SignUp-Name" 
+                    <TextField id="usereditdetails-SignUp-Name" 
                     label="First Name" 
                     variant="outlined" 
                     required
@@ -353,6 +353,7 @@ async function EditAccount(e){
             </div>
             <div className="signUp-ButtonWrap">
                 <button type="button" className="signUp-Button" 
+                id="clcued55-signUp-Button"
                  onClick={(e)=>{
                     EditAccount(e);
                  }}

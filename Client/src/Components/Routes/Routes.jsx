@@ -11,6 +11,8 @@ import AdminLogin from "../../Pages/Auth/Login/Admin";
 import UserReportCard from "../Cards/ReportCard/Report";
 import UserReports from "../../Pages/UserReports/UserReports";
 import UserAccount from "../../Pages/Account/User/User";
+import VerifyAccount from "../../Pages/Auth/VerifyAccount/VerifyAccount.js";
+import ResetPassword from "../../Pages/Auth/ResetPassword/ResetPassword.js";
 const RoutesComponent = () =>{
 
     return (
@@ -24,7 +26,8 @@ const RoutesComponent = () =>{
                 <Route exaxt path="/Test" element ={ <AdminReports/> } />
                 <Route exaxt path="/AdminLoginX86109110213" element = { <AdminLogin/> } />
                 <Route exaxt path="/Account" element = { <UserAccount /> } />
-               
+                <Route exact path= "/user/verifyAccount" element = { <VerifyAccount/> } />
+                <Route exact path= "/user/ResetPassword" element={ <ResetPassword />} />
             </Routes>
             
         </div>
