@@ -49,7 +49,7 @@ const Login = () => {
       
       if(AccessToken && (typeof AccessToken === "string" || AccessToken instanceof String)){
         dispatch(addUser(res.data.user));
-        localStorage .setItem(`token`, AccessToken);
+        localStorage.setItem(`token`, AccessToken);
         const route = "/Reports";
         //if(routerState[routerState.length-1]) dispatch(removeRoute(routerState[routerState.length-1]));
         navigator(route);

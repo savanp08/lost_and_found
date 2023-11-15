@@ -26,11 +26,32 @@ align-items: center;
 background-color: white;
 box-shadow: 1px 1px 10px 12px rgba(0,0,0,0.1);
 border-radius: 17px;
+min-height: 350px;
+}
+
+.pua15-user-details-wrap{
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-around;
+    align-items: center;
+    
+}
+
+.pua15-user-details-text-wrap{
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
 
 }
 
+.pua15-user-details-text1221{
+    display: flex;
+    text-align: center;
+    font-size: 17px;
 
-
+}
 .pua15-cards-wrap{
     width: 100%;
     display: flex;

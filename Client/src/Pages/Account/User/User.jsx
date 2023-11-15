@@ -370,7 +370,9 @@ const UserAccount = () => {
                         </div>
                     </div>
                     <div className="pua15-stats-wrap">
-                        
+                        <div className="pua15-chat-wrap">
+                            
+                        </div>
                     </div>
                 </div>
                 <div className="pua15-cards-wrap">

@@ -181,7 +181,16 @@ const AdminEdiatableClaimCard_BackCard = ({ claimX }) => {
 
             }).then(res => {
                 console.log("Response from virtual assessment claim=> ", res.data)
-
+                setClaim({
+                    ...claim,
+                    "assessment": {
+                        ...claim.assessment,
+                        "virtualAssessment": {
+                            ...claim.assessment.virtualAssessment,
+                            "status": status
+                        }
+                    }
+                })
                 
 
             }).catch(err => {
@@ -230,6 +239,8 @@ const AdminEdiatableClaimCard_BackCard = ({ claimX }) => {
             }
         })
     }
+
+    console.log("claim => ",claim);
 
 
     if(!claim) return <></>

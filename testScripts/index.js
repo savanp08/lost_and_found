@@ -13,6 +13,7 @@ import UserLogout from './Logout.js';
 import adminLogin from './adminLogin.js';
 
 async function automatedTesting() {
+  var count=10;
     
     const driver = new Builder().forBrowser('chrome').build();
 
@@ -35,8 +36,8 @@ async function automatedTesting() {
           const tbodyContent = tableContent.substring(tbodyStartIndex, tbodyEndIndex);
   
           
-          const newRow = `<tr><td>${sn}</td><td>${functionName}</td><td class="${result === 'Passed' ? 'passed' : 'failed'}">${result === 'Passed' ? 'Passed' : 'Failed'}</td></tr>`;
-          
+          const newRow = `<tr><td>${count}</td><td>${functionName}</td><td class="${result === 'Passed' ? 'passed' : 'failed'}">${result === 'Passed' ? 'Passed' : 'Failed'}</td></tr>`;
+          count--;
           
           const newTbodyContent = `${tbodyContent}\n${newRow}`;
          // console.log(newTbodyContent)

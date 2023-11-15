@@ -65,7 +65,11 @@ const AdminEditableClaimCard = (props) => {
                 console.log("Error in deleting claim", err);
             })
     }
-
+    if(props.report && props.report.userId !== claim.userId) return (
+        <div className="caecc22-alt-main-wrap">
+            This was found by the user {props.report.userId}
+        </div>
+    )
     return (
         <div className="caecc22-main-wrap">
             <div className="caecc22-edit-wrap">
@@ -280,6 +284,8 @@ const AdminEdiatableClaimCard_BackCard = ({ claimX }) => {
      claim.schedule.inPersonAssessment.date = claim.schedule.inPersonAssessment.date.toISOString(); 
     }
 
+    console.log("claim => ",claim);
+
     if(!claim) return <></>
     return(
         <div className={'caecc22-claim-display-back-main-wrap' + (editBack? " caecc22-extend-wrap" : "") }>
@@ -415,7 +421,7 @@ const AdminEdiatableClaimCard_BackCard = ({ claimX }) => {
                                         "Status : "
                                     }</span>
                                     <span className='caecc22-claim-display-virtualAssessment-each-text'>{
-                                        //claim.assessment.virtualAssessment.status
+                                        claim.assessment.virtualAssessment.status
                                     }</span>
 
                                 </div>
@@ -462,16 +468,18 @@ const AdminEdiatableClaimCard_BackCard = ({ claimX }) => {
                                         e.preventDefault();
                                         submitVirtualAssessment("Accepted");
                                     }}
+                                    disabled={claim.assessment.virtualAssessment.status === 'Accepted'}
                                     >{
-                                        "Accept"
+                                        claim.assessment.virtualAssessment.status === 'Accepted'? 'Accepted' : 'Accept'
                                     }</button>
                                     <button className='caecc22-claim-display-virtualAssessment-button'
                                     onClick={(e)=>{
                                         e.preventDefault();
                                          submitVirtualAssessment("Rejected");
                                     }}
+                                    disabled={claim.assessment.virtualAssessment.status === 'Rejected'}
                                     >{
-                                        "Reject"
+                                        claim.assessment.virtualAssessment.status === 'Rejected'? 'Rejected' : 'Reject'
                                     }</button>
                                 </div>
                                 
@@ -611,16 +619,18 @@ const AdminEdiatableClaimCard_BackCard = ({ claimX }) => {
                                         submitInPersonAssessment("Accepted");
                                         
                                     }}
+                                    disabled={claim.assessment.inPersonAssessment.status === 'Accepted'}
                                     >{
-                                        "Accept"
+                                        claim.assessment.inPersonAssessment.status==="Accepted"? "Accepted" : "Accept"
                                     }</button>
                                     <button className='caecc22-claim-display-inPersonAssessment-button'
+                                    disabled={claim.assessment.inPersonAssessment.status === "Rejected" }
                                     onClick={(e)=>{
                                         e.preventDefault();
                                         submitInPersonAssessment("Rejected");
                                     }}
                                     >{
-                                        "Reject"
+                                        claim.assessment.inPersonAssessment.status==="Rejected"? "Rejected" : "Reject"
                                     }</button>
                                     </div>
                                         )

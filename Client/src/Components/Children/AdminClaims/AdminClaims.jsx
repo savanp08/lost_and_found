@@ -277,7 +277,11 @@ if(filter.textSearch){
             return 0;
         });
         for(var i=0;i<tempReports.length;i++){
+            try{
             newMap.set(xClaims.get(tempReports[i]._id)._id,xClaims.get(tempReports[i]._id));
+            }catch(err){
+                console.log("Error while filtering",err, " for ", tempReports[i]);
+            }
         }
     var uniquePairs =[];
     var xtempMap = new Map();
@@ -416,7 +420,7 @@ console.log("displayPairs => ",displayPairs);
             <div className="cac24-ARC-claims-wrap">
                 {displayPairs.length>0?(
                     displayPairs.map((value,key)=>{
-                        
+                        if(value.report.delete.status==="deleted") return null;
                         return(
                             <div className="cac24-claims-each-wrap" key={key}>
                             <AdminEditableClaimCard claim={value.claim} user={usersMap.get(value.claim.userId)} report={value.report}/>

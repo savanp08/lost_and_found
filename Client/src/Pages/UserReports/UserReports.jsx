@@ -437,7 +437,18 @@ setDisplayReports(tempReports);
                         </div>
                     </div>
                     <div className="ur11-filter-selectedOptions-wrap">
-
+                             {
+                                filter._ids.length>0? (<span className="ur11-filter-selected-removable"
+                                onClick={(e)=>{
+                                    setFilter({
+                                        ...filter,
+                                        _ids : [],
+                                    })
+                                }}
+                                >
+                                    Map
+                                </span>) : null
+                             }
                     </div>
                   </div>
                     </div>

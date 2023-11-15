@@ -11,7 +11,7 @@ async function sendSignUpConfirmationMail(user){
             text : `Welcome to the Community ${user.name}`,
             html : `<span> <a href="http://localhost:3000/user/verifyAccount?email=${user.email}" >verify </a> the email to finish signing up to Lost & Found</span>`
             
-        };
+        }; 
         transportX.sendMail(mailOptions, (err, info) => {
             if(err){
                 console.log("Contollers/Mailer/Mailer 1 => Error in sending mail", err);        //   1

@@ -16,15 +16,32 @@ const AdminReportCard = ({report,userX}) => {
     const [flip,setFlip] = useState(false);
     const dispatch = useDispatch();
     const user = userX;
-    
+    const [location,setLocation] = useState("");
     //console.log("Props in admin report card",report,userX);
    // console.log("Rerender in edit report popup", local_report,report);
     
+   
 
     useEffect(()=>{
         if(report){
         setLocalReport(report);
         setDisplayImages(report.media);
+        var loc = "";
+        var x = report.itemDetails.location.displayAddress;
+        if(x){
+            try{
+            var y = Object.getOwnPropertyNames(x);
+            y.forEach((i)=>{
+                if(x[i] && typeof x[i] === "string"){
+                    loc+=x[i]+' ';
+                }
+            })
+            setLocation(loc);
+
+            }catch(err){
+                console.log("Err ",err);
+            }
+        }
         }
     },[report]);
 
@@ -57,6 +74,31 @@ const AdminReportCard = ({report,userX}) => {
         
         })
     }
+    function formatDate(inputDate) {
+        const date = new Date(inputDate);
+    
+        // Extract date components
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Month is zero-based
+        const day = String(date.getDate()).padStart(2, '0');
+    
+        // Extract time components
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const seconds = String(date.getSeconds()).padStart(2, '0');
+    
+        // Format the date
+        const formattedDate = `${month}-${day}-${year} ${hours}:${minutes}:${seconds}`;
+    
+        return formattedDate;
+    }
+    
+    // Example usage
+    const inputDateString = "2023-11-11T21:10:29.763Z";
+    const formattedDateString = formatDate(inputDateString);
+    
+    console.log(formattedDateString);
+    
    
 const auth=(user && ((user._id === local_report.userId) || user.adminId? true : false));
 //console.log("debug auth 1=> ",auth,user,(user && ((user._id && user._id === local_report.userId) || user.adminId)));
@@ -151,22 +193,31 @@ if(!user || !local_report) return null;
                     <div className="carc-left-details-wrap">
                         <div className="carc-left-details-each-wrap">
                             <span className="carc-left-details-each-text">
-                                Reported On : <span className="carc-left-details-each-text-value">{local_report.date}</span>
+                                Reported On : <span className="carc-left-details-each-text-value">{formatDate(local_report.date)}</span>
                             </span>
                             </div>
                             <div className="carc-left-details-each-wrap">
                             <span className="carc-left-details-each-text">
                                 Reported By : <span className="carc-left-details-each-text-value">
-                                    {local_report.reporterName.firstName + " " + local_report.reporterName.lastName + " " +
+                                    {local_report.reporterName.firstName? local_report.reporterName.firstName : ""  + " " + local_report.reporterName.lastName?  local_report.reporterName.lastName : "" + " " +
                                     ( local_report.reporterName.middleName? local_report.reporterName.middleName : "") }
                                     </span>
                             </span>
                             </div>
                             <div className="carc-left-details-each-wrap">
                             <span className="carc-left-details-each-text">
-                                ownership : <span className="carc-left-details-each-text-value">
-                                    {local_report.reporterType === "user"? "Self" : "Other"}
+                                report status: <span className="carc-left-details-each-text-value">
+                                    {local_report.reporterType === "user"? "Lost" : "Found"} 
                                     </span>
+                                
+                            </span>
+                            </div>
+                            <div className="carc-left-details-each-wrap">
+                            <span className="carc-left-details-each-text">
+                                current status: <span className="carc-left-details-each-text-value">
+                                    {local_report.found.status === "found"? "Found" : "Lost"} 
+                                    </span>
+                                
                             </span>
                             </div>
                             <div className="carc-left-details-each-wrap">
@@ -177,20 +228,13 @@ if(!user || !local_report) return null;
                             </span>
                             </div>
 
-                            <div className="carc-right-location-wrap">
-                    <div className="carc-right-location-icon-wrap">
-                        Lo:
-                    </div>
-                    <span className="carc-right-location">
-                        {local_report.itemDetails.location.buiildingDetails  + " , "
-                        + local_report.itemDetails.location.university  + " , "
-                        + local_report.itemDetails.location.street   + " , "
-                        + local_report.itemDetails.location.university   + " , "
-                        + local_report.itemDetails.location.city   + " , "
-                        + local_report.itemDetails.location.state   + " , "
-                        + local_report.itemDetails.location.pinCode}
-                    </span>
-                </div>
+                            <div className="carc-left-details-each-wrap">
+                            <span className="carc-left-details-each-text">
+                                Loc : <span className="carc-left-details-each-text-value carc-prevent-text-overflow">
+                                    {location}
+                                    </span>
+                            </span>
+                            </div>
                         </div>
                     </div>
                    
